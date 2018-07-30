@@ -1,0 +1,77 @@
+cmake_minimum_required(VERSION 3.12.0)
+
+project(CppAoc LANGUAGES CXX)
+
+include(cmake/thirdparties/boost.cmake)
+include(cmake/thirdparties/rangev3.cmake)
+include(cmake/build_utils.cmake)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+  set(AOC_CXX_WARNINGS -Wall -Wextra -Wpedantic -Werror -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wrestrict -Wnull-dereference -Wold-style-cast -Wuseless-cast -Wdouble-promotion -Wshadow -Wformat=2 -Wconversion -Wsign-conversion -Wfloat-equal -Wcast-qual -Winit-self -Wpointer-arith)
+endif()
+
+
+# AocUtils
+add_library(AocUtils utils/inc/AoC_utils/md5.h utils/md5.cpp
+                     utils/inc/AoC_utils/geo.h utils/geo.cpp
+                     utils/inc/AoC_utils/match.h)
+
+target_include_directories(AocUtils PUBLIC utils/inc)
+target_link_libraries(AocUtils PRIVATE Boost::boost)
+
+# AocProblemsMap
+add_library(AocProblemsMap inc/AoC/problems_map.h src/problems_map.cpp)
+target_include_directories(AocProblemsMap PUBLIC inc)
+
+# AocProblems
+add_library(AocProblems OBJECT
+                        inc/AoC/2015/problem_01.h src/2015/problem_01.cpp
+                        src/impl_tests.h src/impl_tests.cpp
+                        src/rangev3.h)
+target_include_directories(AocProblems PUBLIC inc PRIVATE src)
+target_link_libraries(AocProblems PUBLIC AocProblemsMap AocUtils PRIVATE Boost::boost range-v3 patterns)
+
+# AocApp
+add_executable(AocApp app/main.cpp
+                       app/solve_problem.h app/solve_problem.cpp
+                       app/parse_cmd_line.h app/parse_cmd_line.cpp
+                       $<TARGET_OBJECTS:AocProblems>)
+target_include_directories(AocApp PRIVATE app)
+target_link_libraries(AocApp PRIVATE AocProblems Boost::program_options)
+
+
+
+# AocLibTests
+add_executable(AocLibTests tests/2015_01.cpp
+                           tests/impl_test.cpp
+                           tests/AoC_utils_tests/md5.cpp
+                           tests/AoC_utils_tests/geo.cpp
+                           tests/AoC_utils_tests/match.cpp
+                           tests/utils/aoc_fixture.cpp
+                           tests/utils/aoc_fixture.h
+                           tests/utils/boost_unit_test_module.cpp
+                           $<TARGET_OBJECTS:AocProblems>)
+target_link_libraries(AocLibTests PRIVATE AocProblems AocUtils Boost::unit_test_framework Boost::program_options)
+
+
+
+
+find_program(ClangFormat clang-format)
+if(ClangFormat)
+  foreach(AocTarget ${AocTargets})
+    get_target_property(AocTargetSources ${AocTarget} SOURCES)
+    list(APPEND AocSources ${AocTargetSources})
+  endforeach()
+
+  list(FILTER AocSources INCLUDE REGEX "^.*\.(h|cpp)\$")
+
+  add_custom_target(clangformat
+    COMMAND clang-format -style=file -i ${AocSources}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+endif()
+
+include(tests/tests.cmake)
