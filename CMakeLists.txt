@@ -32,6 +32,7 @@ add_library(AocProblems OBJECT
                         inc/AoC/2015/problem_01.h src/2015/problem_01.cpp
                         inc/AoC/2015/problem_02.h src/2015/problem_02.cpp
                         inc/AoC/2015/problem_03.h src/2015/problem_03.cpp
+                        inc/AoC/2015/problem_04.h src/2015/problem_04.cpp
                         src/impl_tests.h src/impl_tests.cpp
                         src/rangev3.h)
 target_include_directories(AocProblems PUBLIC inc PRIVATE src)
