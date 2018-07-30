@@ -1,0 +1,94 @@
+#include "AoC/2015/problem_02.h"
+
+#include <AoC/problems_map.h>
+
+#include "rangev3.h"
+
+#include <boost/algorithm/string.hpp>
+
+#include <cassert>
+#include <functional>
+
+namespace
+{
+using Dim = int;
+struct Dimensions
+{
+  const Dim l;
+  const Dim w;
+  const Dim h;
+};
+
+using CalcAreaFunc = std::function<int( Dimensions )>;
+
+Dimensions parse_dimensions( std::string str )
+{
+  const auto dims = str | ranges::view::split( 'x' ) | ranges::view::transform( []( const std::string d ) { return std::stoi( d ); } );
+  assert( ranges::distance( dims ) == 3 );
+
+  auto      dims_iter = ranges::begin( dims );
+  const int l         = *dims_iter++;
+  const int w         = *dims_iter++;
+  const int h         = *dims_iter;
+
+  return { l, w, h };
+}
+
+int calc_box_area( const Dimensions dims )
+{
+  const auto [ l, w, h ]   = dims;
+  const auto sides         = { l * w, w * h, h * l };
+  const auto area          = ranges::accumulate( sides | ranges::view::transform( []( int s ) { return s * 2; } ), 0 );
+  const auto smallest_side = ranges::min( sides );
+  return area + smallest_side;
+}
+
+std::pair<Dim, Dim> get_largest_dims( const Dim d1, const Dim d2, const Dim d3 )
+{
+  std::vector dims = { d1, d2, d3 };
+  ranges::sort( dims );
+  return { dims[ 0 ], dims[ 1 ] };
+}
+
+int calc_ribbon_area( const Dimensions dims )
+{
+  const auto [ l, w, h ] = dims;
+  const auto [ d1, d2 ]  = get_largest_dims( l, w, h );
+
+  const auto wrap = d1 * 2 + d2 * 2;
+  const auto bow  = l * w * h;
+
+  return wrap + bow;
+}
+
+using AreaFunc = int ( * )( Dimensions );
+template <AreaFunc area_func>
+int solve( ranges::istream_range<std::string> dimensions )
+{
+  auto areas = dimensions | ranges::view::transform( &parse_dimensions ) | ranges::view::transform( area_func );
+  return ranges::accumulate( areas, 0 );
+}
+
+}  // namespace
+
+namespace AoC_2015
+{
+
+namespace problem_02
+{
+
+int solve_1( std::istream& input )
+{
+  return solve<&calc_box_area>( input );
+}
+
+int solve_2( std::istream& input )
+{
+  return solve<&calc_ribbon_area>( input );
+}
+
+AOC_REGISTER_PROBLEM( 2015_02, solve_1, solve_2 );
+
+}  // namespace problem_02
+
+}  // namespace AoC_2015
