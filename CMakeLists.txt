@@ -31,6 +31,7 @@ target_include_directories(AocProblemsMap PUBLIC inc)
 add_library(AocProblems OBJECT
                         inc/AoC/2015/problem_01.h src/2015/problem_01.cpp
                         inc/AoC/2015/problem_02.h src/2015/problem_02.cpp
+                        inc/AoC/2015/problem_03.h src/2015/problem_03.cpp
                         src/impl_tests.h src/impl_tests.cpp
                         src/rangev3.h)
 target_include_directories(AocProblems PUBLIC inc PRIVATE src)
@@ -49,6 +50,7 @@ target_link_libraries(AocApp PRIVATE AocProblems Boost::program_options)
 # AocLibTests
 add_executable(AocLibTests tests/2015_01.cpp
                            tests/2015_02.cpp
+                           tests/2015_03.cpp
                            tests/impl_test.cpp
                            tests/AoC_utils_tests/md5.cpp
                            tests/AoC_utils_tests/geo.cpp
