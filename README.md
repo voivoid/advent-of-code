@@ -6,7 +6,7 @@ Prerequisites
 -----
 
 * C++17 compiler
-* cmake
+* cmake 3.12 or later
 * git
 
 Build
@@ -21,13 +21,13 @@ Build
 Tests
 -----
 
-    $ ctest
+    $ ctest -j4
 
 Solve Problem
 -----
 
-    $ ./AocApp problem2015_01_1 < ../advent-of-code/tests/input/2015_01
-    $ ./AocApp problem2015_01_2 < ../advent-of-code/tests/input/2015_01
+    $ ./AocApp 2015_01_1 < ../advent-of-code/tests/input/2015_01
+    $ ./AocApp 2015_01_2 < ../advent-of-code/tests/input/2015_01
 
 Day | 2015 | 2016 | 2017
 --- | ---- | ---- | ----
