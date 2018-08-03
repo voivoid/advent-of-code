@@ -36,6 +36,7 @@ add_library(AocProblems OBJECT
                         inc/AoC/2015/problem_05.h src/2015/problem_05.cpp
                         inc/AoC/2015/problem_06.h src/2015/problem_06.cpp
                         inc/AoC/2015/problem_07.h src/2015/problem_07.cpp
+                        inc/AoC/2015/problem_09.h src/2015/problem_09.cpp
                         src/impl_tests.h src/impl_tests.cpp
                         src/rangev3.h)
 target_include_directories(AocProblems PUBLIC inc PRIVATE src)
@@ -58,6 +59,7 @@ add_executable(AocLibTests tests/2015_01.cpp
                            tests/2015_05.cpp
                            tests/2015_06.cpp
                            tests/2015_07.cpp
+                           tests/2015_09.cpp
                            tests/impl_test.cpp
                            tests/AoC_utils_tests/md5.cpp
                            tests/AoC_utils_tests/geo.cpp
