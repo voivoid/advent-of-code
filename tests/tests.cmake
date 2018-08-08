@@ -25,6 +25,7 @@ if(Bash AND Diff)
   add_aoc_test(2015_05 255 55)
   add_aoc_test(2015_06 569999 17836115)
   add_aoc_test(2015_07 46065 14134)
+  add_aoc_test(2015_08 1333 2046)
   add_aoc_test(2015_09 207 804)
 
 
