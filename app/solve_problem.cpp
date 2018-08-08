@@ -34,6 +34,12 @@ void solve_problem( const std::string& problem, std::ostream& output )
     return;
   }
 
-  const auto result = ( *solve_func )( std::cin );
-  std::visit( ResultPrinter{ output }, result );
+  try
+  {
+      const auto result = ( *solve_func )( std::cin );
+      std::visit( ResultPrinter{ output }, result );
+  }
+  catch( const std::exception& ex ) {
+      output << "Failed to solve the problem due to: " << ex.what() << std::endl;
+  }
 }
