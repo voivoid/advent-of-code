@@ -5,6 +5,9 @@
 #include "rangev3.h"
 
 #include <boost/algorithm/string.hpp>
+#include <boost/spirit/home/x3.hpp>
+#include <boost/fusion/include/vector.hpp>
+#include <boost/fusion/include/adapt_struct.hpp>
 
 #include <cassert>
 #include <functional>
@@ -14,24 +17,29 @@ namespace
 using Dim = int;
 struct Dimensions
 {
-  const Dim l;
-  const Dim w;
-  const Dim h;
+  Dim l;
+  Dim w;
+  Dim h;
 };
+
+}
+
+BOOST_FUSION_ADAPT_STRUCT(Dimensions, l, w, h)
+
+namespace
+{
+
 
 using CalcAreaFunc = std::function<int( Dimensions )>;
 
-Dimensions parse_dimensions( std::string str )
+Dimensions parse_dimensions( const std::string& str )
 {
-  const auto dims = str | ranges::view::split( 'x' ) | ranges::view::transform( []( const std::string d ) { return std::stoi( d ); } );
-  assert( ranges::distance( dims ) == 3 );
+    namespace x3 = boost::spirit::x3;
+    const auto parser = x3::int_ >> 'x' >> x3::int_ >> 'x' >> x3::int_;
 
-  auto      dims_iter = ranges::begin( dims );
-  const int l         = *dims_iter++;
-  const int w         = *dims_iter++;
-  const int h         = *dims_iter;
-
-  return { l, w, h };
+    Dimensions dims;
+    x3::parse( str.cbegin(), str.cend(), parser, dims );
+    return dims;
 }
 
 int calc_box_area( const Dimensions dims )
