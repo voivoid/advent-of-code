@@ -27,7 +27,9 @@ Solve Problem
 -----
 
     $ ./AocApp 2015_01_1 < ../advent-of-code/tests/input/2015_01
+    280
     $ ./AocApp 2015_01_2 < ../advent-of-code/tests/input/2015_01
+    1797
 
 Day | 2015 | 2016 | 2017
 --- | ---- | ---- | ----
