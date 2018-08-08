@@ -1,14 +1,14 @@
 include(FetchContent)
 
-set(BoostVersion "1.67.0")
+set(BoostVersion "1.68.0")
 set(BoostLibs test program_options)
-set(BoostSHA256 8aa4e330c870ef50a896634c931adf468b21f8a69b77007e45c444151229f665)
+set(BoostSHA256 da3411ea45622579d419bfda66f45cd0f8c32a181d84adfa936f5688388995cf)
 set(Boost_USE_STATIC_LIBS TRUE)
 
 string(REPLACE . _ BoostVersionUnderscored ${BoostVersion})
 FetchContent_Declare(
   boost
-  URL "https://dl.bintray.com/boostorg/release/${BoostVersion}/source/boost_${BoostVersionUnderscored}.tar.gz"
+  URL "https://dl.bintray.com/boostorg/release/${BoostVersion}/source/boost_${BoostVersionUnderscored}_rc1.tar.gz"
   URL_HASH SHA256=${BoostSHA256}
 )
 
