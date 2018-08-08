@@ -46,8 +46,7 @@ target_link_libraries(AocProblems PUBLIC AocProblemsMap AocUtils PRIVATE Boost::
 # AocApp
 add_executable(AocApp app/main.cpp
                        app/solve_problem.h app/solve_problem.cpp
-                       app/parse_cmd_line.h app/parse_cmd_line.cpp
-                       $<TARGET_OBJECTS:AocProblems>)
+                       app/parse_cmd_line.h app/parse_cmd_line.cpp)
 target_include_directories(AocApp PRIVATE app)
 target_link_libraries(AocApp PRIVATE AocProblems Boost::program_options)
 
@@ -68,8 +67,7 @@ add_executable(AocLibTests tests/2015_01.cpp
                            tests/AoC_utils_tests/match.cpp
                            tests/utils/aoc_fixture.cpp
                            tests/utils/aoc_fixture.h
-                           tests/utils/boost_unit_test_module.cpp
-                           $<TARGET_OBJECTS:AocProblems>)
+                           tests/utils/boost_unit_test_module.cpp)
 target_link_libraries(AocLibTests PRIVATE AocProblems AocUtils Boost::unit_test_framework Boost::program_options)
 
 
