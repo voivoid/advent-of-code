@@ -8,7 +8,7 @@ set(Boost_USE_STATIC_LIBS TRUE)
 string(REPLACE . _ BoostVersionUnderscored ${BoostVersion})
 FetchContent_Declare(
   boost
-  URL "https://dl.bintray.com/boostorg/release/${BoostVersion}/source/boost_${BoostVersionUnderscored}_rc1.tar.gz"
+  URL "https://dl.bintray.com/boostorg/release/${BoostVersion}/source/boost_${BoostVersionUnderscored}.tar.gz"
   URL_HASH SHA256=${BoostSHA256}
 )
 
