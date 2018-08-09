@@ -18,7 +18,8 @@ endif()
 # AocUtils
 add_library(AocUtils utils/inc/AoC_utils/md5.h utils/md5.cpp
                      utils/inc/AoC_utils/geo.h utils/geo.cpp
-                     utils/inc/AoC_utils/match.h)
+                     utils/inc/AoC_utils/match.h
+                     utils/inc/AoC_utils/parse.h)
 
 target_include_directories(AocUtils PUBLIC utils/inc)
 target_link_libraries(AocUtils PRIVATE Boost::boost)

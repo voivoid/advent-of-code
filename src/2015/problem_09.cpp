@@ -2,9 +2,14 @@
 
 #include <AoC/problems_map.h>
 #include <AoC_utils/match.h>
+#include <AoC_utils/parse.h>
 
 #include "rangev3.h"
 
+#include <boost/fusion/include/vector.hpp>
+#include <boost/spirit/home/x3.hpp>
+
+#include <iostream>
 #include <map>
 #include <vector>
 
@@ -26,17 +31,21 @@ using PathMap = std::map<Path, Distance>;
 
 PathDistance parse_path_distance( const std::string& s )
 {
-  auto tokens = ranges::action::split( s, ' ' );
+  namespace x3 = boost::spirit::x3;
 
-  using S = std::string;
-  const auto path_distance =
-      AoC::match_container( tokens,
-                            []( S from, const S& /*to*/, S to, const S& /*=*/, const S& distance ) {
-                              return PathDistance{ { std::move( from ), std::move( to ) }, static_cast<size_t>( std::stoi( distance ) ) };
-                            },
-                            []( const auto& ) -> PathDistance { throw std::runtime_error( "wrong path distance" ); } );
+  const auto location_parser = +x3::alpha;
+  const auto parser          = location_parser >> " to " >> location_parser >> " = " >> x3::int_;
 
-  return path_distance;
+  boost::fusion::vector<std::string, std::string, int> parsed_data;
+  const bool                                           is_parsed = AoC::x3_parse( s.cbegin(), s.cend(), parser, parsed_data );
+
+  if ( !is_parsed )
+  {
+    throw std::invalid_argument( "Failed to parse path data" );
+  }
+
+  return { { boost::fusion::at_c<0>( parsed_data ), boost::fusion::at_c<1>( parsed_data ) },
+           static_cast<size_t>( boost::fusion::at_c<2>( parsed_data ) ) };
 }
 
 size_t get_distance( const Path& path, const PathMap& path_map )
