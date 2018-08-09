@@ -1,12 +1,13 @@
 #include "AoC/2015/problem_02.h"
 
 #include <AoC/problems_map.h>
+#include <AoC_utils/parse.h>
 
 #include "rangev3.h"
 
 #include <boost/algorithm/string.hpp>
-#include <boost/spirit/home/x3.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
+#include <boost/spirit/home/x3.hpp>
 
 #include <cassert>
 #include <functional>
@@ -21,9 +22,9 @@ struct Dimensions
   Dim h;
 };
 
-}
+}  // namespace
 
-BOOST_FUSION_ADAPT_STRUCT(Dimensions, l, w, h)
+BOOST_FUSION_ADAPT_STRUCT( Dimensions, l, w, h )
 
 namespace
 {
@@ -33,12 +34,17 @@ using CalcAreaFunc = std::function<int( Dimensions )>;
 
 Dimensions parse_dimensions( const std::string& str )
 {
-    namespace x3 = boost::spirit::x3;
-    const auto parser = x3::int_ >> 'x' >> x3::int_ >> 'x' >> x3::int_;
+  namespace x3      = boost::spirit::x3;
+  const auto parser = x3::int_ >> 'x' >> x3::int_ >> 'x' >> x3::int_;
 
-    Dimensions dims;
-    x3::parse( str.cbegin(), str.cend(), parser, dims );
-    return dims;
+  Dimensions dims;
+  bool       is_parsed = AoC::x3_parse( str.cbegin(), str.cend(), parser, dims );
+  if ( !is_parsed )
+  {
+    throw std::invalid_argument( "Failed to parse dimensions" );
+  }
+
+  return dims;
 }
 
 int calc_box_area( const Dimensions dims )
