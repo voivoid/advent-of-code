@@ -25,21 +25,25 @@ struct ResultPrinter
 
 }  // namespace
 
-void solve_problem( const std::string& problem, std::ostream& output )
+bool solve_problem( const std::string& problem )
 {
   const auto solve_func = AoC::get_solve_func( problem );
   if ( !solve_func )
   {
-    output << "Problem " << problem << " not found" << std::endl;
-    return;
+    std::cerr << "Problem " << problem << " not found" << std::endl;
+    return false;
   }
 
   try
   {
-      const auto result = ( *solve_func )( std::cin );
-      std::visit( ResultPrinter{ output }, result );
+    const auto result = ( *solve_func )( std::cin );
+    std::visit( ResultPrinter{ std::cout }, result );
   }
-  catch( const std::exception& ex ) {
-      output << "Failed to solve the problem due to: " << ex.what() << std::endl;
+  catch ( const std::exception& ex )
+  {
+    std::cerr << "Failed to solve the problem due to: " << ex.what() << std::endl;
+    return false;
   }
+
+  return true;
 }
