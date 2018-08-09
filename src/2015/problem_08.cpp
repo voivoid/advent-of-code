@@ -6,8 +6,6 @@
 
 #include <boost/spirit/home/x3.hpp>
 
-#include <iostream>
-
 namespace
 {
 namespace x3 = boost::spirit::x3;
