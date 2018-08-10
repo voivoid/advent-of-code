@@ -1,6 +1,13 @@
 #include "AoC/2015/problem_03.h"
 
-#include "rangev3.h"
+#include <range/v3/istream_range.hpp>
+#include <range/v3/to_container.hpp>
+#include <range/v3/view/concat.hpp>
+#include <range/v3/view/drop.hpp>
+#include <range/v3/view/partial_sum.hpp>
+#include <range/v3/view/stride.hpp>
+#include <range/v3/view/transform.hpp>
+
 #include <AoC/problems_map.h>
 
 #include <set>
@@ -40,8 +47,8 @@ Pos parse_instruction( const Instruction instruction )
   throw std::runtime_error( "Unexpected input" );
 }
 
-
-VisitedHouses solve( ranges::any_view<Instruction> instructions )
+template <typename Range>
+VisitedHouses solve( Range instructions )
 {
   const auto initial_pos = { Pos{ 0, 0 } };
   auto       positions   = ranges::view::concat( initial_pos, instructions | ranges::view::transform( parse_instruction ) );

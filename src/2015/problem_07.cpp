@@ -1,8 +1,12 @@
 #include "AoC/2015/problem_07.h"
 
 #include "AoC/problems_map.h"
-#include "rangev3.h"
 
+#include <range/v3/action/split.hpp>
+#include <range/v3/algorithm/all_of.hpp>
+#include <range/v3/getlines.hpp>
+#include <range/v3/numeric/accumulate.hpp>
+#include <range/v3/view/transform.hpp>
 
 #include <AoC_utils/match.h>
 

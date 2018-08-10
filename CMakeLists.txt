@@ -39,8 +39,7 @@ add_library(AocProblems OBJECT
                         inc/AoC/2015/problem_07.h src/2015/problem_07.cpp
                         inc/AoC/2015/problem_08.h src/2015/problem_08.cpp
                         inc/AoC/2015/problem_09.h src/2015/problem_09.cpp
-                        src/impl_tests.h src/impl_tests.cpp
-                        src/rangev3.h)
+                        src/impl_tests.h src/impl_tests.cpp)
 target_include_directories(AocProblems PUBLIC inc PRIVATE src)
 target_link_libraries(AocProblems PUBLIC AocProblemsMap AocUtils PRIVATE Boost::boost range-v3 patterns)
 

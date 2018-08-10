@@ -16,5 +16,6 @@ FetchContent_GetProperties(rangev3)
 
 add_library(range-v3 INTERFACE)
 set_target_properties(range-v3 PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${rangev3_SOURCE_DIR}/include)
+set_target_properties(range-v3 PROPERTIES INTERFACE_SYSTEM_INCLUDE_DIRECTORIES ${rangev3_SOURCE_DIR}/include)
 
 message("Building RangeV3 done")

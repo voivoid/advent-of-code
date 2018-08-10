@@ -3,7 +3,11 @@
 #include <AoC/problems_map.h>
 #include <AoC_utils/parse.h>
 
-#include "rangev3.h"
+#include <range/v3/algorithm/min.hpp>
+#include <range/v3/algorithm/sort.hpp>
+#include <range/v3/istream_range.hpp>
+#include <range/v3/numeric/accumulate.hpp>
+#include <range/v3/view/transform.hpp>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>

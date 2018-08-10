@@ -4,7 +4,12 @@
 #include <AoC_utils/geo.h>
 #include <AoC_utils/match.h>
 
-#include "rangev3.h"
+
+#include <range/v3/action/split.hpp>
+#include <range/v3/getlines.hpp>
+#include <range/v3/numeric/accumulate.hpp>
+#include <range/v3/view/c_str.hpp>
+#include <range/v3/view/transform.hpp>
 
 #include <boost/multi_array.hpp>
 #include <stdexcept>
