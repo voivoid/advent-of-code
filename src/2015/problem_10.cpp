@@ -1,6 +1,7 @@
 #include "AoC/2015/problem_10.h"
 
 #include <AoC/problems_map.h>
+#include <AoC_utils/algo.h>
 
 #include <range/v3/numeric/accumulate.hpp>
 #include <range/v3/view/group_by.hpp>
@@ -32,10 +33,7 @@ int solve( std::istream& input, const size_t iterations )
   std::string digits;
   input >> digits;
 
-  for ( size_t i = 0; i < iterations; ++i )
-  {
-    digits = transform( digits );
-  }
+  digits = AoC::iterate_n( digits, &transform, iterations );
 
   return static_cast<int>( digits.length() );
 }

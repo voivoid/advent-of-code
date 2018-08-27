@@ -16,10 +16,12 @@ endif()
 
 
 # AocUtils
-add_library(AocUtils utils/inc/AoC_utils/md5.h utils/md5.cpp
+add_library(AocUtils utils/inc/AoC_utils/algo.h
                      utils/inc/AoC_utils/geo.h utils/geo.cpp
                      utils/inc/AoC_utils/match.h
-                     utils/inc/AoC_utils/parse.h)
+                     utils/inc/AoC_utils/md5.h utils/md5.cpp
+                     utils/inc/AoC_utils/parse.h
+)
 
 target_include_directories(AocUtils PUBLIC utils/inc)
 target_link_libraries(AocUtils PRIVATE Boost::boost)
@@ -63,9 +65,10 @@ add_executable(AocLibTests tests/2015_01.cpp
                            tests/2015_08.cpp
                            tests/2015_09.cpp
                            tests/impl_test.cpp
-                           tests/AoC_utils_tests/md5.cpp
+                           tests/AoC_utils_tests/algo.cpp
                            tests/AoC_utils_tests/geo.cpp
                            tests/AoC_utils_tests/match.cpp
+                           tests/AoC_utils_tests/md5.cpp
                            tests/utils/aoc_fixture.cpp
                            tests/utils/aoc_fixture.h
                            tests/utils/boost_unit_test_module.cpp)
