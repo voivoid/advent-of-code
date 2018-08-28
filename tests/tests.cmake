@@ -28,6 +28,7 @@ if(Bash AND Diff)
   add_aoc_test(2015_08 1333 2046)
   add_aoc_test(2015_09 207 804)
   add_aoc_test(2015_10 252594 3579328)
+  add_aoc_test(2015_11 hxbxxyzz hxcaabcc)
 
 
 endif()
