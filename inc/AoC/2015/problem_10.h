@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iosfwd>
-#include <string>
 
 namespace AoC_2015
 {
