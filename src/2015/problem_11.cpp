@@ -87,7 +87,7 @@ Password& update_to_next_password( Password& password )
   return password.insert( 0, 1, 'a' );
 }
 
-Password solve( Password password )
+std::string solve( Password password )
 {
   do
   {
@@ -104,7 +104,7 @@ namespace AoC_2015
 namespace problem_11
 {
 
-Password solve_1( std::istream& input )
+std::string solve_1( std::istream& input )
 {
   Password old_password;
   input >> old_password;
@@ -112,7 +112,7 @@ Password solve_1( std::istream& input )
   return solve( old_password );
 }
 
-Password solve_2( std::istream& input )
+std::string solve_2( std::istream& input )
 {
   Password old_password;
   input >> old_password;

@@ -4,6 +4,7 @@ project(CppAoc LANGUAGES CXX)
 
 include(cmake/thirdparties/boost.cmake)
 include(cmake/thirdparties/rangev3.cmake)
+include(cmake/thirdparties/json.cmake)
 include(cmake/build_utils.cmake)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -43,9 +44,10 @@ add_library(AocProblems OBJECT
                         inc/AoC/2015/problem_09.h src/2015/problem_09.cpp
                         inc/AoC/2015/problem_10.h src/2015/problem_10.cpp
                         inc/AoC/2015/problem_11.h src/2015/problem_11.cpp
+                        inc/AoC/2015/problem_12.h src/2015/problem_12.cpp
                         src/impl_tests.h src/impl_tests.cpp)
 target_include_directories(AocProblems PUBLIC inc PRIVATE src)
-target_link_libraries(AocProblems PUBLIC AocProblemsMap AocUtils PRIVATE Boost::boost range-v3 patterns)
+target_link_libraries(AocProblems PUBLIC AocProblemsMap AocUtils PRIVATE Boost::boost range-v3 json)
 
 # AocApp
 add_executable(AocApp app/main.cpp
@@ -66,6 +68,7 @@ add_executable(AocLibTests tests/2015_01.cpp
                            tests/2015_08.cpp
                            tests/2015_09.cpp
                            tests/2015_11.cpp
+                           tests/2015_12.cpp
                            tests/impl_test.cpp
                            tests/AoC_utils_tests/algo.cpp
                            tests/AoC_utils_tests/geo.cpp
