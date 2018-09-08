@@ -57,24 +57,24 @@ Behavior parse_input_line( const std::string& line )
 {
   namespace x3 = boost::spirit::x3;
 
-  enum mode
+  enum Mode
   {
     gain,
     lose
   };
 
-  x3::symbols<mode> modes;
+  x3::symbols<Mode> modes;
   modes.add( "gain", gain )( "lose", lose );
 
   const auto name   = x3::lexeme[ +x3::alpha ];
   const auto parser = name > "would" > modes > x3::int_ > "happiness" > "units" > "by" > "sitting" > "next" > "to" > name > ".";
 
-  boost::fusion::vector<Name, mode, ModDiff, Name> attrs;
+  boost::fusion::vector<Name, Mode, ModDiff, Name> attrs;
   x3::phrase_parse( line.cbegin(), line.cend(), parser, x3::space, attrs );
 
   auto       neighbour_1 = boost::fusion::at_c<0>( attrs );
   auto       neighbour_2 = boost::fusion::at_c<3>( attrs );
-  const mode mode        = boost::fusion::at_c<1>( attrs );
+  const Mode mode        = boost::fusion::at_c<1>( attrs );
   const auto diff        = boost::fusion::at_c<2>( attrs ) * ( mode == lose ? -1 : +1 );
 
   return { std::move( neighbour_1 ), std::move( neighbour_2 ), diff };

@@ -1,9 +1,8 @@
 #include "AoC/2015/problem_06.h"
 
 #include <AoC/problems_map.h>
+#include <AoC_utils/parse.h>
 #include <AoC_utils/geo.h>
-#include <AoC_utils/match.h>
-
 
 #include <range/v3/action/split.hpp>
 #include <range/v3/getlines.hpp>
@@ -12,6 +11,12 @@
 #include <range/v3/view/transform.hpp>
 
 #include <boost/multi_array.hpp>
+#include <boost/spirit/home/x3.hpp>
+#include <boost/variant.hpp>
+#include <boost/fusion/include/at_c.hpp>
+#include <boost/fusion/include/vector.hpp>
+#include <boost/fusion/adapted/struct.hpp>
+
 #include <stdexcept>
 
 #define THROW_WRONG_CMD_EX() throw std::invalid_argument( "wrong cmd" )
@@ -26,58 +31,46 @@ struct Cmd
     on,
     off,
     toggle
-  } mode;
+  };
+
+  Mode mode;
   AoC::Rectangle rect;
 };
+
+}
+
+BOOST_FUSION_ADAPT_STRUCT(AoC::Point, x, y)
+BOOST_FUSION_ADAPT_STRUCT(AoC::Rectangle, left_top, right_bottom)
+BOOST_FUSION_ADAPT_STRUCT(Cmd, mode, rect)
+
+namespace
+{
 
 using Lamp  = size_t;
 using Lamps = boost::multi_array<Lamp, 2>;
 
-Cmd::Mode parse_cmd_mode( const std::string& mode )
-{
-  if ( mode == "on" )
-  {
-    return Cmd::Mode::on;
-  }
-  else if ( mode == "off" )
-  {
-    return Cmd::Mode::off;
-  }
-  else if ( mode == "toggle" )
-  {
-    return Cmd::Mode::toggle;
-  }
-
-  THROW_WRONG_CMD_EX();
-}
-
-AoC::Point parse_cmd_coord( const std::string& coord )
-{
-  auto coords = ranges::action::split( coord, ranges::view::c_str( "," ) );
-  return { std::stoi( coords[ 0 ] ), std::stoi( coords[ 1 ] ) };
-}
-
-AoC::Rectangle parse_cmd_rect( const std::string& from, const std::string& to )
-{
-  return { parse_cmd_coord( from ), parse_cmd_coord( to ) };
-}
-
-Cmd parse_cmd( const std::string& mode, const std::string& from, const std::string& to )
-{
-  return { parse_cmd_mode( mode ), parse_cmd_rect( from, to ) };
-}
-
 Cmd parse_cmd_line( const std::string& line )
 {
-  const auto tokens = ranges::action::split( line, ' ' );
+    namespace x3 = boost::spirit::x3;
 
-  using S        = const std::string&;
-  const auto cmd = AoC::match_container( tokens,
-                                         []( S /*turn*/, S mode, S from, S /*through*/, S to ) { return parse_cmd( mode, from, to ); },
-                                         []( S mode, S from, S /*through*/, S to ) { return parse_cmd( mode, from, to ); },
-                                         []( const auto& ) -> Cmd { THROW_WRONG_CMD_EX(); } );
+    x3::symbols<Cmd::Mode> on_off_modes;
+    on_off_modes.add("on", Cmd::Mode::on)("off", Cmd::Mode::off);
 
-  return cmd;
+    x3::symbols<Cmd::Mode> toggle_modes;
+    toggle_modes.add("toggle", Cmd::Mode::toggle);
+
+    const auto coord_parser = x3::rule<struct _x, AoC::Point>{} = x3::int_ > ',' > x3::int_;
+    const auto rect_parser = x3::rule<struct _y, AoC::Rectangle>{} = coord_parser > "through" > coord_parser;
+    const auto parser = ("turn" > on_off_modes > rect_parser ) | (toggle_modes > rect_parser);
+
+    Cmd cmd;
+    const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, cmd);
+    if( !is_parsed )
+    {
+        throw std::invalid_argument("Failed to parse input line");
+    }
+
+    return cmd;
 }
 
 
@@ -173,10 +166,6 @@ AOC_REGISTER_PROBLEM( 2015_06, solve_1, solve_2 );
 
 static void impl_tests()
 {
-  assert( Cmd::Mode::on == parse_cmd_mode( "on" ) );
-  assert( ( AoC::Point{ 123, 456 } ) == parse_cmd_coord( "123,456" ) );
-  assert( ( AoC::Rectangle{ { 111, 222 }, { 333, 444 } } ) == parse_cmd_rect( "111,222", "333,444" ) );
-
   {
     const Cmd cmd = parse_cmd_line( "turn off 111,222 through 333,444" );
     assert( cmd.mode == Cmd::Mode::off );
@@ -187,7 +176,7 @@ static void impl_tests()
     Lamps lamps( boost::extents[ 10 ][ 10 ] );
     assert( 0 == calc_lamps_brightness( lamps ) );
 
-    apply_cmd<&make_lamp_manipulator_1>( std::ref( lamps ), parse_cmd_line( "toggle on 0,0 through 1,1" ) );
+    apply_cmd<&make_lamp_manipulator_1>( std::ref( lamps ), parse_cmd_line( "toggle 0,0 through 1,1" ) );
 
     assert( 4 == calc_lamps_brightness( lamps ) );
   }
