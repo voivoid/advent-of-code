@@ -1,6 +1,7 @@
 #include "AoC/2015/problem_11.h"
 
 #include <AoC/problems_map.h>
+#include <AoC_utils/utils.h>
 
 #include <range/v3/algorithm/any_of.hpp>
 #include <range/v3/algorithm/sort.hpp>
@@ -23,6 +24,7 @@ using Password = std::string;
 
 void assert_char( const char c )
 {
+  AOC_UNUSED(c);
   assert( c >= 'a' && c <= 'z' );
 }
 

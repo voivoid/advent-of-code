@@ -22,6 +22,7 @@ add_library(AocUtils utils/inc/AoC_utils/algo.h
                      utils/inc/AoC_utils/match.h
                      utils/inc/AoC_utils/md5.h utils/md5.cpp
                      utils/inc/AoC_utils/parse.h
+                     utils/inc/AoC_utils/utils.h
 )
 
 target_include_directories(AocUtils PUBLIC utils/inc)
@@ -76,6 +77,7 @@ add_executable(AocLibTests tests/2015_01.cpp
                            tests/AoC_utils_tests/geo.cpp
                            tests/AoC_utils_tests/match.cpp
                            tests/AoC_utils_tests/md5.cpp
+                           tests/AoC_utils_tests/utils.cpp
                            tests/utils/aoc_fixture.cpp
                            tests/utils/aoc_fixture.h
                            tests/utils/boost_unit_test_module.cpp)
