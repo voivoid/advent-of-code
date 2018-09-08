@@ -1,7 +1,6 @@
 #include "AoC/2015/problem_09.h"
 
 #include <AoC/problems_map.h>
-#include <AoC_utils/match.h>
 #include <AoC_utils/parse.h>
 
 #include <range/v3/algorithm/permutation.hpp>
@@ -41,7 +40,7 @@ PathDistance parse_path_distance( const std::string& s )
 {
   namespace x3 = boost::spirit::x3;
 
-  const auto location_parser = x3::lexeme[+x3::alpha];
+  const auto location_parser = x3::lexeme[ +x3::alpha ];
   const auto parser          = location_parser > "to" > location_parser > "=" > x3::int_;
 
   boost::fusion::vector<std::string, std::string, int> parsed_data;

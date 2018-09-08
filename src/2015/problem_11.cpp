@@ -24,7 +24,7 @@ using Password = std::string;
 
 void assert_char( const char c )
 {
-  AOC_UNUSED(c);
+  AOC_UNUSED( c );
   assert( c >= 'a' && c <= 'z' );
 }
 

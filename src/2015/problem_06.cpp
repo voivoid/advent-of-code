@@ -1,8 +1,8 @@
 #include "AoC/2015/problem_06.h"
 
 #include <AoC/problems_map.h>
-#include <AoC_utils/parse.h>
 #include <AoC_utils/geo.h>
+#include <AoC_utils/parse.h>
 
 #include <range/v3/action/split.hpp>
 #include <range/v3/getlines.hpp>
@@ -10,12 +10,12 @@
 #include <range/v3/view/c_str.hpp>
 #include <range/v3/view/transform.hpp>
 
+#include <boost/fusion/adapted/struct.hpp>
+#include <boost/fusion/include/at_c.hpp>
+#include <boost/fusion/include/vector.hpp>
 #include <boost/multi_array.hpp>
 #include <boost/spirit/home/x3.hpp>
 #include <boost/variant.hpp>
-#include <boost/fusion/include/at_c.hpp>
-#include <boost/fusion/include/vector.hpp>
-#include <boost/fusion/adapted/struct.hpp>
 
 #include <stdexcept>
 
@@ -33,15 +33,15 @@ struct Cmd
     toggle
   };
 
-  Mode mode;
+  Mode           mode;
   AoC::Rectangle rect;
 };
 
-}
+}  // namespace
 
-BOOST_FUSION_ADAPT_STRUCT(AoC::Point, x, y)
-BOOST_FUSION_ADAPT_STRUCT(AoC::Rectangle, left_top, right_bottom)
-BOOST_FUSION_ADAPT_STRUCT(Cmd, mode, rect)
+BOOST_FUSION_ADAPT_STRUCT( AoC::Point, x, y )
+BOOST_FUSION_ADAPT_STRUCT( AoC::Rectangle, left_top, right_bottom )
+BOOST_FUSION_ADAPT_STRUCT( Cmd, mode, rect )
 
 namespace
 {
@@ -51,26 +51,26 @@ using Lamps = boost::multi_array<Lamp, 2>;
 
 Cmd parse_cmd_line( const std::string& line )
 {
-    namespace x3 = boost::spirit::x3;
+  namespace x3 = boost::spirit::x3;
 
-    x3::symbols<Cmd::Mode> on_off_modes;
-    on_off_modes.add("on", Cmd::Mode::on)("off", Cmd::Mode::off);
+  x3::symbols<Cmd::Mode> on_off_modes;
+  on_off_modes.add( "on", Cmd::Mode::on )( "off", Cmd::Mode::off );
 
-    x3::symbols<Cmd::Mode> toggle_modes;
-    toggle_modes.add("toggle", Cmd::Mode::toggle);
+  x3::symbols<Cmd::Mode> toggle_modes;
+  toggle_modes.add( "toggle", Cmd::Mode::toggle );
 
-    const auto coord_parser = x3::rule<struct _x, AoC::Point>{} = x3::int_ > ',' > x3::int_;
-    const auto rect_parser = x3::rule<struct _y, AoC::Rectangle>{} = coord_parser > "through" > coord_parser;
-    const auto parser = ("turn" > on_off_modes > rect_parser ) | (toggle_modes > rect_parser);
+  const auto coord_parser = x3::rule<struct _x, AoC::Point>{} = x3::int_ > ',' > x3::int_;
+  const auto rect_parser = x3::rule<struct _y, AoC::Rectangle>{} = coord_parser > "through" > coord_parser;
+  const auto parser                                              = ( "turn" > on_off_modes > rect_parser ) | ( toggle_modes > rect_parser );
 
-    Cmd cmd;
-    const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, cmd);
-    if( !is_parsed )
-    {
-        throw std::invalid_argument("Failed to parse input line");
-    }
+  Cmd        cmd;
+  const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, cmd );
+  if ( !is_parsed )
+  {
+    throw std::invalid_argument( "Failed to parse input line" );
+  }
 
-    return cmd;
+  return cmd;
 }
 
 

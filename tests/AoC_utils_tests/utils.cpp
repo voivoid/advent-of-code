@@ -1,6 +1,6 @@
 #include "AoC_utils/utils.h"
 
-void f(int x)
+void f( int x )
 {
-    AOC_UNUSED(x);
+  AOC_UNUSED( x );
 }

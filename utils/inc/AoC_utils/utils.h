@@ -1,3 +1,3 @@
 #pragma once
 
-#define AOC_UNUSED(x) (void)x;
+#define AOC_UNUSED( x ) (void)x;
