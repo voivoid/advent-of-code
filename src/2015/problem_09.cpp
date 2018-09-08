@@ -41,12 +41,11 @@ PathDistance parse_path_distance( const std::string& s )
 {
   namespace x3 = boost::spirit::x3;
 
-  const auto location_parser = +x3::alpha;
-  const auto parser          = location_parser >> " to " >> location_parser >> " = " >> x3::int_;
+  const auto location_parser = x3::lexeme[+x3::alpha];
+  const auto parser          = location_parser > "to" > location_parser > "=" > x3::int_;
 
   boost::fusion::vector<std::string, std::string, int> parsed_data;
-  const bool                                           is_parsed = AoC::x3_parse( s.cbegin(), s.cend(), parser, parsed_data );
-
+  const bool                                           is_parsed = AoC::x3_parse( s.cbegin(), s.cend(), parser, x3::space, parsed_data );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse path data" );

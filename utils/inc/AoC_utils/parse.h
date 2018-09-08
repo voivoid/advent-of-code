@@ -12,4 +12,13 @@ bool x3_parse( Iter begin, Iter end, const Parser& parser, Attr& attr )
   return parsed && ( begin == end );
 }
 
+template <typename Iter, typename Parser, typename Skipper, typename Attr>
+bool x3_parse( Iter begin, Iter end, const Parser& parser, const Skipper& skipper, Attr& attr )
+{
+  const bool parsed = boost::spirit::x3::phrase_parse( begin, end, parser, skipper, attr );
+  return parsed && ( begin == end );
+}
+
+
+
 }  // namespace AoC

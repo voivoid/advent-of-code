@@ -39,10 +39,10 @@ using CalcAreaFunc = std::function<int( Dimensions )>;
 Dimensions parse_dimensions( const std::string& str )
 {
   namespace x3      = boost::spirit::x3;
-  const auto parser = x3::int_ >> 'x' >> x3::int_ >> 'x' >> x3::int_;
+  const auto parser = x3::int_ > 'x' > x3::int_ > 'x' > x3::int_;
 
   Dimensions dims;
-  bool       is_parsed = AoC::x3_parse( str.cbegin(), str.cend(), parser, dims );
+  const bool is_parsed = AoC::x3_parse( str.cbegin(), str.cend(), parser, dims );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse dimensions" );

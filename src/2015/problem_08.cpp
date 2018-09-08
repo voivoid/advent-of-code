@@ -1,6 +1,7 @@
 #include "AoC/2015/problem_08.h"
 
 #include <AoC/problems_map.h>
+#include <AoC_utils/parse.h>
 
 
 #include <range/v3/getlines.hpp>
@@ -50,8 +51,12 @@ size_t run_parser( const std::string& line, const Parser& parser )
 {
   size_t n = 0;
 
-  auto rule = x3::rule<struct _, size_t>{} = parser;
-  boost::spirit::x3::parse( line.cbegin(), line.cend(), rule, n );
+  const auto rule = x3::rule<struct _, size_t>{} = parser;
+  const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), rule, n );
+  if ( !is_parsed )
+  {
+    throw std::invalid_argument( "Failed to parse input line" );
+  }
 
   return n;
 }

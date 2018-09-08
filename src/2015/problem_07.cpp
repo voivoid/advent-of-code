@@ -1,6 +1,6 @@
 #include "AoC/2015/problem_07.h"
 
-#include "AoC/problems_map.h"
+#include <AoC/problems_map.h>
 
 #include <range/v3/action/split.hpp>
 #include <range/v3/algorithm/all_of.hpp>
