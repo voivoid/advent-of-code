@@ -9,7 +9,6 @@ BOOST_AUTO_TEST_CASE( aoc_utils_match )
 {
   const auto match = []( const std::vector<int>& v ) {
     return AoC::match_container( v,
-                                 []( auto, auto, auto, auto ) { return 99999; },
                                  []( int a, int b, int c ) { return a * 100 + b * 10 + c; },
                                  []( int a, int b ) { return a * 10 + b; },
                                  []( int a ) { return a; },
