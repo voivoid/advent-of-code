@@ -67,7 +67,7 @@ Cmd parse_cmd_line( const std::string& line )
   const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, cmd );
   if ( !is_parsed )
   {
-    throw std::invalid_argument( "Failed to parse input line" );
+    throw std::invalid_argument( "Failed to parse input command data" );
   }
 
   return cmd;
