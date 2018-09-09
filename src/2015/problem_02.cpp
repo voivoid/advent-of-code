@@ -96,12 +96,12 @@ namespace problem_02
 
 int solve_1( std::istream& input )
 {
-  return solve<&calc_box_area>( input );
+  return solve<&calc_box_area>( ranges::istream_range<std::string>( input ) );
 }
 
 int solve_2( std::istream& input )
 {
-  return solve<&calc_ribbon_area>( input );
+  return solve<&calc_ribbon_area>( ranges::istream_range<std::string>( input ) );
 }
 
 AOC_REGISTER_PROBLEM( 2015_02, solve_1, solve_2 );

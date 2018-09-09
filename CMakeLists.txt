@@ -22,11 +22,12 @@ add_library(AocUtils utils/inc/AoC_utils/algo.h
                      utils/inc/AoC_utils/match.h
                      utils/inc/AoC_utils/md5.h utils/md5.cpp
                      utils/inc/AoC_utils/parse.h
+                     utils/inc/AoC_utils/ranges.h
                      utils/inc/AoC_utils/utils.h
 )
 
 target_include_directories(AocUtils PUBLIC utils/inc)
-target_link_libraries(AocUtils PRIVATE Boost::boost)
+target_link_libraries(AocUtils PRIVATE Boost::boost PUBLIC range-v3)
 
 # AocProblemsMap
 add_library(AocProblemsMap inc/AoC/problems_map.h src/problems_map.cpp)
@@ -47,6 +48,7 @@ add_library(AocProblems OBJECT
                         inc/AoC/2015/problem_11.h src/2015/problem_11.cpp
                         inc/AoC/2015/problem_12.h src/2015/problem_12.cpp
                         inc/AoC/2015/problem_13.h src/2015/problem_13.cpp
+                        inc/AoC/2015/problem_14.h src/2015/problem_14.cpp
                         src/impl_tests.h src/impl_tests.cpp)
 target_include_directories(AocProblems PUBLIC inc PRIVATE src)
 target_link_libraries(AocProblems PUBLIC AocProblemsMap AocUtils PRIVATE Boost::boost range-v3 json)
@@ -77,6 +79,7 @@ add_executable(AocLibTests tests/2015_01.cpp
                            tests/AoC_utils_tests/geo.cpp
                            tests/AoC_utils_tests/match.cpp
                            tests/AoC_utils_tests/md5.cpp
+                           tests/AoC_utils_tests/ranges.cpp
                            tests/AoC_utils_tests/utils.cpp
                            tests/utils/aoc_fixture.cpp
                            tests/utils/aoc_fixture.h

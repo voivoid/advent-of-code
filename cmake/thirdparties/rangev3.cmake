@@ -2,7 +2,7 @@ include(FetchContent)
 
 find_package(Git REQUIRED)
 
-set(RangeV3Ver 0.3.6)
+set(RangeV3Ver 0.3.7)
 
 FetchContent_Declare(
     rangev3
