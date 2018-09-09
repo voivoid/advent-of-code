@@ -1,14 +1,14 @@
 #include "AoC/2015/problem_01.h"
 
+#include <AoC/problems_map.h>
+
 #include <range/v3/distance.hpp>
 #include <range/v3/istream_range.hpp>
 #include <range/v3/numeric/accumulate.hpp>
+#include <range/v3/view/filter.hpp>
 #include <range/v3/view/partial_sum.hpp>
 #include <range/v3/view/take_while.hpp>
 #include <range/v3/view/transform.hpp>
-
-
-#include <AoC/problems_map.h>
 
 #include <stdexcept>
 
@@ -25,12 +25,18 @@ int parse_instruction( const Instruction instruction )
     case ')': return -1;
   }
 
-  throw std::runtime_error( "Failed to parse instruction input data" );
+  throw std::invalid_argument( "Failed to parse instruction input data" );
+}
+
+bool is_not_space( const char c )
+{
+  return std::isspace( static_cast<int>( c ) ) == 0;
 }
 
 auto get_instructions( std::istream& input )
 {
-  return ranges::istream_range<Instruction>( input ) | ranges::view::transform( &parse_instruction );
+  return ranges::istream_range<Instruction>( input ) | ranges::view::filter( &is_not_space ) |
+         ranges::view::transform( &parse_instruction );
 }
 
 int calc_last_visited_floor( std::istream& input )
