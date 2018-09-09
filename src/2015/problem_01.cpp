@@ -25,19 +25,23 @@ int parse_instruction( const Instruction instruction )
     case ')': return -1;
   }
 
-  throw std::runtime_error( "Unexpected input" );
+  throw std::runtime_error( "Failed to parse instruction input data" );
 }
 
-int calc_last_visited_floor( ranges::istream_range<Instruction> instructions )
+auto get_instructions( std::istream& input )
 {
-  auto offsets = instructions | ranges::view::transform( &parse_instruction );
-  return ranges::accumulate( offsets, 0 );
+  return ranges::istream_range<Instruction>( input ) | ranges::view::transform( &parse_instruction );
 }
 
-int calc_number_of_steps_to_reach_basement( ranges::istream_range<Instruction> instructions )
+int calc_last_visited_floor( std::istream& input )
 {
-  auto moves_to_reach_basement = instructions | ranges::view::transform( &parse_instruction ) | ranges::view::partial_sum() |
-                                 ranges::view::take_while( []( int floor ) { return floor >= 0; } );
+  return ranges::accumulate( get_instructions( input ), 0 );
+}
+
+int calc_number_of_steps_to_reach_basement( std::istream& input )
+{
+  auto moves_to_reach_basement =
+      get_instructions( input ) | ranges::view::partial_sum() | ranges::view::take_while( []( int floor ) { return floor >= 0; } );
 
   return 1 + static_cast<int>( ranges::distance( moves_to_reach_basement ) );
 }
