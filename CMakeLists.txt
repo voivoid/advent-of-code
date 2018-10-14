@@ -49,6 +49,7 @@ add_library(AocProblems OBJECT
                         inc/AoC/2015/problem_12.h src/2015/problem_12.cpp
                         inc/AoC/2015/problem_13.h src/2015/problem_13.cpp
                         inc/AoC/2015/problem_14.h src/2015/problem_14.cpp
+                        inc/AoC/2015/problem_15.h src/2015/problem_15.cpp
                         src/impl_tests.h src/impl_tests.cpp)
 target_include_directories(AocProblems PUBLIC inc PRIVATE src)
 target_link_libraries(AocProblems PUBLIC AocProblemsMap AocUtils PRIVATE Boost::boost range-v3 json)
@@ -74,6 +75,7 @@ add_executable(AocLibTests tests/2015_01.cpp
                            tests/2015_11.cpp
                            tests/2015_12.cpp
                            tests/2015_13.cpp
+                           tests/2015_15.cpp
                            tests/impl_test.cpp
                            tests/AoC_utils_tests/algo.cpp
                            tests/AoC_utils_tests/geo.cpp

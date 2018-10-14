@@ -3,6 +3,7 @@
 #include <range/v3/algorithm/for_each.hpp>
 #include <range/v3/algorithm/mismatch.hpp>
 #include <range/v3/distance.hpp>
+#include <range/v3/to_container.hpp>
 #include <range/v3/view/all.hpp>
 #include <range/v3/view/chunk.hpp>
 #include <range/v3/view/transform.hpp>
@@ -11,6 +12,9 @@
 #include <vector>
 
 namespace AoC
+{
+
+namespace details
 {
 
 // Flattens a range of ranges by iterating the inner
@@ -59,6 +63,8 @@ struct interleave_view<Rngs>::cursor
   }
 };
 
+}  // namespace details
+
 // In:  Range<Range<T>>
 // Out: Range<T>, flattened by walking the ranges
 //                round-robin fashion.
@@ -66,7 +72,7 @@ inline auto interleave()
 {
   return ranges::make_pipeable( []( auto&& rngs ) {
     using Rngs = decltype( rngs );
-    return interleave_view<ranges::view::all_t<Rngs>>( ranges::view::all( std::forward<Rngs>( rngs ) ) );
+    return details::interleave_view<ranges::view::all_t<Rngs>>( ranges::view::all( std::forward<Rngs>( rngs ) ) );
   } );
 }
 
@@ -78,6 +84,16 @@ inline auto transpose()
     using Rngs = decltype( rngs );
     CONCEPT_ASSERT( ranges::ForwardRange<Rngs>() );
     return std::forward<Rngs>( rngs ) | interleave() | ranges::view::chunk( static_cast<std::size_t>( ranges::distance( rngs ) ) );
+  } );
+}
+
+// In: Range<Range<T>>
+// Out: std::vector<std::vector<T>>
+inline auto to_2d_vector()
+{
+  return ranges::make_pipeable( []( auto&& rngs ) {
+    using Rngs = decltype( rngs );
+    return std::forward<Rngs>( rngs ) | ranges::view::transform( []( auto r ) { return r | ranges::to_vector; } ) | ranges::to_vector;
   } );
 }
 

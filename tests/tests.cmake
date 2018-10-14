@@ -32,6 +32,6 @@ if(Bash AND Diff)
   add_aoc_test(2015_12 119433 68466)
   add_aoc_test(2015_13 618 601)
   add_aoc_test(2015_14 2660 1256)
-
+  add_aoc_test(2015_15 13882464 11171160)
 
 endif()

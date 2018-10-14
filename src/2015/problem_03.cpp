@@ -5,6 +5,7 @@
 #include <range/v3/view/concat.hpp>
 #include <range/v3/view/drop.hpp>
 #include <range/v3/view/partial_sum.hpp>
+#include <range/v3/view/single.hpp>
 #include <range/v3/view/stride.hpp>
 #include <range/v3/view/transform.hpp>
 
@@ -50,7 +51,7 @@ Pos parse_instruction( const Instruction instruction )
 template <typename Range>
 VisitedHouses solve( Range instructions )
 {
-  const auto initial_pos = { Pos{ 0, 0 } };
+  const auto initial_pos = ranges::view::single( Pos{ 0, 0 } );
   auto       positions   = ranges::view::concat( initial_pos, instructions | ranges::view::transform( parse_instruction ) );
   auto       visited     = positions | ranges::view::partial_sum();
 
