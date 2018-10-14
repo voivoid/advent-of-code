@@ -5,6 +5,9 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 
+#include <istream>
+#include <string>
+
 namespace
 {
 std::string make_md5( const std::string& secret, size_t index )

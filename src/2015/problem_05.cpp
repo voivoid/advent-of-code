@@ -13,6 +13,11 @@
 
 #include <boost/algorithm/cxx11/any_of.hpp>
 
+#include <istream>
+#include <string>
+#include <string_view>
+#include <utility>
+
 namespace
 {
 

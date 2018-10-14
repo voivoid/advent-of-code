@@ -3,7 +3,9 @@
 #include <AoC/problems_map.h>
 
 #include <algorithm>
+#include <istream>
 #include <numeric>
+#include <stdexcept>
 
 #include <nlohmann/json.hpp>
 

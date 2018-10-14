@@ -10,6 +10,9 @@
 #include <range/v3/view/take_while.hpp>
 #include <range/v3/view/transform.hpp>
 
+#include <cctype>
+
+#include <istream>
 #include <stdexcept>
 
 namespace

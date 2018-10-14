@@ -19,8 +19,11 @@
 #include <boost/fusion/include/vector.hpp>
 #include <boost/spirit/home/x3.hpp>
 
+#include <functional>
+#include <istream>
 #include <string>
 #include <unordered_map>
+#include <utility>
 
 
 namespace

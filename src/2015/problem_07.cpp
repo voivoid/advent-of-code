@@ -12,12 +12,15 @@
 
 #include <boost/functional/overloaded_function.hpp>
 
+#include <cctype>
+#include <cstdint>
+
+#include <istream>
 #include <limits>
 #include <map>
 #include <stdexcept>
+#include <string>
 #include <variant>
-
-#include <cstdint>
 
 #define THROW_WRONG_INSTRUCTION_EX() throw std::invalid_argument( "wrong instruction" )
 

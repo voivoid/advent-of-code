@@ -16,7 +16,11 @@
 #include <boost/spirit/home/x3.hpp>
 #include <boost/variant.hpp>
 
+#include <functional>
+#include <istream>
+#include <numeric>
 #include <stdexcept>
+#include <string>
 
 #define THROW_WRONG_CMD_EX() throw std::invalid_argument( "wrong cmd" )
 

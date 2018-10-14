@@ -8,7 +8,9 @@
 #include <range/v3/view/iota.hpp>
 
 #include <functional>
+#include <istream>
 #include <sstream>
+#include <string>
 
 namespace
 {

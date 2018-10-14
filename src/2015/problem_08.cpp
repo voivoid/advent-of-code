@@ -10,6 +10,10 @@
 
 #include <boost/spirit/home/x3.hpp>
 
+#include <istream>
+#include <stdexcept>
+#include <string>
+
 namespace
 {
 namespace x3 = boost::spirit::x3;

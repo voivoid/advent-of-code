@@ -14,7 +14,12 @@
 #include <boost/spirit/home/x3.hpp>
 
 #include <cassert>
+
 #include <functional>
+#include <stdexcept>
+#include <string>
+#include <utility>
+#include <vector>
 
 namespace
 {

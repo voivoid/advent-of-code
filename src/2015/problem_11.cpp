@@ -14,6 +14,8 @@
 #include <range/v3/view/unique.hpp>
 #include <range/v3/view/zip.hpp>
 
+#include <functional>
+#include <istream>
 #include <string>
 
 #include <cassert>

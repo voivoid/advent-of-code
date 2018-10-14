@@ -11,8 +11,10 @@
 
 #include <AoC/problems_map.h>
 
+#include <istream>
 #include <set>
 #include <stdexcept>
+#include <tuple>
 
 namespace
 {

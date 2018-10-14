@@ -17,7 +17,13 @@
 #include <boost/fusion/include/vector.hpp>
 #include <boost/spirit/home/x3.hpp>
 
+#include <algorithm>
+#include <functional>
+#include <istream>
 #include <map>
+#include <sstream>
+#include <string>
+#include <utility>
 #include <vector>
 
 namespace
