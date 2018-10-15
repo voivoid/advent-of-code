@@ -1,15 +1,17 @@
 find_program(Bash bash)
 find_program(Diff diff)
 
-if(Bash AND Diff)
+if(Bash)
 
   enable_testing()
 
   function(add_aoc_test problem result1 result2)
     add_test(NAME ${problem}_1
-      COMMAND bash -c "diff <($<TARGET_FILE:AocApp> ${problem}_1 < ${CMAKE_CURRENT_SOURCE_DIR}/tests/input/${problem}) <(echo ${result1})")
+      COMMAND bash -c "$<TARGET_FILE:AocApp> ${problem}_1 < ${CMAKE_CURRENT_SOURCE_DIR}/tests/input/${problem}")
+    set_tests_properties(${problem}_1 PROPERTIES PASS_REGULAR_EXPRESSION ${result1})
     add_test(NAME ${problem}_2
-      COMMAND bash -c "diff <($<TARGET_FILE:AocApp> --problem ${problem}_2 < ${CMAKE_CURRENT_SOURCE_DIR}/tests/input/${problem}) <(echo ${result2})")
+      COMMAND bash -c "$<TARGET_FILE:AocApp> --problem ${problem}_2 < ${CMAKE_CURRENT_SOURCE_DIR}/tests/input/${problem}")
+    set_tests_properties(${problem}_2 PROPERTIES PASS_REGULAR_EXPRESSION ${result2})
   endfunction()
 
   add_test(NAME AocUtilsTests
