@@ -50,6 +50,7 @@ add_library(AocProblems OBJECT
                         inc/AoC/2015/problem_13.h src/2015/problem_13.cpp
                         inc/AoC/2015/problem_14.h src/2015/problem_14.cpp
                         inc/AoC/2015/problem_15.h src/2015/problem_15.cpp
+                        inc/AoC/2015/problem_16.h src/2015/problem_16.cpp
                         src/impl_tests.h src/impl_tests.cpp)
 target_include_directories(AocProblems PUBLIC inc PRIVATE src)
 target_link_libraries(AocProblems PUBLIC AocProblemsMap AocUtils PRIVATE Boost::boost range-v3 json)

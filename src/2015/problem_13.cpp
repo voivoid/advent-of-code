@@ -66,11 +66,11 @@ Behavior parse_input_line( const std::string& line )
     lose
   };
 
-  x3::symbols<Mode> modes;
-  modes.add( "gain", gain )( "lose", lose );
+  x3::symbols<Mode> mode_parser;
+  mode_parser.add( "gain", gain )( "lose", lose );
 
   const auto name   = x3::lexeme[ +x3::alpha ];
-  const auto parser = name > "would" > modes > x3::int_ > "happiness" > "units" > "by" > "sitting" > "next" > "to" > name > ".";
+  const auto parser = name > "would" > mode_parser > x3::int_ > "happiness" > "units" > "by" > "sitting" > "next" > "to" > name > ".";
 
   boost::fusion::vector<Name, Mode, ModDiff, Name> attrs;
   x3::phrase_parse( line.cbegin(), line.cend(), parser, x3::space, attrs );
