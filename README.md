@@ -15,7 +15,7 @@ Build
     $ git clone https://github.com/voivoid/advent-of-code/
     $ mkdir advent-of-code-build
     $ cd advent-of-code-build
-    $ cmake ../advent-of-code
+    $ cmake -DCMAKE_BUILD_TYPE=RELEASE ../advent-of-code
     $ cmake --build .
 
 Tests
