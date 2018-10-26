@@ -2,7 +2,7 @@ include(FetchContent)
 
 find_package(Git REQUIRED)
 
-set(JsonVer v3.2.0)
+set(JsonVer v3.3.0)
 
 FetchContent_Declare(
     json
