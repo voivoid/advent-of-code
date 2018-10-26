@@ -88,26 +88,27 @@ Ingredient parse_ingredient( const std::string& line )
   return ingredient;
 }
 
-ranges::any_view<ranges::any_view<Quantity>> generate_quantity_combinations( const size_t ingredients_num, const size_t quantity_left )
+ranges::any_view<ranges::any_view<Quantity>> generate_quantity_combinations( const size_t ingredients_left, const Quantity quantity_left )
 {
-  if ( ingredients_num == 0 || quantity_left == 0 )
+  if ( ingredients_left == 0 || quantity_left == 0 )
   {
-    return ranges::view::single( ranges::view::empty<size_t>() );
+    return ranges::view::single( ranges::view::empty<Quantity>() );
   }
 
+  const Quantity start_quantity = ingredients_left == 1 ? quantity_left : 0;
+
   auto combinations =
-      ranges::view::closed_indices( size_t( 0 ), quantity_left ) |
-      ranges::view::transform( [ingredients_num, quantity_left]( const auto quantity ) {
-        return generate_quantity_combinations( ingredients_num - 1, quantity_left - quantity ) |
+      ranges::view::closed_indices( start_quantity, quantity_left ) |
+      ranges::view::transform( [ingredients_left, quantity_left]( const auto quantity ) {
+        return generate_quantity_combinations( ingredients_left - 1, quantity_left - quantity ) |
                ranges::view::transform( [quantity]( auto qs ) { return ranges::view::concat( ranges::view::single( quantity ), qs ); } );
       } ) |
-      ranges::view::join |
-      ranges::view::filter( [quantity_left]( auto rng ) { return ranges::accumulate( rng, size_t( 0 ) ) == quantity_left; } );
+      ranges::view::join;
 
   return combinations;
 }
 
-auto generate_ingredient_combinations( const std::vector<Ingredient>& ingredients, const size_t max_quantity )
+auto generate_ingredient_combinations( const std::vector<Ingredient>& ingredients, const Quantity max_quantity )
 {
   return generate_quantity_combinations( ingredients.size(), max_quantity ) | ranges::view::transform( [&ingredients]( auto quantities ) {
            return ranges::view::zip_with(
@@ -188,16 +189,19 @@ AOC_REGISTER_PROBLEM( 2015_15, solve_1, solve_2 );
 static void impl_tests()
 {
   auto r1 = generate_quantity_combinations( 0, 0 ) | AoC::to_2d_vector();
-  assert( r1 == std::vector<std::vector<size_t>>{ {} } );
+  assert( r1 == std::vector<std::vector<Quantity>>{ {} } );
 
   auto r2 = generate_quantity_combinations( 1, 1 ) | AoC::to_2d_vector();
-  assert( r2 == std::vector<std::vector<size_t>>{ { 1 } } );
+  assert( r2 == std::vector<std::vector<Quantity>>{ { 1 } } );
 
   auto r3 = generate_quantity_combinations( 1, 3 ) | AoC::to_2d_vector();
-  assert( r3 == ( std::vector<std::vector<size_t>>{ { 3 } } ) );
+  assert( r3 == ( std::vector<std::vector<Quantity>>{ { 3 } } ) );
 
   auto r4 = generate_quantity_combinations( 2, 2 ) | AoC::to_2d_vector();
-  assert( r4 == ( std::vector<std::vector<size_t>>{ { 0, 2 }, { 1, 1 }, { 2 } } ) );
+  assert( r4 == ( std::vector<std::vector<Quantity>>{ { 0, 2 }, { 1, 1 }, { 2 } } ) );
+
+  auto r5 = generate_quantity_combinations( 2, 3 ) | AoC::to_2d_vector();
+  assert( r5 == ( std::vector<std::vector<Quantity>>{ { 0, 3 }, { 1, 2 }, { 2, 1 }, { 3 } } ) );
 
   const auto ingredient1 = parse_ingredient( "Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8" );
   assert( ingredient1.name == "Butterscotch" );
