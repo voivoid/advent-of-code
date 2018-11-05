@@ -35,7 +35,7 @@ using Coords = std::vector<Coord>;
 Field make_field( const size_t side )
 {
   const auto side_max_index = static_cast<CellIndex>( side );
-  Field      field( boost::extents[ side_max_index ][ side_max_index ] );
+  Field field( boost::extents[ side_max_index ][ side_max_index ] );
   return field;
 }
 
@@ -98,9 +98,9 @@ size_t count_alive_cells( const Cells& cells )
 
 size_t get_alive_neighbours_num( const Field& field, const CellIndex x, const CellIndex y )
 {
-  const CellIndex max_side_index   = get_max_cell_index( field );
-  const auto      neighbour_coords = get_neighbours( x, y, max_side_index );
-  const auto      alive_neighbour_cells =
+  const CellIndex max_side_index = get_max_cell_index( field );
+  const auto neighbour_coords    = get_neighbours( x, y, max_side_index );
+  const auto alive_neighbour_cells =
       neighbour_coords | ranges::view::transform( [&field]( const auto& coord ) { return get_cell( field, coord ); } );
   return count_alive_cells( alive_neighbour_cells );
 }

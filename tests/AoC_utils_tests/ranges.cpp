@@ -13,17 +13,17 @@
 
 BOOST_AUTO_TEST_CASE( aoc_utils_ranges_interleave )
 {
-  const std::vector<std::vector<int>> vecs        = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
-  const auto                          interleaved = vecs | AoC::interleave() | ranges::to_vector;
+  const std::vector<std::vector<int>> vecs = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+  const auto interleaved                   = vecs | AoC::interleave() | ranges::to_vector;
 
   BOOST_CHECK( ranges::equal( interleaved, std::vector<int>{ 1, 4, 7, 2, 5, 8, 3, 6, 9 } ) );
 }
 
 BOOST_AUTO_TEST_CASE( aoc_utils_ranges_transpose )
 {
-  std::vector<std::vector<int>> vecs       = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
-  const auto                    transposed = vecs | AoC::transpose() | AoC::to_2d_vector();
-  const auto                    expected   = std::vector<std::vector<int>>{ { 1, 4, 7 }, { 2, 5, 8 }, { 3, 6, 9 } };
+  std::vector<std::vector<int>> vecs = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+  const auto transposed              = vecs | AoC::transpose() | AoC::to_2d_vector();
+  const auto expected                = std::vector<std::vector<int>>{ { 1, 4, 7 }, { 2, 5, 8 }, { 3, 6, 9 } };
 
   BOOST_CHECK( transposed == expected );
 

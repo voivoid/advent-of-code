@@ -34,11 +34,11 @@ using Quantity = size_t;
 struct Ingredient
 {
   std::string name;
-  int         capacity;
-  int         durability;
-  int         flavor;
-  int         texture;
-  int         calories;
+  int capacity;
+  int durability;
+  int flavor;
+  int texture;
+  int calories;
 };
 
 Ingredient operator+( Ingredient i1, const Ingredient& i2 )
@@ -141,9 +141,9 @@ int calc_max_score( Scores scores )
 
 int solve( std::istream& input, const Quantity max_quantity, const std::optional<int> calories = {} )
 {
-  const auto ingredients             = ranges::getlines( input ) | ranges::view::transform( &parse_ingredient ) | ranges::to_vector;
-  auto       ingredient_combinations = generate_ingredient_combinations( ingredients, max_quantity );
-  auto       scores                  = calc_scores( ingredient_combinations );
+  const auto ingredients       = ranges::getlines( input ) | ranges::view::transform( &parse_ingredient ) | ranges::to_vector;
+  auto ingredient_combinations = generate_ingredient_combinations( ingredients, max_quantity );
+  auto scores                  = calc_scores( ingredient_combinations );
 
   if ( calories )
   {

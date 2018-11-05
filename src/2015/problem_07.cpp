@@ -60,7 +60,7 @@ using Circuit     = std::map<Wire, Instruction>;
 struct CircuitInstruction
 {
   Instruction instruction;
-  Wire        destination;
+  Wire destination;
 };
 
 bool is_alpha( const char c )
@@ -121,7 +121,7 @@ Signal get_signal( const Source& source, Circuit& circuit )
   const auto source_visitor = boost::make_overloaded_function( []( const Signal& signal ) { return signal; },
                                                                [&circuit]( const Wire& wire ) {
                                                                  const auto& instruction = get_instruction( wire, circuit );
-                                                                 const auto  result      = run_instruction( instruction, circuit );
+                                                                 const auto result       = run_instruction( instruction, circuit );
                                                                  update_circuit_wire_signal( circuit, wire, result );
                                                                  return result;
                                                                } );

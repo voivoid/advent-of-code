@@ -54,8 +54,8 @@ template <typename Range>
 VisitedHouses solve( Range instructions )
 {
   const auto initial_pos = ranges::view::single( Pos{ 0, 0 } );
-  auto       positions   = ranges::view::concat( initial_pos, instructions | ranges::view::transform( parse_instruction ) );
-  auto       visited     = positions | ranges::view::partial_sum();
+  auto positions         = ranges::view::concat( initial_pos, instructions | ranges::view::transform( parse_instruction ) );
+  auto visited           = positions | ranges::view::partial_sum();
 
   return visited | ranges::to_<std::set>();
 }
@@ -68,7 +68,7 @@ namespace problem_03
 {
 int solve_1( std::istream& input )
 {
-  auto       instructions   = ranges::istream_range<Instruction>( input );
+  auto instructions         = ranges::istream_range<Instruction>( input );
   const auto visited_houses = solve( instructions );
   return static_cast<int>( visited_houses.size() );
 }

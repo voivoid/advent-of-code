@@ -36,7 +36,7 @@ struct Cmd
     toggle
   };
 
-  Mode           mode;
+  Mode mode;
   AoC::Rectangle rect;
 };
 
@@ -66,7 +66,7 @@ Cmd parse_cmd_line( const std::string& line )
   const auto rect_parser = x3::rule<struct _y, AoC::Rectangle>{} = coord_parser > "through" > coord_parser;
   const auto parser                                              = ( "turn" > on_off_modes > rect_parser ) | ( toggle_modes > rect_parser );
 
-  Cmd        cmd;
+  Cmd cmd;
   const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, cmd );
   if ( !is_parsed )
   {
@@ -107,8 +107,8 @@ LampManipulator make_lamp_manipulator_2( const Cmd::Mode mode )
 template <ManipulatorFactory manipulator_factory>
 auto apply_cmd( std::reference_wrapper<Lamps> lamps, const Cmd& cmd )
 {
-  const auto& rect        = cmd.rect;
-  const auto  manipulator = manipulator_factory( cmd.mode );
+  const auto& rect       = cmd.rect;
+  const auto manipulator = manipulator_factory( cmd.mode );
   for ( auto x = rect.left_top.x; x <= rect.right_bottom.x; ++x )
   {
     for ( auto y = rect.left_top.y; y <= rect.right_bottom.y; ++y )
@@ -127,7 +127,7 @@ size_t calc_lamps_brightness( const Lamps& lamps )
 template <ManipulatorFactory manipulator_factory>
 int solve( std::istream& input )
 {
-  auto  cmds = ranges::getlines( input ) | ranges::view::transform( &parse_cmd_line );
+  auto cmds = ranges::getlines( input ) | ranges::view::transform( &parse_cmd_line );
   Lamps lamps( boost::extents[ 1000 ][ 1000 ] );
 
   const auto run_cmd = &apply_cmd<manipulator_factory>;

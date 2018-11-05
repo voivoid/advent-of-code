@@ -17,8 +17,8 @@ namespace AoC
 
 std::optional<ProblemFunc> get_solve_func( const ProblemName& name )
 {
-  const auto& map       = get_problems_map();
-  auto        func_iter = map.find( name );
+  const auto& map = get_problems_map();
+  auto func_iter  = map.find( name );
   if ( func_iter != map.cend() )
   {
     return func_iter->second;

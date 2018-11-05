@@ -51,8 +51,8 @@ using NeighboursMap = std::unordered_map<Neighbours, ModDiff, boost::hash<Neighb
 
 struct Behavior
 {
-  Name    neighbour_1;
-  Name    neighbour_2;
+  Name neighbour_1;
+  Name neighbour_2;
   ModDiff diff;
 };
 
@@ -75,10 +75,10 @@ Behavior parse_input_line( const std::string& line )
   boost::fusion::vector<Name, Mode, ModDiff, Name> attrs;
   x3::phrase_parse( line.cbegin(), line.cend(), parser, x3::space, attrs );
 
-  auto       neighbour_1 = boost::fusion::at_c<0>( attrs );
-  auto       neighbour_2 = boost::fusion::at_c<3>( attrs );
-  const Mode mode        = boost::fusion::at_c<1>( attrs );
-  const auto diff        = boost::fusion::at_c<2>( attrs ) * ( mode == lose ? -1 : +1 );
+  auto neighbour_1 = boost::fusion::at_c<0>( attrs );
+  auto neighbour_2 = boost::fusion::at_c<3>( attrs );
+  const Mode mode  = boost::fusion::at_c<1>( attrs );
+  const auto diff  = boost::fusion::at_c<2>( attrs ) * ( mode == lose ? -1 : +1 );
 
   return { std::move( neighbour_1 ), std::move( neighbour_2 ), diff };
 }
@@ -103,8 +103,8 @@ NeighboursMap make_neighbours_map( std::istream& input )
 
 ModDiff get_mood( const Name& name1, const Name& name2, const NeighboursMap& neighbours_map )
 {
-  std::pair<const Name&, const Name&> p    = { name1, name2 };
-  auto                                iter = neighbours_map.find( p );
+  std::pair<const Name&, const Name&> p = { name1, name2 };
+  auto iter                             = neighbours_map.find( p );
   assert( iter != neighbours_map.cend() );
   return iter->second;
 }
@@ -199,8 +199,8 @@ static void impl_tests()
   {
     std::istringstream ss(
         "Alice would gain 54 happiness units by sitting next to Bob.\nBob would lose 11 happiness units by sitting next to Alice." );
-    const auto map  = make_neighbours_map( ss );
-    auto       iter = map.find( { "Alice", "Bob" } );
+    const auto map = make_neighbours_map( ss );
+    auto iter      = map.find( { "Alice", "Bob" } );
     assert( iter != map.cend() );
     assert( iter->second == 54 );
     assert( -11 == get_mood( "Bob", "Alice", map ) );

@@ -36,7 +36,7 @@ using Route = std::vector<Location>;
 
 struct PathDistance
 {
-  Path     path;
+  Path path;
   Distance distance;
 };
 
@@ -50,7 +50,7 @@ PathDistance parse_path_distance( const std::string& s )
   const auto parser          = location_parser > "to" > location_parser > "=" > x3::int_;
 
   boost::fusion::vector<std::string, std::string, int> parsed_data;
-  const bool                                           is_parsed = AoC::x3_parse( s.cbegin(), s.cend(), parser, x3::space, parsed_data );
+  const bool is_parsed = AoC::x3_parse( s.cbegin(), s.cend(), parser, x3::space, parsed_data );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse input path data" );
@@ -149,13 +149,13 @@ static void impl_tests()
 
   {
     std::istringstream ss( "A to B = 10" );
-    auto               pm = parse_path_map( ss );
+    auto pm = parse_path_map( ss );
     assert( 10 == get_distance( { "A", "B" }, pm ) );
   }
 
   {
     std::istringstream ss( "A to B = 10\nB to C = 20" );
-    auto               pm = parse_path_map( ss );
+    auto pm = parse_path_map( ss );
     assert( 30 == calc_route_distance( { "A", "B", "C" }, pm ) );
   }
 }

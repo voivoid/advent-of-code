@@ -28,7 +28,7 @@ namespace
 {
 struct Deer
 {
-  std::string  name;
+  std::string name;
   unsigned int speed;
   unsigned int time_to_fly;
   unsigned int time_to_rest;
@@ -53,7 +53,7 @@ Deer parse_deer( const std::string& line )
   const auto parser = name_parser > "can" > "fly" > x3::uint_ > "km/s" > "for" > x3::uint_ > "seconds" > "but" > "then" > "must" > "rest" >
                       "for" > x3::uint_ > "seconds";
 
-  Deer       deer;
+  Deer deer;
   const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space | x3::punct, deer );
   if ( !is_parsed )
   {

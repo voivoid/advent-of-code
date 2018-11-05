@@ -25,7 +25,7 @@ using Volume                 = int;
 using ContainersCombinations = ranges::any_view<ranges::any_view<Volume>>;
 
 ContainersCombinations generate_combinations( ranges::any_view<Volume, ranges::category::random_access> containers,
-                                              const Volume                                              volume_left )
+                                              const Volume volume_left )
 {
   if ( volume_left == 0 )
   {
@@ -42,7 +42,7 @@ ContainersCombinations generate_combinations( ranges::any_view<Volume, ranges::c
     return {};
   }
 
-  auto                   tail = containers | ranges::view::tail;
+  auto tail = containers | ranges::view::tail;
   ContainersCombinations result1 =
       generate_combinations( tail, volume_left - head ) |
       ranges::view::transform( [head]( auto rng ) { return ranges::view::concat( ranges::view::single( head ), rng ); } ) |
@@ -116,37 +116,37 @@ static void impl_tests()
 
   {
     std::vector<Volume> v{};
-    auto                r = generate_combinations( v, 1 ) | AoC::to_2d_vector();
+    auto r = generate_combinations( v, 1 ) | AoC::to_2d_vector();
     assert( r == VV{} );
   }
 
   {
     std::vector<Volume> v{ 1 };
-    auto                r = generate_combinations( v, 0 ) | AoC::to_2d_vector();
+    auto r = generate_combinations( v, 0 ) | AoC::to_2d_vector();
     assert( r == VV{ {} } );
   }
 
   {
     std::vector<Volume> v{ 3 };
-    auto                r = generate_combinations( v, 1 ) | AoC::to_2d_vector();
+    auto r = generate_combinations( v, 1 ) | AoC::to_2d_vector();
     assert( r == VV{} );
   }
 
   {
     std::vector<Volume> v{ 3 };
-    auto                r = generate_combinations( v, 3 ) | AoC::to_2d_vector();
+    auto r = generate_combinations( v, 3 ) | AoC::to_2d_vector();
     assert( r == VV{ { 3 } } );
   }
 
   {
     std::vector<Volume> v{ 2, 3, 5 };
-    auto                r = generate_combinations( v, 10 ) | AoC::to_2d_vector();
+    auto r = generate_combinations( v, 10 ) | AoC::to_2d_vector();
     assert( r == ( VV{ { 2, 3, 5 } } ) );
   }
 
   {
     std::vector<Volume> v{ 5, 5, 100, 100 };
-    auto                r = generate_combinations( v, 10 ) | AoC::to_2d_vector();
+    auto r = generate_combinations( v, 10 ) | AoC::to_2d_vector();
     assert( r == ( VV{ { 5, 5 } } ) );
   }
 

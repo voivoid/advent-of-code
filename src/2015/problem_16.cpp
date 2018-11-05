@@ -39,7 +39,7 @@ struct Aunt
     perfumes
   };
 
-  unsigned int                 index;
+  unsigned int index;
   std::map<Compound, Quantity> compounds;
 };
 
@@ -63,7 +63,7 @@ Aunt parse_aunt( const std::string& input )
   const auto compound_parser = compounds > ':' > x3::uint_;
   const auto parser          = "Sue" > x3::uint_ > ':' > ( compound_parser % ',' );
 
-  Aunt       aunt;
+  Aunt aunt;
   const bool is_parsed = AoC::x3_parse( input.cbegin(), input.cend(), parser, x3::space, aunt );
   if ( !is_parsed )
   {

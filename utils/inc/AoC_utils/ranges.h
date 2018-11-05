@@ -40,10 +40,10 @@ class interleave_view : public ranges::view_facade<interleave_view<Rngs>>
 template <class Rngs>
 struct interleave_view<Rngs>::cursor
 {
-  std::size_t                                                       n_;
-  std::vector<ranges::range_value_type_t<Rngs>>*                    rngs_;
+  std::size_t n_;
+  std::vector<ranges::range_value_type_t<Rngs>>* rngs_;
   std::vector<ranges::iterator_t<ranges::range_value_type_t<Rngs>>> its_;
-  decltype( auto )                                                  read() const
+  decltype( auto ) read() const
   {
     return *its_[ n_ ];
   }

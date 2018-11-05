@@ -14,7 +14,7 @@ using ProblemResult = std::variant<int, std::string>;
 using ProblemFunc   = std::function<ProblemResult( std::istream& )>;
 
 std::optional<ProblemFunc> get_solve_func( const ProblemName& name );
-void                       register_solve_func( ProblemName name, ProblemFunc func );
+void register_solve_func( ProblemName name, ProblemFunc func );
 
 namespace Details
 {
