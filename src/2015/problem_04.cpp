@@ -10,7 +10,7 @@
 
 namespace
 {
-std::string make_md5( const std::string& secret, size_t index )
+std::string make_md5( const std::string& secret, const size_t index )
 {
   return AoC::md5( secret + std::to_string( index ) );
 }

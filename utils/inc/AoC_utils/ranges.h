@@ -93,7 +93,7 @@ inline auto to_2d_vector()
 {
   return ranges::make_pipeable( []( auto&& rngs ) {
     using Rngs = decltype( rngs );
-    using T = ranges::range_value_type_t<ranges::range_value_type_t<Rngs>>;
+    using T    = ranges::range_value_type_t<ranges::range_value_type_t<Rngs>>;
     return std::vector<std::vector<T>>{ std::forward<Rngs>( rngs ) };
   } );
 }

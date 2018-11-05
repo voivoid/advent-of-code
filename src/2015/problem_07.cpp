@@ -63,7 +63,7 @@ struct CircuitInstruction
   Wire        destination;
 };
 
-bool is_alpha( char c )
+bool is_alpha( const char c )
 {
   return std::isalpha( c ) != 0;
 }

@@ -21,29 +21,36 @@
 
 namespace
 {
-using Volume            = int;
+using Volume                 = int;
 using ContainersCombinations = ranges::any_view<ranges::any_view<Volume>>;
 
-ContainersCombinations generate_combinations( ranges::any_view<Volume, ranges::category::random_access> containers, const Volume volume_left )
+ContainersCombinations generate_combinations( ranges::any_view<Volume, ranges::category::random_access> containers,
+                                              const Volume                                              volume_left )
 {
-  if ( containers.empty() || volume_left <= 0 )
+  if ( volume_left == 0 )
   {
     return ranges::view::single( ranges::view::empty<Volume>() );
   }
+  else if ( containers.empty() || volume_left < 0 )
+  {
+    return {};
+  }
 
   auto head = containers.front();
-  auto tail = ranges::view::tail( containers );
+  if ( volume_left < head )
+  {
+    return {};
+  }
 
-  ContainersCombinations result1 = generate_combinations( tail, volume_left - head ) | ranges::view::transform( [head]( auto rng ) {
-                                return ranges::view::concat( ranges::view::single( head ), rng );
-                              } );
+  auto                   tail = containers | ranges::view::tail;
+  ContainersCombinations result1 =
+      generate_combinations( tail, volume_left - head ) |
+      ranges::view::transform( [head]( auto rng ) { return ranges::view::concat( ranges::view::single( head ), rng ); } ) |
+      ranges::view::filter( [volume_left]( auto rng ) { return ranges::accumulate( rng, 0 ) == volume_left; } );
 
   ContainersCombinations result2 = generate_combinations( tail, volume_left );
 
-  auto result = ranges::view::concat( result1, result2 ) |
-                ranges::view::filter( [volume_left]( auto rng ) { return ranges::accumulate( rng, 0 ) == volume_left; } );
-
-  return result;
+  return ranges::view::concat( result1, result2 );
 }
 
 ContainersCombinations generate_combinations( std::istream& input, const Volume volume_to_store )
@@ -59,17 +66,17 @@ auto get_possible_combinations_num( std::istream& input, const Volume volume_to_
 
 auto get_min_containers_combinations_num( std::istream& input, const Volume volume_to_store )
 {
-    const auto combinations = generate_combinations( input, volume_to_store ) | AoC::to_2d_vector();
+  const auto combinations = generate_combinations( input, volume_to_store ) | AoC::to_2d_vector();
 
-    const auto combination_with_min_containers =
-        ranges::min( combinations, []( const auto c1, const auto c2 ) { return c1.size() < c2.size(); } );
+  const auto combination_with_min_containers =
+      ranges::min( combinations, []( const auto c1, const auto c2 ) { return c1.size() < c2.size(); } );
 
-    const auto min_num_of_containers = combination_with_min_containers.size();
+  const auto min_num_of_containers = combination_with_min_containers.size();
 
-    auto combitions_with_min_containers =
-        combinations | ranges::view::filter( [min_num_of_containers]( const auto c ) { return c.size() == min_num_of_containers; } );
+  auto combitions_with_min_containers =
+      combinations | ranges::view::filter( [min_num_of_containers]( const auto c ) { return c.size() == min_num_of_containers; } );
 
-    return ranges::distance( combitions_with_min_containers );
+  return ranges::distance( combitions_with_min_containers );
 }
 
 }  // namespace
@@ -87,7 +94,7 @@ int solve_1( std::istream& input )
 
 int solve_2( std::istream& input )
 {
-    return static_cast<int>( get_min_containers_combinations_num( input, 150 ) );
+  return static_cast<int>( get_min_containers_combinations_num( input, 150 ) );
 }
 
 AOC_REGISTER_PROBLEM( 2015_17, solve_1, solve_2 );
@@ -105,15 +112,54 @@ AOC_REGISTER_PROBLEM( 2015_17, solve_1, solve_2 );
 
 static void impl_tests()
 {
-    {
-        std::stringstream ss ( "20 15 10 5 5" );
-        assert( 4 == get_possible_combinations_num( ss , 25 ) );
-    }
+  using VV = std::vector<std::vector<Volume>>;
 
-    {
-        std::stringstream ss ( "20 15 10 5 5" );
-        assert( 3 == get_min_containers_combinations_num( ss , 25 ) );
-    }
+  {
+    std::vector<Volume> v{};
+    auto                r = generate_combinations( v, 1 ) | AoC::to_2d_vector();
+    assert( r == VV{} );
+  }
+
+  {
+    std::vector<Volume> v{ 1 };
+    auto                r = generate_combinations( v, 0 ) | AoC::to_2d_vector();
+    assert( r == VV{ {} } );
+  }
+
+  {
+    std::vector<Volume> v{ 3 };
+    auto                r = generate_combinations( v, 1 ) | AoC::to_2d_vector();
+    assert( r == VV{} );
+  }
+
+  {
+    std::vector<Volume> v{ 3 };
+    auto                r = generate_combinations( v, 3 ) | AoC::to_2d_vector();
+    assert( r == VV{ { 3 } } );
+  }
+
+  {
+    std::vector<Volume> v{ 2, 3, 5 };
+    auto                r = generate_combinations( v, 10 ) | AoC::to_2d_vector();
+    assert( r == ( VV{ { 2, 3, 5 } } ) );
+  }
+
+  {
+    std::vector<Volume> v{ 5, 5, 100, 100 };
+    auto                r = generate_combinations( v, 10 ) | AoC::to_2d_vector();
+    assert( r == ( VV{ { 5, 5 } } ) );
+  }
+
+
+  {
+    std::stringstream ss( "20 15 10 5 5" );
+    assert( 4 == get_possible_combinations_num( ss, 25 ) );
+  }
+
+  {
+    std::stringstream ss( "20 15 10 5 5" );
+    assert( 3 == get_min_containers_combinations_num( ss, 25 ) );
+  }
 }
 
 REGISTER_IMPL_TEST( impl_tests );

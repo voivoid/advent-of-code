@@ -2,7 +2,6 @@
 
 #include <AoC/problems_map.h>
 #include <AoC_utils/parse.h>
-#include <AoC_utils/ranges.h>
 
 #include <range/v3/algorithm/max.hpp>
 #include <range/v3/getlines.hpp>
@@ -184,24 +183,27 @@ AOC_REGISTER_PROBLEM( 2015_15, solve_1, solve_2 );
 #ifndef NDEBUG
 
 #  include "impl_tests.h"
+#  include <AoC_utils/ranges.h>
 #  include <cassert>
 
 static void impl_tests()
 {
+  using VV = std::vector<std::vector<Quantity>>;
+
   auto r1 = generate_quantity_combinations( 0, 0 ) | AoC::to_2d_vector();
-  assert( r1 == std::vector<std::vector<Quantity>>{ {} } );
+  assert( r1 == VV{ {} } );
 
   auto r2 = generate_quantity_combinations( 1, 1 ) | AoC::to_2d_vector();
-  assert( r2 == std::vector<std::vector<Quantity>>{ { 1 } } );
+  assert( r2 == VV{ { 1 } } );
 
   auto r3 = generate_quantity_combinations( 1, 3 ) | AoC::to_2d_vector();
-  assert( r3 == ( std::vector<std::vector<Quantity>>{ { 3 } } ) );
+  assert( r3 == VV{ { 3 } } );
 
   auto r4 = generate_quantity_combinations( 2, 2 ) | AoC::to_2d_vector();
-  assert( r4 == ( std::vector<std::vector<Quantity>>{ { 0, 2 }, { 1, 1 }, { 2 } } ) );
+  assert( r4 == ( VV{ { 0, 2 }, { 1, 1 }, { 2 } } ) );
 
   auto r5 = generate_quantity_combinations( 2, 3 ) | AoC::to_2d_vector();
-  assert( r5 == ( std::vector<std::vector<Quantity>>{ { 0, 3 }, { 1, 2 }, { 2, 1 }, { 3 } } ) );
+  assert( r5 == ( VV{ { 0, 3 }, { 1, 2 }, { 2, 1 }, { 3 } } ) );
 
   const auto ingredient1 = parse_ingredient( "Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8" );
   assert( ingredient1.name == "Butterscotch" );

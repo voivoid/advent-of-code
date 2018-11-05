@@ -130,7 +130,7 @@ int solve( std::istream& input )
   auto  cmds = ranges::getlines( input ) | ranges::view::transform( &parse_cmd_line );
   Lamps lamps( boost::extents[ 1000 ][ 1000 ] );
 
-  auto run_cmd = &apply_cmd<manipulator_factory>;
+  const auto run_cmd = &apply_cmd<manipulator_factory>;
   ranges::accumulate( cmds, std::ref( lamps ), run_cmd );
 
   return static_cast<int>( calc_lamps_brightness( lamps ) );

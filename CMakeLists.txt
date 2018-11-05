@@ -11,11 +11,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-  set(AOC_CXX_WARNINGS -Wall -Wextra -Wpedantic -Werror -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wrestrict -Wnull-dereference -Wold-style-cast -Wuseless-cast -Wdouble-promotion -Wshadow -Wformat=2 -Wconversion -Wsign-conversion -Wfloat-equal -Wcast-qual -Winit-self -Wpointer-arith)
-endif()
-
-
 # AocUtils
 add_library(AocUtils utils/inc/AoC_utils/algo.h
                      utils/inc/AoC_utils/geo.h utils/geo.cpp
@@ -33,25 +28,10 @@ target_link_libraries(AocUtils PRIVATE Boost::boost PUBLIC range-v3)
 add_library(AocProblemsMap inc/AoC/problems_map.h src/problems_map.cpp)
 target_include_directories(AocProblemsMap PUBLIC inc)
 
+append_problem_srcs(AocProblemsSources 2015 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18)
+
 # AocProblems
-add_library(AocProblems OBJECT
-                        inc/AoC/2015/problem_01.h src/2015/problem_01.cpp
-                        inc/AoC/2015/problem_02.h src/2015/problem_02.cpp
-                        inc/AoC/2015/problem_03.h src/2015/problem_03.cpp
-                        inc/AoC/2015/problem_04.h src/2015/problem_04.cpp
-                        inc/AoC/2015/problem_05.h src/2015/problem_05.cpp
-                        inc/AoC/2015/problem_06.h src/2015/problem_06.cpp
-                        inc/AoC/2015/problem_07.h src/2015/problem_07.cpp
-                        inc/AoC/2015/problem_08.h src/2015/problem_08.cpp
-                        inc/AoC/2015/problem_09.h src/2015/problem_09.cpp
-                        inc/AoC/2015/problem_10.h src/2015/problem_10.cpp
-                        inc/AoC/2015/problem_11.h src/2015/problem_11.cpp
-                        inc/AoC/2015/problem_12.h src/2015/problem_12.cpp
-                        inc/AoC/2015/problem_13.h src/2015/problem_13.cpp
-                        inc/AoC/2015/problem_14.h src/2015/problem_14.cpp
-                        inc/AoC/2015/problem_15.h src/2015/problem_15.cpp
-                        inc/AoC/2015/problem_16.h src/2015/problem_16.cpp
-                        inc/AoC/2015/problem_17.h src/2015/problem_17.cpp
+add_library(AocProblems OBJECT ${AocProblemsSources}
                         src/impl_tests.h src/impl_tests.cpp)
 target_include_directories(AocProblems PUBLIC inc PRIVATE src)
 target_link_libraries(AocProblems PUBLIC AocProblemsMap AocUtils PRIVATE Boost::boost range-v3 json)

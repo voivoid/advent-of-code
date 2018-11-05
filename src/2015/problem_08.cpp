@@ -18,7 +18,7 @@ namespace
 {
 namespace x3 = boost::spirit::x3;
 
-auto inc( size_t x )
+auto inc( const size_t x )
 {
   return [x]( auto& ctx ) { x3::_val( ctx ) += x; };
 }

@@ -62,7 +62,7 @@ PathDistance parse_path_distance( const std::string& s )
 
 size_t get_distance( const Path& path, const PathMap& path_map )
 {
-  auto path_iter = path_map.find( path );
+  const auto path_iter = path_map.find( path );
   assert( path_iter != path_map.cend() );
 
   return path_iter->second;
