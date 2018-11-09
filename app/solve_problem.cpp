@@ -1,6 +1,6 @@
 #include "solve_problem.h"
 
-#include <AoC/problems_map.h>
+#include "AoC/problems_map.h"
 
 #include <iostream>
 

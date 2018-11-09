@@ -1,6 +1,6 @@
-#include <boost/test/unit_test.hpp>
+#include "boost/test/unit_test.hpp"
 
-#include <AoC_utils/geo.h>
+#include "AoC_utils/geo.h"
 
 #include <ostream>
 

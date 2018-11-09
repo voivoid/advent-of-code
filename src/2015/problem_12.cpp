@@ -1,13 +1,13 @@
 #include "AoC/2015/problem_12.h"
 
-#include <AoC/problems_map.h>
+#include "AoC/problems_map.h"
+
+#include "nlohmann/json.hpp"
 
 #include <algorithm>
 #include <istream>
 #include <numeric>
 #include <stdexcept>
-
-#include <nlohmann/json.hpp>
 
 using mjson = nlohmann::json;
 

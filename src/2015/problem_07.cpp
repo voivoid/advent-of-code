@@ -1,19 +1,16 @@
 #include "AoC/2015/problem_07.h"
 
-#include <AoC/problems_map.h>
+#include "AoC/problems_map.h"
 
-#include <range/v3/action/split.hpp>
-#include <range/v3/algorithm/all_of.hpp>
-#include <range/v3/getlines.hpp>
-#include <range/v3/numeric/accumulate.hpp>
-#include <range/v3/view/transform.hpp>
+#include "range/v3/action/split.hpp"
+#include "range/v3/algorithm/all_of.hpp"
+#include "range/v3/getlines.hpp"
+#include "range/v3/numeric/accumulate.hpp"
+#include "range/v3/view/transform.hpp"
 
-#include <AoC_utils/match.h>
+#include "AoC_utils/match.h"
 
-#include <boost/functional/overloaded_function.hpp>
-
-#include <cctype>
-#include <cstdint>
+#include "boost/functional/overloaded_function.hpp"
 
 #include <istream>
 #include <limits>
@@ -21,6 +18,9 @@
 #include <stdexcept>
 #include <string>
 #include <variant>
+
+#include <cctype>
+#include <cstdint>
 
 #define THROW_WRONG_INSTRUCTION_EX() throw std::invalid_argument( "wrong instruction" )
 

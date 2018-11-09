@@ -1,9 +1,9 @@
 #include "AoC/2015/problem_04.h"
 
-#include <AoC/problems_map.h>
-#include <AoC_utils/md5.h>
+#include "AoC/problems_map.h"
+#include "AoC_utils/md5.h"
 
-#include <boost/algorithm/string/predicate.hpp>
+#include "boost/algorithm/string/predicate.hpp"
 
 #include <istream>
 #include <string>

@@ -1,7 +1,7 @@
 #include "parse_cmd_line.h"
 #include "solve_problem.h"
 
-#include <boost/functional/overloaded_function.hpp>
+#include "boost/functional/overloaded_function.hpp"
 
 #include <iostream>
 

@@ -1,19 +1,18 @@
 #include "AoC/2015/problem_05.h"
 
-#include <range/v3/algorithm/adjacent_find.hpp>
-#include <range/v3/algorithm/any_of.hpp>
-#include <range/v3/algorithm/count_if.hpp>
-#include <range/v3/getlines.hpp>
-#include <range/v3/view/drop.hpp>
-#include <range/v3/view/zip.hpp>
+#include "range/v3/algorithm/adjacent_find.hpp"
+#include "range/v3/algorithm/any_of.hpp"
+#include "range/v3/algorithm/count_if.hpp"
+#include "range/v3/getlines.hpp"
+#include "range/v3/view/drop.hpp"
+#include "range/v3/view/zip.hpp"
 
-#include <AoC/problems_map.h>
+#include "AoC/problems_map.h"
 
-#include <stdexcept>
-
-#include <boost/algorithm/cxx11/any_of.hpp>
+#include "boost/algorithm/cxx11/any_of.hpp"
 
 #include <istream>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <utility>

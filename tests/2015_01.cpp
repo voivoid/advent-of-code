@@ -1,8 +1,8 @@
-#include <boost/test/unit_test.hpp>
+#include "boost/test/unit_test.hpp"
 
 #include "utils/aoc_fixture.h"
 
-#include <AoC/2015/problem_01.h>
+#include "AoC/2015/problem_01.h"
 
 #include <stdexcept>
 

@@ -1,19 +1,19 @@
 #include "AoC/2015/problem_01.h"
 
-#include <AoC/problems_map.h>
+#include "AoC/problems_map.h"
 
-#include <range/v3/distance.hpp>
-#include <range/v3/istream_range.hpp>
-#include <range/v3/numeric/accumulate.hpp>
-#include <range/v3/view/filter.hpp>
-#include <range/v3/view/partial_sum.hpp>
-#include <range/v3/view/take_while.hpp>
-#include <range/v3/view/transform.hpp>
-
-#include <cctype>
+#include "range/v3/distance.hpp"
+#include "range/v3/istream_range.hpp"
+#include "range/v3/numeric/accumulate.hpp"
+#include "range/v3/view/filter.hpp"
+#include "range/v3/view/partial_sum.hpp"
+#include "range/v3/view/take_while.hpp"
+#include "range/v3/view/transform.hpp"
 
 #include <istream>
 #include <stdexcept>
+
+#include <cctype>
 
 namespace
 {

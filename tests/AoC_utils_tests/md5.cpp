@@ -1,6 +1,6 @@
-#include <boost/test/unit_test.hpp>
+#include "boost/test/unit_test.hpp"
 
-#include <AoC_utils/md5.h>
+#include "AoC_utils/md5.h"
 
 BOOST_AUTO_TEST_CASE( aoc_utils_md5 )
 {
