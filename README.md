@@ -52,7 +52,7 @@ Day | 2015 | 2016 | 2017 | 2018 |
 17  | [✓](https://github.com/voivoid/advent-of-code/blob/master/src/2015/problem_17.cpp)     |      |      |
 18  | [✓](https://github.com/voivoid/advent-of-code/blob/master/src/2015/problem_18.cpp)     |      |      |
 19  |      |      |      |
-20  |      |      |      |
+20  | [✓](https://github.com/voivoid/advent-of-code/blob/master/src/2015/problem_20.cpp)     |      |      |
 21  | [✓](https://github.com/voivoid/advent-of-code/blob/master/src/2015/problem_21.cpp)     |      |      |
 22  |      |      |      |
 23  |      |      |      |
