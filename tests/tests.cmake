@@ -1,16 +1,19 @@
 find_program(Bash bash)
-find_program(Diff diff)
 
 if(Bash)
 
   enable_testing()
 
   function(add_aoc_test problem result1 result2)
+    set(App $<TARGET_FILE:AocApp>)
+    set(Input ${CMAKE_CURRENT_SOURCE_DIR}/tests/input/${problem})
+
     add_test(NAME ${problem}_1
-      COMMAND bash -c "$<TARGET_FILE:AocApp> ${problem}_1 < ${CMAKE_CURRENT_SOURCE_DIR}/tests/input/${problem}")
+      COMMAND bash -c "${App} ${problem}_1 < ${Input}" )
     set_tests_properties(${problem}_1 PROPERTIES PASS_REGULAR_EXPRESSION "^${result1}\n$")
+
     add_test(NAME ${problem}_2
-      COMMAND bash -c "$<TARGET_FILE:AocApp> --problem ${problem}_2 < ${CMAKE_CURRENT_SOURCE_DIR}/tests/input/${problem}")
+      COMMAND bash -c "${App} --problem ${problem}_2 < ${Input}")
     set_tests_properties(${problem}_2 PROPERTIES PASS_REGULAR_EXPRESSION "^${result2}\n$")
   endfunction()
 
@@ -38,6 +41,7 @@ if(Bash)
   add_aoc_test(2015_16 103 405)
   add_aoc_test(2015_17 4372 4)
   add_aoc_test(2015_18 821 886)
+  add_aoc_test(2015_19 576 0)
   add_aoc_test(2015_20 665280 705600)
   add_aoc_test(2015_21 121 201)
 

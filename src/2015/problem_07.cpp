@@ -193,10 +193,10 @@ Circuit parse_circuit( std::istream& input )
   auto instructions = ranges::getlines( input ) | ranges::view::transform( &parse_instruction );
 
   Circuit circuit;
-  ranges::accumulate( instructions, std::ref( circuit ), []( std::reference_wrapper<Circuit> c, const CircuitInstruction& i ) {
-    c.get()[ i.destination ] = i.instruction;
-    return c;
-  } );
+  for ( const auto& [ instruction, destination ] : instructions )
+  {
+    circuit[ destination ] = instruction;
+  };
 
   return circuit;
 }

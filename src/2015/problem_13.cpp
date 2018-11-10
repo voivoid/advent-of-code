@@ -56,7 +56,7 @@ struct Behavior
   ModDiff diff;
 };
 
-Behavior parse_input_line( const std::string& line )
+Behavior parse_behavior( const std::string& line )
 {
   namespace x3 = boost::spirit::x3;
 
@@ -90,13 +90,13 @@ void add_neighbours_to_map( Name n1, Name n2, const ModDiff diff, NeighboursMap&
 
 NeighboursMap make_neighbours_map( std::istream& input )
 {
-  NeighboursMap neighbours_map;
+  auto behaviors = ranges::getlines( input ) | ranges::view::transform( &parse_behavior );
 
-  auto lines = ranges::getlines( input ) | ranges::view::transform( &parse_input_line );
-  ranges::accumulate( lines, std::ref( neighbours_map ), []( auto& acc_map, Behavior behavior ) {
-    add_neighbours_to_map( std::move( behavior.neighbour_1 ), std::move( behavior.neighbour_2 ), behavior.diff, acc_map.get() );
-    return acc_map;
-  } );
+  NeighboursMap neighbours_map;
+  for ( const auto& behavior : behaviors )
+  {
+    add_neighbours_to_map( std::move( behavior.neighbour_1 ), std::move( behavior.neighbour_2 ), behavior.diff, neighbours_map );
+  }
 
   return neighbours_map;
 }
@@ -185,13 +185,13 @@ AOC_REGISTER_PROBLEM( 2015_13, solve_1, solve_2 );
 static void impl_tests()
 {
   {
-    const auto behavior = parse_input_line( "Alice would gain 54 happiness units by sitting next to Bob." );
+    const auto behavior = parse_behavior( "Alice would gain 54 happiness units by sitting next to Bob." );
     assert( behavior.neighbour_1 == "Alice" );
     assert( behavior.neighbour_2 == "Bob" );
     assert( behavior.diff == 54 );
   }
   {
-    const auto behavior = parse_input_line( "Foo would lose 99 happiness units by sitting next to Bar." );
+    const auto behavior = parse_behavior( "Foo would lose 99 happiness units by sitting next to Bar." );
     assert( behavior.neighbour_1 == "Foo" );
     assert( behavior.neighbour_2 == "Bar" );
     assert( behavior.diff == -99 );

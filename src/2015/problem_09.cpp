@@ -81,12 +81,13 @@ PathMap parse_path_map( std::istream& input )
   auto travel_data = ranges::getlines( input ) | ranges::view::transform( &parse_path_distance );
 
   PathMap path_map;
-  ranges::accumulate( travel_data, std::ref( path_map ), []( std::reference_wrapper<PathMap> map, const PathDistance& pd ) {
+  for ( const auto& pd : travel_data )
+  {
     const auto& [ from, to ] = pd.path;
-    map.get().emplace( Path{ to, from }, pd.distance );
-    map.get().emplace( Path{ from, to }, pd.distance );
-    return map;
-  } );
+    path_map.emplace( Path{ to, from }, pd.distance );
+    path_map.emplace( Path{ from, to }, pd.distance );
+  }
+
   return path_map;
 }
 

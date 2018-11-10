@@ -18,14 +18,12 @@ std::string transform( const std::string& digits )
 {
   const auto digit_groups = digits | ranges::view::group_by( std::equal_to<char>{} );
 
-  const auto digit_groups_to_str = []( std::reference_wrapper<std::ostringstream> acc, const auto group ) {
-    acc.get() << ranges::distance( group );
-    acc.get() << group[ 0 ];
-    return acc;
-  };
-
   std::ostringstream acc;
-  ranges::accumulate( digit_groups, std::ref( acc ), digit_groups_to_str );
+  for ( const auto group : digit_groups )
+  {
+    acc << ranges::distance( group );
+    acc << group[ 0 ];
+  }
 
   return acc.str();
 }
