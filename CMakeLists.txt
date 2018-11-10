@@ -28,7 +28,7 @@ target_link_libraries(AocUtils PRIVATE Boost::boost PUBLIC range-v3)
 add_library(AocProblemsMap inc/AoC/problems_map.h src/problems_map.cpp)
 target_include_directories(AocProblemsMap PUBLIC inc)
 
-append_problem_srcs(AocProblemsSources 2015 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18)
+append_problem_srcs(AocProblemsSources 2015 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 21)
 
 # AocProblems
 add_library(AocProblems OBJECT ${AocProblemsSources}

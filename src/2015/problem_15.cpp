@@ -182,8 +182,8 @@ AOC_REGISTER_PROBLEM( 2015_15, solve_1, solve_2 );
 
 #ifndef NDEBUG
 
-#  include "impl_tests.h"
 #  include "AoC_utils/ranges.h"
+#  include "impl_tests.h"
 #  include <cassert>
 
 static void impl_tests()
