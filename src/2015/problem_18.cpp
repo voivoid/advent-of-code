@@ -149,10 +149,16 @@ void enable_corner_lights( Field& field )
   set_cell( field, max_side_index - 1, max_side_index - 1, Cell::Alive );
 }
 
-int solve( std::istream& input, const size_t side, size_t steps, const bool force_corner_lights_on = false )
+enum class CornerLightsMode
+{
+  On,
+  Off
+};
+
+int solve( std::istream& input, const size_t side, size_t steps, const CornerLightsMode corner_lights_mode )
 {
   Field field = populate_field( input, side );
-  if ( force_corner_lights_on )
+  if ( corner_lights_mode == CornerLightsMode::On )
   {
     enable_corner_lights( field );
   }
@@ -161,7 +167,7 @@ int solve( std::istream& input, const size_t side, size_t steps, const bool forc
   {
     process_step( field );
 
-    if ( force_corner_lights_on )
+    if ( corner_lights_mode == CornerLightsMode::On )
     {
       enable_corner_lights( field );
     }
@@ -179,12 +185,12 @@ namespace problem_18
 
 int solve_1( std::istream& input )
 {
-  return solve( input, 100, 100 );
+  return solve( input, 100, 100, CornerLightsMode::Off );
 }
 
 int solve_2( std::istream& input )
 {
-  return solve( input, 100, 100, true );
+  return solve( input, 100, 100, CornerLightsMode::On );
 }
 
 AOC_REGISTER_PROBLEM( 2015_18, solve_1, solve_2 );
@@ -241,7 +247,7 @@ static void impl_tests()
 
   {
     auto input = get_test_sample();
-    assert( 4 == solve( input, test_sample_side, 4 ) );
+    assert( 4 == solve( input, test_sample_side, 4, CornerLightsMode::Off ) );
   }
 }
 

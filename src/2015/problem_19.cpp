@@ -47,20 +47,21 @@ std::pair<Molecule, Molecule> parse_replacement( const std::string& line )
   return { boost::fusion::at_c<0>( replacements ), boost::fusion::at_c<1>( replacements ) };
 }
 
+enum class ReplacementsMapMode
+{
+  Normal,
+  Reversed
+};
+
 template <typename Replacements>
-MoleculeMap make_replacements_map( Replacements replacements, const bool reverse = false )
+MoleculeMap make_replacements_map( Replacements replacements, const ReplacementsMapMode mode )
 {
   MoleculeMap map;
   for ( auto [ key, value ] : replacements )
   {
-      if( reverse )
-      {
-        map.emplace( std::move( value ), std::move( key ) );
-      }
-      else
-      {
-          map.emplace( std::move( key ), std::move( value ) );
-      }
+    auto& k = mode == ReplacementsMapMode::Reversed ? value : key;
+    auto& v = mode == ReplacementsMapMode::Reversed ? key : value;
+    map.emplace( std::move( k ), std::move( v ) );
   };
 
   return map;
@@ -93,64 +94,64 @@ std::vector<Formula> do_replacements( const Formula& formula, const Molecule& fr
   return results;
 }
 
-auto parse_input( std::istream& input, const bool reverse_replacements_map = false )
+auto parse_input( std::istream& input, const ReplacementsMapMode mode )
 {
-    auto replacement_lines = ranges::getlines( input ) | ranges::view::take_while( []( const std::string& line ) { return line != ""; } ) |
-                             ranges::view::transform( &parse_replacement );
-    const auto replacements_map = make_replacements_map( replacement_lines, reverse_replacements_map );
-    std::string result_molecule;
-    input >> result_molecule;
+  auto replacement_lines = ranges::getlines( input ) | ranges::view::take_while( []( const std::string& line ) { return line != ""; } ) |
+                           ranges::view::transform( &parse_replacement );
+  const auto replacements_map = make_replacements_map( replacement_lines, mode );
+  std::string result_molecule;
+  input >> result_molecule;
 
-    return std::make_pair( std::move( replacements_map ), std::move( result_molecule ) );
+  return std::make_pair( std::move( replacements_map ), std::move( result_molecule ) );
 }
 
 size_t calc_all_replacements( const MoleculeMap& replacements_map, const Formula& formula )
 {
-    size_t counter = 0;
-    for ( const auto& [ from, _ ] : replacements_map )
-    {
-        counter += AoC::count_substrings( formula, from );
-    }
+  size_t counter = 0;
+  for ( const auto& [ from, _ ] : replacements_map )
+  {
+    counter += AoC::count_substrings( formula, from );
+  }
 
-    return counter;
+  return counter;
 }
 
 std::vector<Formula> get_all_replacements( const MoleculeMap& replacements_map, const Formula& formula )
 {
-    std::vector<Molecule> all_replacements;
-    all_replacements.reserve( calc_all_replacements( replacements_map, formula ) );
+  std::vector<Molecule> all_replacements;
+  all_replacements.reserve( calc_all_replacements( replacements_map, formula ) );
 
-    for ( const auto& [ from, to ] : replacements_map )
-    {
-      auto replacements = do_replacements( formula, from, to );
-      ranges::insert( all_replacements, all_replacements.end(), replacements | ranges::view::move );
-    }
+  for ( const auto& [ from, to ] : replacements_map )
+  {
+    auto replacements = do_replacements( formula, from, to );
+    ranges::insert( all_replacements, all_replacements.end(), replacements | ranges::view::move );
+  }
 
-    return std::move( all_replacements ) | ranges::action::sort | ranges::action::unique;
+  return std::move( all_replacements ) | ranges::action::sort | ranges::action::unique;
 }
 
 void reduce( const MoleculeMap& replacements_map, const Formula& formula, std::set<Formula>& reduced )
 {
-    if( formula == "e" )
-    {
-        throw std::runtime_error("FOUND!");
-    }
+  if ( formula == "e" )
+  {
+    throw std::runtime_error( "FOUND!" );
+  }
 
-    if( reduced.find( formula ) != reduced.cend() )
-    {
-        return;
-    }
+  if ( reduced.find( formula ) != reduced.cend() )
+  {
+    return;
+  }
 
-    reduced.insert( formula );
+  reduced.insert( formula );
 
-    for ( const auto& [ from, to ] : replacements_map )
+  for ( const auto& [ from, to ] : replacements_map )
+  {
+    auto replacements = do_replacements( formula, from, to );
+    for ( const auto& replacement : replacements )
     {
-        auto replacements = do_replacements( formula, from, to );
-        for( const auto& replacement : replacements)
-        {
-            reduce( replacements_map, replacement, reduced );
-        }
+      reduce( replacements_map, replacement, reduced );
     }
+  }
 }
 
 }  // namespace
@@ -163,18 +164,18 @@ namespace problem_19
 
 int solve_1( std::istream& input )
 {
-  const auto& [ replacements_map, formula ] = parse_input( input );
-  const auto all_replacements = get_all_replacements( replacements_map, formula );
+  const auto& [ replacements_map, formula ] = parse_input( input, ReplacementsMapMode::Normal );
+  const auto all_replacements               = get_all_replacements( replacements_map, formula );
 
   return static_cast<int>( all_replacements.size() );
 }
 
 int solve_2( std::istream& /*input*/ )
 {
-//  const auto& [ replacements_map, result_molecule ] = parse_input( input, true );
+  //  const auto& [ replacements_map, result_molecule ] = parse_input( input, true );
 
-//  std::set<Formula> reduced_formulas;
-//  reduce( replacements_map, result_molecule, reduced_formulas );
+  //  std::set<Formula> reduced_formulas;
+  //  reduce( replacements_map, result_molecule, reduced_formulas );
 
   return 0;
 }

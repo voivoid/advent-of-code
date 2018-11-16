@@ -4,5 +4,5 @@
 
 namespace AoC
 {
-    size_t count_substrings( std::string_view input, std::string_view substring );
+size_t count_substrings( std::string_view input, std::string_view substring );
 }

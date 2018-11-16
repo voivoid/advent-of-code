@@ -3,8 +3,7 @@
 #include "AoC/problems_map.h"
 #include "AoC_utils/parse.h"
 
-#include "boost/fusion/container/vector.hpp"
-#include "boost/fusion/sequence/intrinsic/at_c.hpp"
+#include "boost/fusion/adapted/struct.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 #include "range/v3/algorithm/min.hpp"
@@ -31,6 +30,12 @@ struct Char
   int damage;
   int armor;
 };
+}  // namespace
+
+BOOST_FUSION_ADAPT_STRUCT( Char, hp, damage, armor )
+
+namespace
+{
 
 struct Item
 {
@@ -51,9 +56,8 @@ static const Items store_rings = { Item{ 0, 0, 0 },   Item{ 0, 0, 0 },  Item{ 25
 
 const Char& fight( const Char& char1, const Char& char2 )
 {
-  const auto char1_dmg = std::max( 1, char1.damage - char2.armor );
-  const auto char2_dmg = std::max( 1, char2.damage - char1.armor );
-
+  const int char1_dmg = std::max( 1, char1.damage - char2.armor );
+  const int char2_dmg = std::max( 1, char2.damage - char1.armor );
 
   const int char1_round_to_win = static_cast<int>( std::ceil( static_cast<float>( char2.hp ) / static_cast<float>( char1_dmg ) ) );
   const int char2_round_to_win = static_cast<int>( std::ceil( static_cast<float>( char1.hp ) / static_cast<float>( char2_dmg ) ) );
@@ -92,20 +96,20 @@ auto generate_items_combination()
          } );
 }
 
-Char parse_character( const std::string& input )
+Char parse_boss( const std::string& input )
 {
   namespace x3 = boost::spirit::x3;
 
-  boost::fusion::vector<int, int, int> char_data;
-  auto parser = "Hit Points:" > x3::int_ > "Damage:" > x3::int_ > "Armor:" > x3::int_;
+  Char boss;
+  const auto parser = "Hit Points:" > x3::int_ > "Damage:" > x3::int_ > "Armor:" > x3::int_;
 
-  const bool is_parsed = AoC::x3_parse( input.cbegin(), input.cend(), parser, x3::space, char_data );
+  const bool is_parsed = AoC::x3_parse( input.cbegin(), input.cend(), parser, x3::space, boss );
   if ( !is_parsed )
   {
-    throw std::invalid_argument( "Failed to parse aunt data" );
+    throw std::invalid_argument( "Failed to parse boss data" );
   }
 
-  return Char{ boost::fusion::at_c<0>( char_data ), boost::fusion::at_c<1>( char_data ), boost::fusion::at_c<2>( char_data ) };
+  return boss;
 }
 
 bool are_winnable_items( const Items& items, const Char& player, const Char& boss )
@@ -122,19 +126,19 @@ bool are_loser_items( const Items& items, const Char& player, const Char& boss )
 }
 
 template <bool ( *items_filter )( const Items&, const Char&, const Char& )>
-auto get_best_items( std::istream& input )
+auto get_suitable_items_costs( std::istream& input )
 {
   std::string input_str{ std::istream_iterator<char>( input >> std::noskipws ), std::istream_iterator<char>() };
 
   const Char player = { 100, 0, 0 };
-  const Char boss   = parse_character( input_str );
+  const Char boss   = parse_boss( input_str );
 
   auto items_combinations = generate_items_combination();
 
-  auto best_items = items_combinations | ranges::view::filter( std::bind( items_filter, std::placeholders::_1, player, boss ) ) |
-                    ranges::view::transform( &calc_items_cost );
+  auto suitable_items_costs = items_combinations | ranges::view::filter( std::bind( items_filter, std::placeholders::_1, player, boss ) ) |
+                              ranges::view::transform( &calc_items_cost );
 
-  return best_items;
+  return suitable_items_costs;
 }
 
 }  // namespace
@@ -147,14 +151,14 @@ namespace problem_21
 
 int solve_1( std::istream& input )
 {
-  auto best_items = get_best_items<&are_winnable_items>( input );
-  return ranges::min( best_items );
+  auto suitable_items_costs = get_suitable_items_costs<&are_winnable_items>( input );
+  return ranges::min( suitable_items_costs );
 }
 
 int solve_2( std::istream& input )
 {
-  auto best_items = get_best_items<&are_loser_items>( input );
-  return ranges::max( best_items );
+  auto suitable_items_costs = get_suitable_items_costs<&are_loser_items>( input );
+  return ranges::max( suitable_items_costs );
 }
 
 AOC_REGISTER_PROBLEM( 2015_21, solve_1, solve_2 );
@@ -172,10 +176,10 @@ AOC_REGISTER_PROBLEM( 2015_21, solve_1, solve_2 );
 static void impl_tests()
 {
   {
-    const Char c = parse_character( "Hit Points: 103\nDamage: 9\nArmor: 2\n" );
-    assert( c.hp == 103 );
-    assert( c.damage == 9 );
-    assert( c.armor == 2 );
+    const Char b = parse_boss( "Hit Points: 103\nDamage: 9\nArmor: 2\n" );
+    assert( b.hp == 103 );
+    assert( b.damage == 9 );
+    assert( b.armor == 2 );
   }
   {
     const auto player  = Char{ 8, 5, 5 };

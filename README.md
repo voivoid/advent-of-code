@@ -5,7 +5,7 @@ Advent of Code ( https://adventofcode.com ) 2015-2017 solutions using modern c++
 Prerequisites
 -----
 
-* C++17 compiler
+* C++20a compiler ( tested on gcc 8.2.1 )
 * cmake 3.12 or later
 * git
 
@@ -31,6 +31,9 @@ Solve Problem
     $ ./AocApp 2015_01_2 < ../advent-of-code/tests/input/2015_01
     1797
 
+Sources
+-----
+
 Day | 2015 | 2016 | 2017 | 2018 |
 --- | ---- | ---- | ---- | ---- |
 01  | [✓](https://github.com/voivoid/advent-of-code/blob/master/src/2015/problem_01.cpp)     |      |      |
@@ -54,7 +57,7 @@ Day | 2015 | 2016 | 2017 | 2018 |
 19  |      |      |      |
 20  | [✓](https://github.com/voivoid/advent-of-code/blob/master/src/2015/problem_20.cpp)     |      |      |
 21  | [✓](https://github.com/voivoid/advent-of-code/blob/master/src/2015/problem_21.cpp)     |      |      |
-22  |      |      |      |
+22  | [✓](https://github.com/voivoid/advent-of-code/blob/master/src/2015/problem_22.cpp)     |      |      |
 23  |      |      |      |
 24  |      |      |      |
 25  |      |      |      |

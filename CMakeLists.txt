@@ -7,7 +7,7 @@ include(cmake/thirdparties/rangev3.cmake)
 include(cmake/thirdparties/json.cmake)
 include(cmake/build_utils.cmake)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -30,7 +30,7 @@ target_link_libraries(AocUtils PRIVATE Boost::boost PUBLIC range-v3)
 add_library(AocProblemsMap inc/AoC/problems_map.h src/problems_map.cpp)
 target_include_directories(AocProblemsMap PUBLIC inc)
 
-append_problem_srcs(AocProblemsSources 2015 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21)
+append_problem_srcs(AocProblemsSources 2015 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22)
 
 # AocProblems
 add_library(AocProblems OBJECT ${AocProblemsSources}
