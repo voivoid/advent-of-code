@@ -13,7 +13,3 @@ BOOST_FIXTURE_TEST_CASE( problem2015_20_1, AocFixture )
   BOOST_CHECK_EQUAL( 4, run( &solve_1, "70" ) );
   BOOST_CHECK_EQUAL( 6, run( &solve_1, "120" ) );
 }
-
-BOOST_FIXTURE_TEST_CASE( problem2015_20_2, AocFixture )
-{
-}

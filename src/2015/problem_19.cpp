@@ -130,7 +130,7 @@ std::vector<Formula> get_all_replacements( const MoleculeMap& replacements_map, 
   return std::move( all_replacements ) | ranges::action::sort | ranges::action::unique;
 }
 
-//void reduce( const MoleculeMap& replacements_map, const Formula& formula, std::set<Formula>& reduced )
+// void reduce( const MoleculeMap& replacements_map, const Formula& formula, std::set<Formula>& reduced )
 //{
 //  if ( formula == "e" )
 //  {
