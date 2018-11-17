@@ -175,7 +175,8 @@ bool is_castable( const Player& player )
 
 void Player::update_effectful_spells( Boss& boss )
 {
-  boost::fusion::for_each( spell_effects, [ this, &boss ]<typename Spell>( boost::fusion::pair<Spell, int> & v ) {
+  boost::fusion::for_each( spell_effects, [ this, &boss ]( auto& v ) {
+    using Spell = typename std::decay_t<decltype(v)>::first_type;
     auto& active_turns = v.second;
     if ( active_turns > 0 )
     {
@@ -262,7 +263,7 @@ using Spells        = std::vector<SpellsVariant>;
 int calc_spells_mana_cost( const Spells& spells )
 {
   const auto spell_costs = spells | ranges::view::transform( []( const auto& spell ) {
-                             return std::visit( []<typename Spell>( Spell ) { return Spell::mana_cost; }, spell );
+                             return std::visit( []( auto spell ) { return decltype( spell )::mana_cost; }, spell );
                            } );
 
   return ranges::accumulate( spell_costs, 0 );
@@ -286,7 +287,8 @@ std::vector<Spells> generate_spells( const Player& player, const Boss& boss, con
   }
 
   std::vector<Spells> result_spells;
-  boost::mp11::mp_for_each<Player::SpellsList>( [&result_spells, player, boss, mode ]<typename Spell>( Spell ) {
+  boost::mp11::mp_for_each<Player::SpellsList>( [&result_spells, player, boss, mode ]( auto spell ) {
+    using Spell = decltype(spell);
     if ( is_castable<Spell>( player ) )
     {
       Boss b   = boss;

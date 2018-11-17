@@ -44,20 +44,20 @@ if(DEFINED BoostLibsCmdLine)
   endif()
 
   if(BoostToolset)
-    set(BootstrapToolset "--with-toolset=${BoostToolset}")
-    set(B2Toolset "toolset=${BoostToolset}")
+    set(BoostBootstrapToolset "--with-toolset=${BoostToolset}")
+    set(BoostB2Toolset "toolset=${BoostToolset}")
   endif()
 
   if(EXISTS ${BoostB2} )
     message("Boost is already bootstrapped")
   else()
     message("Bootstrapping boost...")
-    execute_process(COMMAND ${BoostBootstrapCmd} ${BootstrapToolset}
+    execute_process(COMMAND ${BoostBootstrapCmd} ${BoostBootstrapToolset}
       WORKING_DIRECTORY ${BoostSrcDir}
-      RESULT_VARIABLE BootstrapResult)
+      RESULT_VARIABLE BoostBootstrapResult)
 
-    if( NOT ${BootstrapResult} EQUAL 0 )
-      message(ERROR "${BoostBootstrapCmd} failed")
+    if( NOT ${BoostBootstrapResult} EQUAL 0 )
+      message(ERROR "${BoostBoostBootstrapCmd} failed")
     endif()
 
   endif()
@@ -68,26 +68,24 @@ if(DEFINED BoostLibsCmdLine)
     RELATIVE ${BoostLibDir}
     ${BoostLibDir}/*)
 
-  set(AllLibsBuilt TRUE)
+  set(BoostAllLibsBuilt TRUE)
   foreach(Component ${BoostComponents})
     string(FIND "${BoostBuiltLibs}" ${Component} ComponentFound)
     if(ComponentFound EQUAL -1)
-      set(AllLibsBuilt FALSE)
+      set(BoostAllLibsBuilt FALSE)
     endif()
   endforeach()
 
-  message("B2 TOOLSET ${CMAKE_CXX_COMPILER_ID} ${BootstrapToolset} ${B2Toolset}")
-
-  if(AllLibsBuilt)
+  if(BoostAllLibsBuilt)
     message("Boost libraries are already built")
   else()
     message("Building boost libraries...")
-    set(BoostB2Cmd ${BoostB2} ${B2Toolset} ${BoostLibsCmdLine} -j 8)
+    set(BoostB2Cmd ${BoostB2} ${BoostB2Toolset} ${BoostLibsCmdLine} -j 8)
     execute_process(COMMAND ${BoostB2Cmd}
       WORKING_DIRECTORY ${BoostSrcDir}
-      RESULT_VARIABLE B2Result)
+      RESULT_VARIABLE BoostB2Result)
 
-    if( NOT ${B2Result} EQUAL 0 )
+    if( NOT ${BoostB2Result} EQUAL 0 )
       message(ERROR "${BoostB2} failed")
     endif()
 
