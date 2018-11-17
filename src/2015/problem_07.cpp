@@ -173,7 +173,7 @@ CircuitInstruction parse_instruction( const std::string& line )
 {
   const auto tokens = ranges::action::split( line, ' ' );
 
-  using S                = const std::string&;
+  using S                = std::string;
   const auto instruction = AoC::match_container(
       tokens,
       []( const S& arg1, const S& binary_op, const S& arg2, const S& /*->*/, const S& /*dest*/ ) {

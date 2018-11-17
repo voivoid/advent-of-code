@@ -262,8 +262,8 @@ using Spells        = std::vector<SpellsVariant>;
 
 int calc_spells_mana_cost( const Spells& spells )
 {
-  const auto spell_costs = spells | ranges::view::transform( []( const auto& spell ) {
-                             return std::visit( []( auto spell ) { return decltype( spell )::mana_cost; }, spell );
+  const auto spell_costs = spells | ranges::view::transform( []( const auto& spell_variant ) {
+                             return std::visit( []( auto spell ) { return decltype( spell )::mana_cost; }, spell_variant );
                            } );
 
   return ranges::accumulate( spell_costs, 0 );

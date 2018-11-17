@@ -6,7 +6,7 @@ namespace AoC
 {
 
 template <typename T, typename F>
-auto iterate_n( T&& val, F&& func, size_t n )
+auto&& iterate_n( T&& val, F&& func, size_t n )
 {
   while ( n > 0 )
   {
@@ -14,7 +14,7 @@ auto iterate_n( T&& val, F&& func, size_t n )
     --n;
   }
 
-  return val;
+  return std::forward<T&&>( val );
 }
 
 }  // namespace AoC

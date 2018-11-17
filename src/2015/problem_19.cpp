@@ -130,29 +130,29 @@ std::vector<Formula> get_all_replacements( const MoleculeMap& replacements_map, 
   return std::move( all_replacements ) | ranges::action::sort | ranges::action::unique;
 }
 
-void reduce( const MoleculeMap& replacements_map, const Formula& formula, std::set<Formula>& reduced )
-{
-  if ( formula == "e" )
-  {
-    throw std::runtime_error( "FOUND!" );
-  }
+//void reduce( const MoleculeMap& replacements_map, const Formula& formula, std::set<Formula>& reduced )
+//{
+//  if ( formula == "e" )
+//  {
+//    throw std::runtime_error( "FOUND!" );
+//  }
 
-  if ( reduced.find( formula ) != reduced.cend() )
-  {
-    return;
-  }
+//  if ( reduced.find( formula ) != reduced.cend() )
+//  {
+//    return;
+//  }
 
-  reduced.insert( formula );
+//  reduced.insert( formula );
 
-  for ( const auto& [ from, to ] : replacements_map )
-  {
-    auto replacements = do_replacements( formula, from, to );
-    for ( const auto& replacement : replacements )
-    {
-      reduce( replacements_map, replacement, reduced );
-    }
-  }
-}
+//  for ( const auto& [ from, to ] : replacements_map )
+//  {
+//    auto replacements = do_replacements( formula, from, to );
+//    for ( const auto& replacement : replacements )
+//    {
+//      reduce( replacements_map, replacement, reduced );
+//    }
+//  }
+//}
 
 }  // namespace
 
