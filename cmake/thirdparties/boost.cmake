@@ -10,7 +10,7 @@ FetchContent_Declare(
   boost
   URL "https://dl.bintray.com/boostorg/release/${BoostVersion}/source/boost_${BoostVersionUnderscored}.tar.gz"
   URL_HASH SHA256=${BoostSHA256}
-)
+  )
 
 message("Building Boost...")
 FetchContent_Populate(boost)
@@ -29,44 +29,69 @@ string(REPLACE test unit_test_framework BoostComponents "${BoostLibs}")
 
 if(DEFINED BoostLibsCmdLine)
 
-    if(WIN32)
-      set(BoostBootstrapCmd cmd /C ${BoostSrcDir}/bootstrap.bat)
-      set(BoostB2 ${BoostSrcDir}/b2.exe)
-    else()
-      set(BoostBootstrapCmd $ENV{SHELL} ${BoostSrcDir}/bootstrap.sh)
-      set(BoostB2 ${BoostSrcDir}/b2)
+  if(WIN32)
+    set(BoostBootstrapCmd cmd /C ${BoostSrcDir}/bootstrap.bat)
+    set(BoostB2 ${BoostSrcDir}/b2.exe)
+  else()
+    set(BoostBootstrapCmd $ENV{SHELL} ${BoostSrcDir}/bootstrap.sh)
+    set(BoostB2 ${BoostSrcDir}/b2)
+  endif()
+
+  if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    set(BoostToolset "gcc")
+  elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    set(BoostToolset "clang")
+  endif()
+
+  if(BoostToolset)
+    set(BootstrapToolset "--with-toolset=${BoostToolset}")
+    set(B2Toolset "toolset=${BoostToolset}")
+  endif()
+
+  if(EXISTS ${BoostB2} )
+    message("Boost is already bootstrapped")
+  else()
+    message("Bootstrapping boost...")
+    execute_process(COMMAND ${BoostBootstrapCmd} ${BootstrapToolset}
+      WORKING_DIRECTORY ${BoostSrcDir}
+      RESULT_VARIABLE BootstrapResult)
+
+    if( NOT ${BootstrapResult} EQUAL 0 )
+      message(ERROR "${BoostBootstrapCmd} failed")
     endif()
 
-    if(EXISTS ${BoostB2} )
-        message("Boost is already bootstrapped")
-    else()
-        message("Bootstrapping boost...")
-        execute_process(COMMAND ${BoostBootstrapCmd}
-                        WORKING_DIRECTORY ${BoostSrcDir})
+  endif()
+
+
+  file(
+    GLOB BoostBuiltLibs
+    RELATIVE ${BoostLibDir}
+    ${BoostLibDir}/*)
+
+  set(AllLibsBuilt TRUE)
+  foreach(Component ${BoostComponents})
+    string(FIND "${BoostBuiltLibs}" ${Component} ComponentFound)
+    if(ComponentFound EQUAL -1)
+      set(AllLibsBuilt FALSE)
+    endif()
+  endforeach()
+
+  message("B2 TOOLSET ${CMAKE_CXX_COMPILER_ID} ${BootstrapToolset} ${B2Toolset}")
+
+  if(AllLibsBuilt)
+    message("Boost libraries are already built")
+  else()
+    message("Building boost libraries...")
+    set(BoostB2Cmd ${BoostB2} ${B2Toolset} ${BoostLibsCmdLine} -j 8)
+    execute_process(COMMAND ${BoostB2Cmd}
+      WORKING_DIRECTORY ${BoostSrcDir}
+      RESULT_VARIABLE B2Result)
+
+    if( NOT ${B2Result} EQUAL 0 )
+      message(ERROR "${BoostB2} failed")
     endif()
 
-
-    file(
-      GLOB BoostBuiltLibs
-      RELATIVE ${BoostLibDir}
-      ${BoostLibDir}/*)
-
-    set(AllLibsBuilt TRUE)
-    foreach(Component ${BoostComponents})
-      string(FIND "${BoostBuiltLibs}" ${Component} ComponentFound)
-      if(ComponentFound EQUAL -1)
-        set(AllLibsBuilt FALSE)
-      endif()
-    endforeach()
-
-    if(AllLibsBuilt)
-        message("Boost libraries are already built")
-    else()
-        message("Building boost libraries...")
-        set(BoostB2Cmd ${BoostB2} ${BoostLibsCmdLine} -j 8)
-        execute_process(COMMAND ${BoostB2Cmd}
-                        WORKING_DIRECTORY ${BoostSrcDir})
-    endif()
+  endif()
 
 endif()
 

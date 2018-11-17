@@ -5,10 +5,10 @@ find_package(Git REQUIRED)
 set(JsonVer v3.4.0)
 
 FetchContent_Declare(
-    json
-    GIT_REPOSITORY https://github.com/nlohmann/json
-    GIT_TAG ${JsonVer}
-)
+  json
+  GIT_REPOSITORY https://github.com/nlohmann/json
+  GIT_TAG ${JsonVer}
+  )
 
 message("Building Json ...")
 FetchContent_Populate(json)
