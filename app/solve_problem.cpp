@@ -4,7 +4,10 @@
 
 #include <iostream>
 
-bool solve_problem( const std::string& problem )
+namespace AocApp
+{
+
+bool solve_problem( const std::string& problem, const size_t /*repeats*/ )
 {
   const auto solve_func = AoC::get_solve_func( problem );
   if ( !solve_func )
@@ -26,3 +29,5 @@ bool solve_problem( const std::string& problem )
 
   return true;
 }
+
+}  // namespace AocApp

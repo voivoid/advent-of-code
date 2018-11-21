@@ -1,5 +1,7 @@
 #include "AoC/problems_map.h"
 
+#include <map>
+
 #include <cassert>
 
 namespace
@@ -32,6 +34,11 @@ void register_solve_func( ProblemName name, ProblemFunc func )
   auto& map = get_problems_map();
   assert( map.find( name ) == map.cend() );
   map.emplace( std::move( name ), func );
+}
+
+std::vector<ProblemName> get_solved_problems_list()
+{
+  return {};
 }
 
 }  // namespace AoC

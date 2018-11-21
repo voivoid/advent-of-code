@@ -2,4 +2,9 @@
 
 #include <string>
 
-bool solve_problem( const std::string& problem );
+namespace AocApp
+{
+
+bool solve_problem( const std::string& problem, size_t repeats );
+
+}

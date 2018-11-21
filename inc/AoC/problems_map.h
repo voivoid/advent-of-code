@@ -2,10 +2,10 @@
 
 #include <functional>
 #include <iosfwd>
-#include <map>
 #include <optional>
 #include <string>
 #include <variant>
+#include <vector>
 
 namespace AoC
 {
@@ -13,6 +13,7 @@ using ProblemName   = std::string;
 using ProblemResult = std::variant<int, std::string>;
 using ProblemFunc   = std::function<ProblemResult( std::istream& )>;
 
+std::vector<ProblemName> get_solved_problems_list();
 std::optional<ProblemFunc> get_solve_func( const ProblemName& name );
 void register_solve_func( ProblemName name, ProblemFunc func );
 
@@ -21,7 +22,7 @@ namespace Details
 
 struct ProblemRegistrator
 {
-  ProblemRegistrator( std::string problem_name, ProblemFunc solve_1, ProblemFunc solve_2 )
+  ProblemRegistrator( ProblemName problem_name, ProblemFunc solve_1, ProblemFunc solve_2 )
   {
     register_solve_func( problem_name + "_1", solve_1 );
     register_solve_func( problem_name + "_2", solve_2 );
