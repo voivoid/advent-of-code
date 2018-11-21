@@ -5,7 +5,7 @@ Advent of Code ( https://adventofcode.com ) 2015-2017 solutions using really mod
 Prerequisites
 -----
 
-* C++17 compiler ( tested with gcc 8.2.1 and clang 7.0 )
+* C++17 compiler ( tested with gcc 8.2.1 )
 * cmake 3.12 or later
 * git
 

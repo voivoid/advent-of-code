@@ -36,14 +36,14 @@ append_problem_srcs(AocProblemsSources 2015 01 02 03 04 05 06 07 08 09 10 11 12 
 add_library(AocProblems OBJECT ${AocProblemsSources}
   src/impl_tests.h src/impl_tests.cpp)
 target_include_directories(AocProblems PUBLIC inc PRIVATE src)
-target_link_libraries(AocProblems PUBLIC AocProblemsMap AocUtils PRIVATE Boost::boost range-v3 json)
+target_link_libraries(AocProblems PUBLIC AocProblemsMap AocUtils Boost::context PRIVATE Boost::boost range-v3 json)
 
 # AocApp
 add_executable(AocApp app/main.cpp
   app/solve_problem.h app/solve_problem.cpp
   app/parse_cmd_line.h app/parse_cmd_line.cpp)
 target_include_directories(AocApp PRIVATE app)
-target_link_libraries(AocApp PRIVATE AocProblems Boost::program_options)
+target_link_libraries(AocApp PRIVATE AocProblems Boost::boost Boost::program_options)
 
 
 
@@ -75,7 +75,7 @@ add_executable(AocLibTests tests/2015_01.cpp
   tests/utils/aoc_fixture.cpp
   tests/utils/aoc_fixture.h
   tests/utils/boost_unit_test_module.cpp)
-target_link_libraries(AocLibTests PRIVATE AocProblems AocUtils Boost::unit_test_framework Boost::program_options)
+target_link_libraries(AocLibTests PRIVATE AocProblems AocUtils Boost::boost Boost::unit_test_framework)
 
 
 
