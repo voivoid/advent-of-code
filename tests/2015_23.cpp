@@ -22,4 +22,3 @@ BOOST_FIXTURE_TEST_CASE( problem2015_23_1, AocFixture )
 {
   BOOST_CHECK_EQUAL( 2, run( &solve_1, get_input() ) );
 }
-

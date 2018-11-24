@@ -4,8 +4,8 @@
 #include "AoC_utils/ranges.h"
 
 #include "range/v3/action/sort.hpp"
-#include "range/v3/algorithm/min.hpp"
 #include "range/v3/algorithm/lexicographical_compare.hpp"
+#include "range/v3/algorithm/min.hpp"
 #include "range/v3/distance.hpp"
 #include "range/v3/istream_range.hpp"
 #include "range/v3/numeric/accumulate.hpp"
@@ -32,9 +32,9 @@ struct CacheComparator
 {
   bool operator()( const CacheKey& k1, const CacheKey& k2 ) const
   {
-    if( k1.first != k2.first )
+    if ( k1.first != k2.first )
     {
-        return k1.first < k2.first;
+      return k1.first < k2.first;
     }
 
     auto r1 = k1.second;

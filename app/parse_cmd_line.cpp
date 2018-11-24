@@ -36,7 +36,7 @@ parse_result parse_cmd_args( const int argc, char** argv )
 
   if ( vars_map.count( "problem" ) )
   {
-    return cmd_solve_problem{ vars_map[ "problem" ].as<std::string>(), vars_map[ "repeats"].as<size_t>() };
+    return cmd_solve_problem{ vars_map[ "problem" ].as<std::string>(), vars_map[ "repeats" ].as<size_t>() };
   }
 
   std::ostringstream ss;

@@ -46,5 +46,6 @@ if(Bash)
   add_aoc_test(2015_21 121 201)
   add_aoc_test(2015_22 1824 1937)
   add_aoc_test(2015_23 307 160)
+  add_aoc_test(2015_24 11266889531 77387711)
 
 endif()

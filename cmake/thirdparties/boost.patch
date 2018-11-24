@@ -1,0 +1,15 @@
+--- ./boost/coroutine2/detail/pull_coroutine.hpp	2018-08-01 23:50:47.000000000 +0300
++++ ./boost/coroutine2/detail/pull_coroutine.hpp	2018-11-21 12:25:26.172784403 +0300
+@@ -127,7 +127,11 @@
+             return * this;
+         }
+ 
+-        iterator operator++( int) = delete;
++        iterator operator++( int) {
++            iterator i = *this;
++            increment_();
++            return i;
++        }
+ 
+         reference_t operator*() const noexcept {
+             return c_->cb_->get();
