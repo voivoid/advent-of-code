@@ -26,7 +26,7 @@ add_library(AocUtils utils/inc/AoC_utils/algo.h
 target_include_directories(AocUtils PUBLIC utils/inc)
 target_link_libraries(AocUtils PRIVATE Boost::boost PUBLIC range-v3)
 
-append_problem_srcs(AocProblemsSources 2015 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24)
+append_problem_srcs(AocProblemsSources 2015 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25)
 list(APPEND AocProblemsSources src/2015/problem_01_generator.cpp)
 
 # AocProblems
@@ -64,6 +64,7 @@ add_executable(AocLibTests tests/2015_01.cpp
   tests/2015_20.cpp
   tests/2015_23.cpp
   tests/2015_24.cpp
+  tests/2015_25.cpp
   tests/impl_test.cpp
   tests/AoC_utils_tests/algo.cpp
   tests/AoC_utils_tests/anon_ret.cpp
