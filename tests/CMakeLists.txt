@@ -1,12 +1,45 @@
+# AocLibTests
+add_executable(AocLibTests
+  2015_01.cpp
+  2015_02.cpp
+  2015_03.cpp
+  2015_05.cpp
+  2015_06.cpp
+  2015_07.cpp
+  2015_08.cpp
+  2015_09.cpp
+  2015_11.cpp
+  2015_12.cpp
+  2015_13.cpp
+  2015_15.cpp
+  2015_19.cpp
+  2015_20.cpp
+  2015_23.cpp
+  2015_24.cpp
+  2015_25.cpp
+  2016_01.cpp
+  impl_test.cpp
+  AoC_utils_tests/algo.cpp
+  AoC_utils_tests/anon_ret.cpp
+  AoC_utils_tests/geo.cpp
+  AoC_utils_tests/match.cpp
+  AoC_utils_tests/md5.cpp
+  AoC_utils_tests/ranges.cpp
+  AoC_utils_tests/ranges_coro.cpp
+  AoC_utils_tests/string.cpp
+  AoC_utils_tests/utils.cpp
+  utils/aoc_fixture.cpp
+  utils/aoc_fixture.h
+  utils/boost_unit_test_module.cpp)
+target_link_libraries(AocLibTests PRIVATE AocProblems AocUtils Boost::boost Boost::unit_test_framework)
+
+
 find_program(Bash bash)
-
 if(Bash)
-
-  enable_testing()
 
   function(add_aoc_test problem result1 result2)
     set(App $<TARGET_FILE:AocApp>)
-    set(Input ${CMAKE_CURRENT_SOURCE_DIR}/tests/input/${problem})
+    set(Input ${CMAKE_CURRENT_SOURCE_DIR}/input/${problem})
 
     add_test(NAME ${problem}_1
       COMMAND bash -c "${App} ${problem}_1 < ${Input}" )
@@ -48,5 +81,7 @@ if(Bash)
   add_aoc_test(2015_23 307 160)
   add_aoc_test(2015_24 11266889531 77387711)
   add_aoc_test(2015_25 9132360 0)
+
+  add_aoc_test(2016_01 273 115)
 
 endif()

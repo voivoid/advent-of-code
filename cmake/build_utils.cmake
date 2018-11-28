@@ -9,7 +9,6 @@ elseif (MSVC)
 endif()
 
 macro(process_aoc_target Target)
-  list(APPEND AocTargets ${Target})
   target_compile_options(${Target} PUBLIC ${AocCxxWarnings})
 endmacro()
 
@@ -21,10 +20,4 @@ endmacro()
 macro(add_executable ExecutableName)
   _add_executable(${ARGV})
   process_aoc_target(${ExecutableName})
-endmacro()
-
-macro(append_problem_srcs ProblemsSources Year)
-  foreach(ProblemNum ${ARGN})
-    list(APPEND ${ProblemsSources} inc/AoC/${Year}/problem_${ProblemNum}.h src/${Year}/problem_${ProblemNum}.cpp)
-  endforeach(ProblemNum)
 endmacro()

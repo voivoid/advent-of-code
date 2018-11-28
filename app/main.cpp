@@ -32,8 +32,9 @@ bool exec_cmd_generate_data( const AocApp::cmd_generate_data& )
 
 int safe_main( const int argc, char** const argv )
 {
-  const auto cmd = AocApp::parse_cmd_args( argc, argv );
+  std::ios_base::sync_with_stdio( false );
 
+  const auto cmd = AocApp::parse_cmd_args( argc, argv );
   const auto cmd_visitor =
       boost::make_overloaded_function( &exec_cmd_help, &exec_cmd_solve_problem, &exec_cmd_list_problems, &exec_cmd_generate_data );
 

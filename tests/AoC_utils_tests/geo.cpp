@@ -34,6 +34,8 @@ BOOST_AUTO_TEST_CASE( aoc_utils_geo_point )
   BOOST_CHECK_NE( p2, p1 );
   BOOST_CHECK_EQUAL( p2, p3 );
   BOOST_CHECK_EQUAL( p3, p2 );
+
+  BOOST_CHECK_LT( p1, p2 );
 }
 
 BOOST_AUTO_TEST_CASE( aoc_utils_geo_rect )
