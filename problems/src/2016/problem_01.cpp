@@ -13,8 +13,6 @@
 #include "range/v3/view/transform.hpp"
 #include "range/v3/view/zip_with.hpp"
 
-
-
 #include "boost/fusion/adapted/struct.hpp"
 #include "boost/spirit/home/x3.hpp"
 
@@ -201,7 +199,7 @@ int solve_2( std::istream& input )
   const auto corner_states = instructions | ranges::view::exclusive_scan( start_state, &run_instruction );
 
   const auto all_visited_coords = ranges::view::zip_with( &run_instruction_steps_by_step, corner_states, instructions ) |
-                                  ranges::view::join | ranges::view::transform( std::bind( &State::coord, std::placeholders::_1 ) );
+                                  ranges::view::join | ranges::view::transform( []( const State& s ) { return s.coord; } );
 
   const auto already_visited_coord = find_already_visited_coord( all_visited_coords );
   return calc_distance( start_state.coord, already_visited_coord );
