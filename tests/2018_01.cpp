@@ -11,7 +11,7 @@ BOOST_FIXTURE_TEST_CASE( problem2018_01_1, AocFixture )
   BOOST_CHECK_EQUAL( 3, run( &solve_1, "+1 -2 +3 +1" ) );
 }
 
-BOOST_FIXTURE_TEST_CASE( problem2016_08_2, AocFixture )
+BOOST_FIXTURE_TEST_CASE( problem2018_01_2, AocFixture )
 {
   BOOST_CHECK_EQUAL( 2, run( &solve_2, "+1 -2 +3 +1" ) );
   BOOST_CHECK_EQUAL( 0, run( &solve_2, "+1 -1" ) );

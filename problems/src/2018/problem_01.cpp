@@ -1,4 +1,4 @@
-#include "AoC/2016/problem_01.h"
+#include "AoC/2018/problem_01.h"
 
 #include "AoC/problems_map.h"
 
@@ -8,6 +8,8 @@
 #include "range/v3/view/cycle.hpp"
 #include "range/v3/view/partial_sum.hpp"
 
+#include <istream>
+#include <stdexcept>
 #include <unordered_set>
 
 namespace
