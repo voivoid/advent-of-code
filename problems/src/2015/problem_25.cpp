@@ -1,8 +1,8 @@
 #include "AoC/2015/problem_25.h"
 
 #include "AoC/problems_map.h"
-#include "AoC_utils/algo.h"
-#include "AoC_utils/parse.h"
+#include "AoC/utils/algo.h"
+#include "AoC/utils/parse.h"
 
 #include "boost/fusion/adapted/struct.hpp"
 #include "boost/spirit/home/x3.hpp"

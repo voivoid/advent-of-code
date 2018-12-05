@@ -1,8 +1,8 @@
 #include "boost/test/unit_test.hpp"
 
-#include "AoC_utils/md5.h"
+#include "AoC/utils/md5.h"
 
-BOOST_AUTO_TEST_CASE( aoc_utils_md5 )
+BOOST_AUTO_TEST_CASE( AoC_utils_md5 )
 {
   BOOST_CHECK_EQUAL( "d41d8cd98f00b204e9800998ecf8427e", AoC::md5( "" ) );
   BOOST_CHECK_EQUAL( "0cc175b9c0f1b6a831c399e269772661", AoC::md5( "a" ) );

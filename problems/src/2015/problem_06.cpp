@@ -1,8 +1,9 @@
 #include "AoC/2015/problem_06.h"
 
 #include "AoC/problems_map.h"
-#include "AoC_utils/geo.h"
-#include "AoC_utils/parse.h"
+#include "AoC/utils/2d_array.h"
+#include "AoC/utils/geo.h"
+#include "AoC/utils/parse.h"
 
 #include "range/v3/getlines.hpp"
 #include "range/v3/numeric/accumulate.hpp"
@@ -12,7 +13,6 @@
 #include "boost/fusion/adapted/struct.hpp"
 #include "boost/fusion/include/at_c.hpp"
 #include "boost/fusion/include/vector.hpp"
-#include "boost/multi_array.hpp"
 #include "boost/spirit/home/x3.hpp"
 #include "boost/variant.hpp"
 
@@ -37,20 +37,21 @@ struct Cmd
   };
 
   Mode mode;
-  AoC::Rectangle rect;
+  AoC::URectangle rect;
 };
 
 }  // namespace
 
-BOOST_FUSION_ADAPT_STRUCT( AoC::Point, x, y )
-BOOST_FUSION_ADAPT_STRUCT( AoC::Rectangle, left_top, right_bottom )
+BOOST_FUSION_ADAPT_STRUCT( AoC::UPoint, x, y )
+BOOST_FUSION_ADAPT_STRUCT( AoC::URectangle, left_top, right_bottom )
 BOOST_FUSION_ADAPT_STRUCT( Cmd, mode, rect )
 
 namespace
 {
 
-using Lamp  = size_t;
-using Lamps = boost::multi_array<Lamp, 2>;
+using Lamp = size_t;
+template <size_t grid_side>
+using Lamps = AoC::dd_array<Lamp, grid_side, grid_side>;
 
 Cmd parse_cmd_line( const std::string& line )
 {
@@ -62,9 +63,9 @@ Cmd parse_cmd_line( const std::string& line )
   x3::symbols<Cmd::Mode> toggle_modes;
   toggle_modes.add( "toggle", Cmd::Mode::toggle );
 
-  const auto coord_parser = x3::rule<struct _x, AoC::Point>{} = x3::int_ > ',' > x3::int_;
-  const auto rect_parser = x3::rule<struct _y, AoC::Rectangle>{} = coord_parser > "through" > coord_parser;
-  const auto parser                                              = ( "turn" > on_off_modes > rect_parser ) | ( toggle_modes > rect_parser );
+  const auto coord_parser = x3::rule<struct _x, AoC::UPoint>{} = AoC::size_t_parser > ',' > AoC::size_t_parser;
+  const auto rect_parser = x3::rule<struct _y, AoC::URectangle>{} = coord_parser > "through" > coord_parser;
+  const auto parser = ( "turn" > on_off_modes > rect_parser ) | ( toggle_modes > rect_parser );
 
   Cmd cmd;
   const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, cmd );
@@ -104,8 +105,8 @@ LampManipulator make_lamp_manipulator_2( const Cmd::Mode mode )
   THROW_WRONG_CMD_EX();
 }
 
-template <ManipulatorFactory manipulator_factory>
-auto apply_cmd( std::reference_wrapper<Lamps> lamps, const Cmd& cmd )
+template <ManipulatorFactory manipulator_factory, size_t side>
+auto apply_cmd( Lamps<side>& lamps, const Cmd& cmd )
 {
   const auto& rect       = cmd.rect;
   const auto manipulator = manipulator_factory( cmd.mode );
@@ -113,24 +114,26 @@ auto apply_cmd( std::reference_wrapper<Lamps> lamps, const Cmd& cmd )
   {
     for ( auto y = rect.left_top.y; y <= rect.right_bottom.y; ++y )
     {
-      manipulator( lamps.get()[ y ][ x ] );
+      manipulator( lamps[ x ][ y ] );
     }
   }
-  return lamps;
+  return std::ref( lamps );
 }
 
-size_t calc_lamps_brightness( const Lamps& lamps )
+template <size_t side>
+size_t calc_lamps_brightness( const Lamps<side>& lamps )
 {
-  return std::accumulate( lamps.data(), lamps.data() + lamps.num_elements(), size_t( 0 ) );
+  return std::accumulate( lamps.cbegin(), lamps.cend(), size_t( 0 ) );
 }
 
 template <ManipulatorFactory manipulator_factory>
 int solve( std::istream& input )
 {
-  auto cmds = ranges::getlines( input ) | ranges::view::transform( &parse_cmd_line );
-  Lamps lamps( boost::extents[ 1000 ][ 1000 ] );
+  auto cmds                  = ranges::getlines( input ) | ranges::view::transform( &parse_cmd_line );
+  constexpr size_t grid_side = 1000;
+  Lamps<grid_side> lamps;
 
-  const auto run_cmd = &apply_cmd<manipulator_factory>;
+  const auto run_cmd = &apply_cmd<manipulator_factory, grid_side>;
   ranges::accumulate( cmds, std::ref( lamps ), run_cmd );
 
   return static_cast<int>( calc_lamps_brightness( lamps ) );
@@ -172,14 +175,14 @@ static void impl_tests()
   {
     const Cmd cmd = parse_cmd_line( "turn off 111,222 through 333,444" );
     assert( cmd.mode == Cmd::Mode::off );
-    assert( cmd.rect == ( AoC::Rectangle{ { 111, 222 }, { 333, 444 } } ) );
+    assert( cmd.rect == ( AoC::URectangle{ { 111, 222 }, { 333, 444 } } ) );
   }
 
   {
-    Lamps lamps( boost::extents[ 10 ][ 10 ] );
+    Lamps<10> lamps;
     assert( 0 == calc_lamps_brightness( lamps ) );
 
-    apply_cmd<&make_lamp_manipulator_1>( std::ref( lamps ), parse_cmd_line( "toggle 0,0 through 1,1" ) );
+    apply_cmd<&make_lamp_manipulator_1, 10>( std::ref( lamps ), parse_cmd_line( "toggle 0,0 through 1,1" ) );
 
     assert( 4 == calc_lamps_brightness( lamps ) );
   }

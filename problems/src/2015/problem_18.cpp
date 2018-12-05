@@ -1,13 +1,12 @@
 #include "AoC/2015/problem_18.h"
 
 #include "AoC/problems_map.h"
+#include "AoC/utils/2d_array.h"
 
 #include "range/v3/algorithm/count.hpp"
 #include "range/v3/istream_range.hpp"
 #include "range/v3/view/filter.hpp"
 #include "range/v3/view/transform.hpp"
-
-#include "boost/multi_array.hpp"
 
 #include <algorithm>
 #include <functional>
@@ -22,50 +21,32 @@ enum class Cell
   Alive,
   Empty
 };
-using Field     = boost::multi_array<Cell, 2>;
-using CellIndex = Field::index;
-using Cells     = std::vector<Cell>;
+
+template <size_t side>
+using Field = AoC::dd_array<Cell, side, side>;
+using Cells = std::vector<Cell>;
 struct Coord
 {
-  const CellIndex x;
-  const CellIndex y;
+  const size_t x;
+  const size_t y;
 };
 using Coords = std::vector<Coord>;
 
-Field make_field( const size_t side )
-{
-  const auto side_max_index = static_cast<CellIndex>( side );
-  Field field( boost::extents[ side_max_index ][ side_max_index ] );
-  return field;
-}
-
-CellIndex get_max_cell_index( const Field& field )
-{
-  const auto side = field.shape()[ 0 ];
-  assert( side == field.shape()[ 1 ] );
-
-  return static_cast<CellIndex>( side );
-}
-
-Field populate_field( std::istream& input, const size_t side )
+template <size_t side>
+Field<side> populate_field( std::istream& input )
 {
   auto input_cells =
       ranges::istream<char>( input ) | ranges::view::transform( []( const auto c ) {
         return c == '#' ? Cell::Alive : c == '.' ? Cell::Empty : throw std::invalid_argument( "Failed to parse lights input data" );
       } );
 
-  Field field = make_field( side );
-  std::copy_n( input_cells.begin(), side * side, field.data() );
+  Field<side> field;
+  std::copy_n( input_cells.begin(), side * side, field.begin() );
 
   return field;
 }
 
-auto make_field_range( const Field& field )
-{
-  return ranges::make_iterator_range( field.data(), field.data() + field.num_elements() );
-}
-
-Coords get_neighbours( const CellIndex x, const CellIndex y, const CellIndex max_index )
+Coords get_neighbours( const size_t x, const size_t y, const size_t max_index )
 {
   Coords coords = { { x - 1, y - 1 }, { x, y - 1 },     { x + 1, y - 1 }, { x - 1, y },
                     { x + 1, y },     { x - 1, y + 1 }, { x, y + 1 },     { x + 1, y + 1 } };
@@ -75,19 +56,22 @@ Coords get_neighbours( const CellIndex x, const CellIndex y, const CellIndex max
          } );
 }
 
-Cell get_cell( const Field& field, const CellIndex x, const CellIndex y )
+template <size_t side>
+Cell get_cell( const Field<side>& field, const size_t x, const size_t y )
 {
-  return field[ y ][ x ];
+  return field[ x ][ y ];
 }
 
-Cell get_cell( const Field& field, const Coord& coord )
+template <size_t side>
+Cell get_cell( const Field<side>& field, const Coord& coord )
 {
-  return field[ coord.y ][ coord.x ];
+  return get_cell( field, coord.x, coord.y );
 }
 
-void set_cell( Field& field, const CellIndex x, const CellIndex y, const Cell cell )
+template <size_t side>
+void set_cell( Field<side>& field, const size_t x, const size_t y, const Cell cell )
 {
-  field[ y ][ x ] = cell;
+  field[ x ][ y ] = cell;
 }
 
 template <typename Cells>
@@ -96,10 +80,10 @@ size_t count_alive_cells( const Cells& cells )
   return static_cast<size_t>( ranges::count( cells, Cell::Alive ) );
 }
 
-size_t get_alive_neighbours_num( const Field& field, const CellIndex x, const CellIndex y )
+template <size_t side>
+size_t get_alive_neighbours_num( const Field<side>& field, const size_t x, const size_t y )
 {
-  const CellIndex max_side_index = get_max_cell_index( field );
-  const auto neighbour_coords    = get_neighbours( x, y, max_side_index );
+  const auto neighbour_coords = get_neighbours( x, y, side );
   const auto alive_neighbour_cells =
       neighbour_coords | ranges::view::transform( [&field]( const auto& coord ) { return get_cell( field, coord ); } );
   return count_alive_cells( alive_neighbour_cells );
@@ -117,17 +101,14 @@ Cell calc_new_state( const Cell cell, const size_t alive_neighbours_cells_num )
   }
 }
 
-void process_step( Field& field )
+template <size_t side>
+void process_step( Field<side>& field )
 {
-  const auto side = field.shape()[ 0 ];
-  assert( side == field.shape()[ 1 ] );
+  Field<side> new_field;
 
-  Field new_field = make_field( side );
-
-  const CellIndex max_side_index = get_max_cell_index( field );
-  for ( CellIndex x = 0; x < max_side_index; ++x )
+  for ( size_t x = 0; x < side; ++x )
   {
-    for ( CellIndex y = 0; y < max_side_index; ++y )
+    for ( size_t y = 0; y < side; ++y )
     {
       const auto cell                       = get_cell( field, x, y );
       const auto alive_neighbours_cells_num = get_alive_neighbours_num( field, x, y );
@@ -140,13 +121,13 @@ void process_step( Field& field )
   field = std::move( new_field );
 }
 
-void enable_corner_lights( Field& field )
+template <size_t side>
+void enable_corner_lights( Field<side>& field )
 {
-  const CellIndex max_side_index = get_max_cell_index( field );
   set_cell( field, 0, 0, Cell::Alive );
-  set_cell( field, 0, max_side_index - 1, Cell::Alive );
-  set_cell( field, max_side_index - 1, 0, Cell::Alive );
-  set_cell( field, max_side_index - 1, max_side_index - 1, Cell::Alive );
+  set_cell( field, 0, side - 1, Cell::Alive );
+  set_cell( field, side - 1, 0, Cell::Alive );
+  set_cell( field, side - 1, side - 1, Cell::Alive );
 }
 
 enum class CornerLightsMode
@@ -155,9 +136,10 @@ enum class CornerLightsMode
   Off
 };
 
-int solve( std::istream& input, const size_t side, size_t steps, const CornerLightsMode corner_lights_mode )
+template <size_t side>
+int solve( std::istream& input, size_t steps, const CornerLightsMode corner_lights_mode )
 {
-  Field field = populate_field( input, side );
+  Field<side> field = populate_field<side>( input );
   if ( corner_lights_mode == CornerLightsMode::On )
   {
     enable_corner_lights( field );
@@ -173,7 +155,7 @@ int solve( std::istream& input, const size_t side, size_t steps, const CornerLig
     }
   }
 
-  return static_cast<int>( count_alive_cells( make_field_range( field ) ) );
+  return static_cast<int>( count_alive_cells( ranges::make_iterator_range( field.cbegin(), field.cend() ) ) );
 }
 }  // namespace
 
@@ -185,12 +167,12 @@ namespace problem_18
 
 int solve_1( std::istream& input )
 {
-  return solve( input, 100, 100, CornerLightsMode::Off );
+  return solve<100>( input, 100, CornerLightsMode::Off );
 }
 
 int solve_2( std::istream& input )
 {
-  return solve( input, 100, 100, CornerLightsMode::On );
+  return solve<100>( input, 100, CornerLightsMode::On );
 }
 
 AOC_REGISTER_PROBLEM( 2015_18, solve_1, solve_2 );
@@ -223,7 +205,7 @@ static void impl_tests()
 
   {
     auto input = get_test_sample();
-    auto field = populate_field( input, test_sample_side );
+    auto field = populate_field<test_sample_side>( input );
 
     assert( Cell::Empty == get_cell( field, 0, 0 ) );
     assert( Cell::Alive == get_cell( field, 1, 0 ) );
@@ -247,7 +229,7 @@ static void impl_tests()
 
   {
     auto input = get_test_sample();
-    assert( 4 == solve( input, test_sample_side, 4, CornerLightsMode::Off ) );
+    assert( 4 == solve<test_sample_side>( input, 4, CornerLightsMode::Off ) );
   }
 }
 

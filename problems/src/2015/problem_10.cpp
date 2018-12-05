@@ -1,7 +1,7 @@
 #include "AoC/2015/problem_10.h"
 
 #include "AoC/problems_map.h"
-#include "AoC_utils/algo.h"
+#include "AoC/utils/algo.h"
 
 #include "range/v3/numeric/accumulate.hpp"
 #include "range/v3/view/group_by.hpp"

@@ -1,7 +1,7 @@
 #include "AoC/2015/problem_11.h"
 
 #include "AoC/problems_map.h"
-#include "AoC_utils/utils.h"
+#include "AoC/utils/utils.h"
 
 #include "range/v3/algorithm/any_of.hpp"
 #include "range/v3/algorithm/sort.hpp"

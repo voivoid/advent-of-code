@@ -1,8 +1,8 @@
 #include "AoC/2016/problem_01.h"
 
 #include "AoC/problems_map.h"
-#include "AoC_utils/geo.h"
-#include "AoC_utils/parse.h"
+#include "AoC/utils/geo.h"
+#include "AoC/utils/parse.h"
 
 #include "range/v3/istream_range.hpp"
 #include "range/v3/numeric/accumulate.hpp"
@@ -66,7 +66,7 @@ Instruction parse_instruction( const std::string& line )
 
   const auto rotation_parser = x3::symbols<Instruction::Rotation>();
   rotation_parser.add( "L", Instruction::Rotation::Left )( "R", Instruction::Rotation::Right );
-  const auto parser = rotation_parser > x3::ulong_;
+  const auto parser = rotation_parser > AoC::size_t_parser;
 
   Instruction instruction;
   const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space | x3::punct, instruction );

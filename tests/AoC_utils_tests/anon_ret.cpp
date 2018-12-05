@@ -1,6 +1,6 @@
 #include <boost/test/unit_test.hpp>
 
-#include <AoC_utils/anon_ret.h>
+#include <AoC/utils/anon_ret.h>
 
 auto f1()
 {
@@ -10,7 +10,7 @@ auto f1()
   AOC_RETURN_ANONYMOUS_STRUCT( x, y, z );
 }
 
-BOOST_AUTO_TEST_CASE( aoc_utils_anonymous_return )
+BOOST_AUTO_TEST_CASE( AoC_utils_anonymous_return )
 {
   auto test1 = f1();
   BOOST_CHECK_EQUAL( test1.x, 1 );

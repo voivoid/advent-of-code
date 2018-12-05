@@ -1,6 +1,6 @@
 #include "boost/test/unit_test.hpp"
 
-#include "AoC_utils/geo.h"
+#include "AoC/utils/geo.h"
 
 #include <ostream>
 
@@ -21,7 +21,7 @@ std::ostream& operator<<( std::ostream& s, const AoC::GenericRectangle<T>& rect 
 }
 }  // namespace AoC
 
-BOOST_AUTO_TEST_CASE( aoc_utils_geo_point )
+BOOST_AUTO_TEST_CASE( AoC_utils_geo_point )
 {
   AoC::Point p1{ 1, 2 };
   BOOST_CHECK_EQUAL( p1.x, 1 );
@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE( aoc_utils_geo_point )
   BOOST_CHECK_LT( p1, p2 );
 }
 
-BOOST_AUTO_TEST_CASE( aoc_utils_geo_rect )
+BOOST_AUTO_TEST_CASE( AoC_utils_geo_rect )
 {
   AoC::Rectangle r1{ { 1, 2 }, { 3, 4 } };
   BOOST_CHECK_EQUAL( r1.left_top, ( AoC::Point{ 1, 2 } ) );

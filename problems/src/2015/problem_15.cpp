@@ -1,7 +1,7 @@
 #include "AoC/2015/problem_15.h"
 
 #include "AoC/problems_map.h"
-#include "AoC_utils/parse.h"
+#include "AoC/utils/parse.h"
 
 #include "range/v3/algorithm/max.hpp"
 #include "range/v3/getlines.hpp"
@@ -194,7 +194,7 @@ AOC_REGISTER_PROBLEM( 2015_15, solve_1, solve_2 );
 
 #ifndef NDEBUG
 
-#  include "AoC_utils/ranges.h"
+#  include "AoC/utils/ranges.h"
 #  include "impl_tests.h"
 #  include <cassert>
 

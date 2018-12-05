@@ -19,6 +19,8 @@ bool x3_parse( Iter begin, Iter end, const Parser& parser, const Skipper& skippe
   return parsed && ( begin == end );
 }
 
+constexpr auto size_t_parser = boost::spirit::x3::ulong_;
+
 
 
 }  // namespace AoC

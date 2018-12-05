@@ -1,8 +1,8 @@
 #include "AoC/2015/problem_19.h"
 
 #include "AoC/problems_map.h"
-#include "AoC_utils/parse.h"
-#include "AoC_utils/string.h"
+#include "AoC/utils/parse.h"
+#include "AoC/utils/string.h"
 
 #include "range/v3/action/insert.hpp"
 #include "range/v3/action/sort.hpp"

@@ -1,8 +1,8 @@
 #include "boost/test/unit_test.hpp"
 
-#include "AoC_utils/string.h"
+#include "AoC/utils/string.h"
 
-BOOST_AUTO_TEST_CASE( aoc_utils_string_count_substrings )
+BOOST_AUTO_TEST_CASE( AoC_utils_string_count_substrings )
 {
   BOOST_CHECK_EQUAL( 0, AoC::count_substrings( "", "" ) );
   BOOST_CHECK_EQUAL( 0, AoC::count_substrings( "abc", "" ) );

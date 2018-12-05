@@ -51,8 +51,13 @@ bool operator!=( const GenericRectangle<T>& r1, const GenericRectangle<T>& r2 )
   return !( r1 == r2 );
 }
 
-using Point     = GenericPoint<int>;
-using Coord     = GenericPoint<int>;
-using Rectangle = GenericRectangle<int>;
+using Point  = GenericPoint<int>;
+using UPoint = GenericPoint<size_t>;
+
+using Coord  = GenericPoint<int>;
+using UCoord = GenericPoint<size_t>;
+
+using Rectangle  = GenericRectangle<int>;
+using URectangle = GenericRectangle<size_t>;
 
 }  // namespace AoC

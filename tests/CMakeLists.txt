@@ -18,14 +18,15 @@ add_executable(AocLibTests
   2015_24.cpp
   2015_25.cpp
   2016_01.cpp
+  2016_02.cpp
   impl_test.cpp
+  AoC_utils_tests/2d_array.cpp
   AoC_utils_tests/algo.cpp
   AoC_utils_tests/anon_ret.cpp
   AoC_utils_tests/geo.cpp
   AoC_utils_tests/match.cpp
   AoC_utils_tests/md5.cpp
   AoC_utils_tests/ranges.cpp
-  AoC_utils_tests/ranges_coro.cpp
   AoC_utils_tests/string.cpp
   AoC_utils_tests/utils.cpp
   utils/aoc_fixture.cpp
@@ -51,7 +52,7 @@ if(Bash)
   endfunction()
 
   add_test(NAME AocUtilsTests
-    COMMAND $<TARGET_FILE:AocLibTests> --run_test=*aoc_utils*)
+    COMMAND $<TARGET_FILE:AocLibTests> --run_test=*AoC_utils*)
 
   add_test(NAME AocLibTests_2015
     COMMAND $<TARGET_FILE:AocLibTests> --run_test=*2015*)
@@ -83,5 +84,6 @@ if(Bash)
   add_aoc_test(2015_25 9132360 0)
 
   add_aoc_test(2016_01 273 115)
+  add_aoc_test(2016_02 78293 AC8C8)
 
 endif()

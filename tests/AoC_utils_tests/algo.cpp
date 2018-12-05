@@ -1,8 +1,8 @@
 #include "boost/test/unit_test.hpp"
 
-#include "AoC_utils/algo.h"
+#include "AoC/utils/algo.h"
 
-BOOST_AUTO_TEST_CASE( aoc_utils_algo_iterate )
+BOOST_AUTO_TEST_CASE( AoC_utils_algo_iterate )
 {
   auto inc = []( const auto x ) { return x + 1; };
   BOOST_CHECK_EQUAL( 1, AoC::iterate_n( 1, inc, 0 ) );

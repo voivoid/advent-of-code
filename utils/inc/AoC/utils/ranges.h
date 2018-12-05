@@ -6,6 +6,8 @@
 #include "range/v3/to_container.hpp"
 #include "range/v3/view/all.hpp"
 #include "range/v3/view/chunk.hpp"
+#include "range/v3/view/concat.hpp"
+#include "range/v3/view/single.hpp"
 #include "range/v3/view/transform.hpp"
 #include "range/v3/view_facade.hpp"
 
@@ -97,5 +99,28 @@ inline auto to_2d_vector()
     return std::vector<std::vector<T>>{ std::forward<Rngs>( rngs ) };
   } );
 }
+
+// In: Range<T>, T
+// Out: Range<T> with T element prepended
+template <typename T>
+inline auto prepend( T elem )
+{
+  return ranges::make_pipeable( [e = std::move( elem )]( auto&& rng ) {
+    using Rng = decltype( rng );
+    return ranges::view::concat( ranges::view::single( std::move( e ) ), std::forward<Rng>( rng ) );
+  } );
+}
+
+// In: Range<T>, T
+// Out: Range<T> with T element appended
+template <typename T>
+inline auto append( T elem )
+{
+  return ranges::make_pipeable( [e = std::move( elem )]( auto&& rng ) {
+    using Rng = decltype( rng );
+    return ranges::view::concat( std::forward<Rng>( rng ), ranges::view::single( std::move( e ) ) );
+  } );
+}
+
 
 }  // namespace AoC
