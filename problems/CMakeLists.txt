@@ -7,6 +7,7 @@ endmacro()
 
 append_problem_srcs(AocProblemsSources 2015 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25)
 append_problem_srcs(AocProblemsSources 2016 01 02)
+append_problem_srcs(AocProblemsSources 2018 01)
 list(APPEND AocProblemsSources src/2015/problem_01_generator.cpp)
 
 add_library(AocProblems OBJECT ${AocProblemsSources}

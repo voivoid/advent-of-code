@@ -19,6 +19,7 @@ add_executable(AocLibTests
   2015_25.cpp
   2016_01.cpp
   2016_02.cpp
+  2018_01.cpp
   impl_test.cpp
   AoC_utils_tests/2d_array.cpp
   AoC_utils_tests/algo.cpp
@@ -85,5 +86,7 @@ if(Bash)
 
   add_aoc_test(2016_01 273 115)
   add_aoc_test(2016_02 78293 AC8C8)
+
+  add_aoc_test(2018_01 411 56360)
 
 endif()
