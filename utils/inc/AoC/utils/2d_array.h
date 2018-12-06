@@ -2,28 +2,100 @@
 
 #include "AoC/utils/geo.h"
 
+#include "range/v3/view/cartesian_product.hpp"
 #include "range/v3/view/indices.hpp"
 
+#include <algorithm>
 #include <array>
 #include <optional>
+#include <type_traits>
+#include <vector>
 
 namespace AoC
 {
 
+namespace Details
+{
 template <typename T, size_t width, size_t height>
+using Array = std::array<std::array<T, width>, height>;
+
+template <typename T, size_t width, size_t height>
+class dd_array_stack_impl
+{
+    public:
+  using Array = Details::Array<T, width, height>;
+
+  dd_array_stack_impl() : data{}
+  {
+  }
+  dd_array_stack_impl( Array init ) : data( std::move( init ) )
+  {
+  }
+
+  T& get( const size_t x, const size_t y )
+  {
+    return data[ y ][ x ];
+  }
+
+  const T& get( const size_t x, const size_t y ) const
+  {
+    return data[ y ][ x ];
+  }
+
+    private:
+  Array data;
+};
+
+template <typename T, size_t width, size_t height>
+class dd_array_heap_impl
+{
+    public:
+  using Array = Details::Array<T, width, height>;
+
+  dd_array_heap_impl() : data( std::make_unique<Array>() )
+  {
+  }
+  dd_array_heap_impl( Array init ) : data( std::make_unique<Array>( std::move( init ) ) )
+  {
+  }
+
+  T& get( const size_t x, const size_t y )
+  {
+    return ( *data )[ y ][ x ];
+  }
+
+  const T& get( const size_t x, const size_t y ) const
+  {
+    return ( *data )[ y ][ x ];
+  }
+
+    private:
+  std::unique_ptr<Array> data;
+};
+}  // namespace Details
+
+enum class dd_array_alloc_type
+{
+  stack,
+  heap
+};
+
+template <typename T, size_t width, size_t height, dd_array_alloc_type alloc = dd_array_alloc_type::stack>
 class dd_array
 {
   template <typename Arr>
   struct Proxy;
 
-    public:
-  using ArrayImpl = std::array<std::array<T, width>, height>;
+  using Impl = std::conditional_t<alloc == dd_array_alloc_type::stack,
+                                  Details::dd_array_stack_impl<T, width, height>,
+                                  Details::dd_array_heap_impl<T, width, height>>;
 
-  dd_array() : data( ArrayImpl{} )
+    public:
+  dd_array()
   {
   }
 
-  dd_array( ArrayImpl arr ) : data( std::move( arr ) )
+  dd_array( typename Impl::Array arr ) : impl( std::move( arr ) )
   {
   }
 
@@ -54,7 +126,7 @@ class dd_array
 
   T* begin()
   {
-    return &( data[ 0 ][ 0 ] );
+    return &( impl.template get( 0, 0 ) );
   }
 
   const T* begin() const
@@ -74,7 +146,7 @@ class dd_array
 
   const T* cbegin() const
   {
-    return &( data[ 0 ][ 0 ] );
+    return &( impl.template get( 0, 0 ) );
   }
 
   const T* cend() const
@@ -91,28 +163,28 @@ class dd_array
     {
       assert( x <= width );
       assert( y <= height );
-      return ( arr.data )[ y ][ x ];
+      return arr.impl.get( x, y );
     }
 
-    size_t x;
+    const size_t x;
     Arr& arr;
   };
 
     private:
-  ArrayImpl data;
+  Impl impl;
 };
 
-template <typename T, size_t width, size_t height>
-std::optional<UPoint> dd_array_find_elem_indices( const dd_array<T, width, height>& arr, const T& elem )
+template <typename T, size_t width, size_t height, dd_array_alloc_type alloc>
+std::optional<UPoint> dd_array_find_elem_indices( const dd_array<T, width, height, alloc>& arr, const T& elem )
 {
-  for ( size_t x : ranges::view::indices( size_t( 0 ), width ) )
+  const auto xs = ranges::view::indices( size_t{ 0 }, width );
+  const auto ys = ranges::view::indices( size_t{ 0 }, height );
+
+  for ( auto [ y, x ] : ranges::view::cartesian_product( ys, xs ) )
   {
-    for ( size_t y : ranges::view::indices( size_t( 0 ), height ) )
+    if ( arr[ x ][ y ] == elem )
     {
-      if ( arr[ x ][ y ] == elem )
-      {
-        return { { x, y } };
-      }
+      return { { x, y } };
     }
   }
 

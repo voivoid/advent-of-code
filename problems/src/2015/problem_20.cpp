@@ -39,7 +39,7 @@ std::vector<size_t> get_all_divisors( const size_t n )
 size_t calc_presents1( size_t house_index )
 {
   auto divisors = get_all_divisors( house_index );
-  return 10 * ranges::accumulate( divisors, size_t( 0 ) );
+  return 10 * ranges::accumulate( divisors, size_t{ 0 } );
 }
 
 size_t calc_presents2( size_t house_index )
@@ -47,7 +47,7 @@ size_t calc_presents2( size_t house_index )
   auto divisors = get_all_divisors( house_index );
   return 11 *
          ranges::accumulate( divisors | ranges::view::filter( [house_index]( const auto divisor ) { return divisor * 50 >= house_index; } ),
-                             size_t( 0 ) );
+                             size_t{ 0 } );
 }
 
 template <size_t ( *calc_presents )( size_t )>
@@ -57,7 +57,7 @@ int solve( std::istream& input )
   input >> presents_num;
 
   auto houses_with_at_least_as_many_presents =
-      ranges::view::ints( size_t( 1 ) ) |
+      ranges::view::ints( size_t{ 1 } ) |
       ranges::view::filter( [presents_num]( const size_t house_index ) { return calc_presents( house_index ) >= presents_num; } );
 
   const size_t first_house = houses_with_at_least_as_many_presents.front();

@@ -36,6 +36,14 @@ BOOST_AUTO_TEST_CASE( AoC_utils_geo_point )
   BOOST_CHECK_EQUAL( p3, p2 );
 
   BOOST_CHECK_LT( p1, p2 );
+  BOOST_CHECK_LE( p1, p2 );
+  BOOST_CHECK_GT( p2, p1 );
+  BOOST_CHECK_GE( p2, p1 );
+
+  AoC::Point p4{ 4, 4 };
+  BOOST_CHECK_EQUAL( p4, p4 );
+  BOOST_CHECK_LE( p4, p4 );
+  BOOST_CHECK_GE( p4, p4 );
 }
 
 BOOST_AUTO_TEST_CASE( AoC_utils_geo_rect )
@@ -51,4 +59,9 @@ BOOST_AUTO_TEST_CASE( AoC_utils_geo_rect )
   BOOST_CHECK_NE( r2, r1 );
   BOOST_CHECK_EQUAL( r2, r3 );
   BOOST_CHECK_EQUAL( r3, r2 );
+
+  BOOST_CHECK( AoC::contains( r1, { 1, 2 } ) );
+  BOOST_CHECK( AoC::contains( r1, { 2, 3 } ) );
+  BOOST_CHECK( AoC::contains( r1, { 3, 4 } ) );
+  BOOST_CHECK( !AoC::contains( r1, { 1, 1 } ) );
 }

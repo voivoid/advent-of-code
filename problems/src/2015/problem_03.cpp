@@ -55,7 +55,7 @@ VisitedHouses solve( Range instructions )
 {
   const auto initial_pos = ranges::view::single( Pos{ 0, 0 } );
   auto positions         = ranges::view::concat( initial_pos, instructions | ranges::view::transform( parse_instruction ) );
-  auto visited           = positions | ranges::view::partial_sum();
+  auto visited           = positions | ranges::view::partial_sum;
 
   return visited | ranges::to_<std::set>();
 }

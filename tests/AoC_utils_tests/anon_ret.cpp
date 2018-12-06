@@ -2,6 +2,9 @@
 
 #include <AoC/utils/anon_ret.h>
 
+namespace
+{
+
 auto f1()
 {
   int x = 1;
@@ -9,6 +12,8 @@ auto f1()
   int z = 3;
   AOC_RETURN_ANONYMOUS_STRUCT( x, y, z );
 }
+
+}  // namespace
 
 BOOST_AUTO_TEST_CASE( AoC_utils_anonymous_return )
 {

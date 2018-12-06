@@ -81,7 +81,7 @@ int calc_max_score( const std::vector<Deer>& deers, const Seconds time_to_travel
 {
   const auto distances_by_time = deers |
                                  ranges::view::transform( std::bind( &get_time_speed_range, std::placeholders::_1, time_to_travel ) ) |
-                                 ranges::view::transform( ranges::view::partial_sum() ) | AoC::transpose() | AoC::to_2d_vector();
+                                 ranges::view::transform( ranges::view::partial_sum ) | AoC::transpose() | AoC::to_2d_vector();
 
   auto scores =
       distances_by_time | ranges::view::transform( []( const auto& distances ) {

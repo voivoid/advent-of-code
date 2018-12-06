@@ -12,11 +12,6 @@
 #include <stdexcept>
 #include <unordered_set>
 
-namespace
-{
-
-}  // namespace
-
 namespace AoC_2018
 {
 
@@ -34,7 +29,7 @@ int solve_2( std::istream& input )
   const auto frequencies = ranges::istream_range<int>( input ) | ranges::to_vector;
 
   std::unordered_set<int> resulting_frequencies = { 0 };
-  for ( const auto f : frequencies | ranges::view::cycle | ranges::view::partial_sum() )
+  for ( const auto f : frequencies | ranges::view::cycle | ranges::view::partial_sum )
   {
     if ( resulting_frequencies.find( f ) != resulting_frequencies.cend() )
     {

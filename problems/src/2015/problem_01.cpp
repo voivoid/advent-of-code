@@ -50,7 +50,7 @@ int calc_last_visited_floor( std::istream& input )
 int calc_number_of_steps_to_reach_basement( std::istream& input )
 {
   auto moves_to_reach_basement =
-      get_instructions( input ) | ranges::view::partial_sum() | ranges::view::take_while( []( int floor ) { return floor >= 0; } );
+      get_instructions( input ) | ranges::view::partial_sum | ranges::view::take_while( []( int floor ) { return floor >= 0; } );
 
   return 1 + static_cast<int>( ranges::distance( moves_to_reach_basement ) );
 }

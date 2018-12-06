@@ -11,7 +11,7 @@ parse_result parse_cmd_args( const int argc, char** argv )
 {
   boost::program_options::options_description description( "Options" );
   description.add_options()( "help", "show help message" )( "problem", boost::program_options::value<std::string>(), "solve problem" )(
-      "repeats", boost::program_options::value<size_t>()->default_value( size_t( 1 ) ) )( "list", "show list of solved problems" )(
+      "repeats", boost::program_options::value<size_t>()->default_value( size_t{ 1 } ) )( "list", "show list of solved problems" )(
       "generate", boost::program_options::value<std::string>(), "generate data for problems" )(
       "seed", boost::program_options::value<size_t>(), "seed for data generator" )(
       "size", boost::program_options::value<size_t>(), "size of data to be generated" );

@@ -21,6 +21,7 @@ add_executable(AocLibTests
   2016_02.cpp
   2018_01.cpp
   2018_02.cpp
+  2018_03.cpp
   impl_test.cpp
   AoC_utils_tests/2d_array.cpp
   AoC_utils_tests/algo.cpp
@@ -57,7 +58,13 @@ if(Bash)
     COMMAND $<TARGET_FILE:AocLibTests> --run_test=*AoC_utils*)
 
   add_test(NAME AocLibTests_2015
-    COMMAND $<TARGET_FILE:AocLibTests> --run_test=*2015*)
+      COMMAND $<TARGET_FILE:AocLibTests> --run_test=*2015*)
+
+  add_test(NAME AocLibTests_2016
+      COMMAND $<TARGET_FILE:AocLibTests> --run_test=*2016*)
+
+  add_test(NAME AocLibTests_2018
+      COMMAND $<TARGET_FILE:AocLibTests> --run_test=*2018*)
 
   add_aoc_test(2015_01 280 1797)
   add_aoc_test(2015_02 1586300 3737498)
@@ -90,5 +97,6 @@ if(Bash)
 
   add_aoc_test(2018_01 411 56360)
   add_aoc_test(2018_02 5681 uqyoeizfvmbistpkgnocjtwld)
+  add_aoc_test(2018_03 116491 707)
 
 endif()

@@ -18,8 +18,8 @@ char byte_to_char( const std::byte b )
 {
   static constexpr char chars[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
-  assert( size_t( b ) < sizeof( chars ) );
-  return chars[ int( b ) ];
+  assert( static_cast<size_t>( b ) < sizeof( chars ) );
+  return chars[ static_cast<int>( b ) ];
 }
 
 std::string md5_to_string( const md5_digest::digest_bytes& bytes )

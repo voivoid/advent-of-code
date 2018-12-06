@@ -81,7 +81,7 @@ size_t calc_encoded_line_len_2( const std::string& line )
 template <size_t ( *calc_encoded_line_len )( const std::string& )>
 size_t calc_lines( std::istream& input )
 {
-  return ranges::accumulate( ranges::getlines( input ) | ranges::view::transform( calc_encoded_line_len ), size_t( 0 ) );
+  return ranges::accumulate( ranges::getlines( input ) | ranges::view::transform( calc_encoded_line_len ), size_t{ 0 } );
 }
 
 }  // namespace

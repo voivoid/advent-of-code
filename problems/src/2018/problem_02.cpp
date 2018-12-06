@@ -40,7 +40,7 @@ BoxStats analyze_box_id( BoxId id )
                               ranges::view::transform( []( const auto group ) { return ranges::distance( group ); } );
   const bool has_doubles = ranges::count( groups_lengths, 2 ) > 0;
   const bool has_triples = ranges::count( groups_lengths, 3 ) > 0;
-  return { has_doubles ? size_t( 1 ) : size_t( 0 ), has_triples ? size_t( 1 ) : size_t( 0 ) };
+  return { has_doubles ? size_t{ 1 } : size_t{ 0 }, has_triples ? size_t{ 1 } : size_t{ 0 } };
 }
 
 size_t count_mismatches( const BoxId& b1, const BoxId& b2 )

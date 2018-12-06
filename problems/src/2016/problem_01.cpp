@@ -66,7 +66,7 @@ Instruction parse_instruction( const std::string& line )
 
   const auto rotation_parser = x3::symbols<Instruction::Rotation>();
   rotation_parser.add( "L", Instruction::Rotation::Left )( "R", Instruction::Rotation::Right );
-  const auto parser = rotation_parser > AoC::size_t_parser;
+  const auto parser = rotation_parser > AoC::x3_size_t_parser;
 
   Instruction instruction;
   const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space | x3::punct, instruction );
@@ -144,7 +144,7 @@ State run_instruction( const State state, const Instruction instruction )
 auto run_instruction_steps_by_step( State state, const Instruction instruction )
 {
   state.heading = calc_new_heading( state.heading, instruction.rotation );
-  return ranges::view::closed_indices( size_t( 1 ), instruction.steps_num ) |
+  return ranges::view::closed_indices( size_t{ 1 }, instruction.steps_num ) |
          ranges::view::exclusive_scan(
              state, std::bind( &run_instruction, std::placeholders::_1, Instruction{ Instruction::Rotation::Forward, 1 } ) );
 }

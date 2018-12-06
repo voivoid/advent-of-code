@@ -71,7 +71,7 @@ size_t get_distance( const Path& path, const PathMap& path_map )
 size_t calc_route_distance( const Route& route, const PathMap& path_map )
 {
   const auto paths = ranges::view::zip( route, route | ranges::view::drop( 1 ) );
-  return ranges::accumulate( paths, size_t( 0 ), [&path_map]( size_t acc_distance, const auto& path ) {
+  return ranges::accumulate( paths, size_t{ 0 }, [&path_map]( size_t acc_distance, const auto& path ) {
     return acc_distance + get_distance( { path.first, path.second }, path_map );
   } );
 }

@@ -155,7 +155,7 @@ int solve( std::istream& input, size_t steps, const CornerLightsMode corner_ligh
     }
   }
 
-  return static_cast<int>( count_alive_cells( ranges::make_iterator_range( field.cbegin(), field.cend() ) ) );
+  return static_cast<int>( count_alive_cells( field ) );
 }
 }  // namespace
 

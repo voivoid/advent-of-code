@@ -63,8 +63,8 @@ Cmd parse_cmd_line( const std::string& line )
   x3::symbols<Cmd::Mode> toggle_modes;
   toggle_modes.add( "toggle", Cmd::Mode::toggle );
 
-  const auto coord_parser = x3::rule<struct _x, AoC::UPoint>{} = AoC::size_t_parser > ',' > AoC::size_t_parser;
-  const auto rect_parser = x3::rule<struct _y, AoC::URectangle>{} = coord_parser > "through" > coord_parser;
+  const auto coord_parser = x3::rule<struct _point, AoC::UPoint>{} = AoC::x3_size_t_parser > ',' > AoC::x3_size_t_parser;
+  const auto rect_parser = x3::rule<struct _rect, AoC::URectangle>{} = coord_parser > "through" > coord_parser;
   const auto parser = ( "turn" > on_off_modes > rect_parser ) | ( toggle_modes > rect_parser );
 
   Cmd cmd;
@@ -123,7 +123,7 @@ auto apply_cmd( Lamps<side>& lamps, const Cmd& cmd )
 template <size_t side>
 size_t calc_lamps_brightness( const Lamps<side>& lamps )
 {
-  return std::accumulate( lamps.cbegin(), lamps.cend(), size_t( 0 ) );
+  return ranges::accumulate( lamps, size_t{ 0 } );
 }
 
 template <ManipulatorFactory manipulator_factory>
