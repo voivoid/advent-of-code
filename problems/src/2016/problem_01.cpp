@@ -66,7 +66,7 @@ Instruction parse_instruction( const std::string& line )
 
   const auto rotation_parser = x3::symbols<Instruction::Rotation>();
   rotation_parser.add( "L", Instruction::Rotation::Left )( "R", Instruction::Rotation::Right );
-  const auto parser = rotation_parser > AoC::x3_size_t_parser;
+  const auto parser = rotation_parser > AoC::x3_size_t_;
 
   Instruction instruction;
   const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space | x3::punct, instruction );

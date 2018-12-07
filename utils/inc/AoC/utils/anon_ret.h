@@ -6,13 +6,14 @@
 #include <boost/preprocessor/seq/for_each_i.hpp>
 #include <boost/preprocessor/variadic/to_seq.hpp>
 
+#include <type_traits>
 #include <utility>
 
 #define AOC_DETAILS_FOREACH_VAARG( MACRO, ... ) BOOST_PP_SEQ_FOR_EACH( MACRO, , BOOST_PP_VARIADIC_TO_SEQ( __VA_ARGS__ ) )
 
 #define AOC_DETAILS_FOREACH_I_VAARG( MACRO, ... ) BOOST_PP_SEQ_FOR_EACH_I( MACRO, , BOOST_PP_VARIADIC_TO_SEQ( __VA_ARGS__ ) )
 
-#define AOC_DETAILS_ANON_RET_EXPAND_TYPES( r, data, elem ) using BOOST_PP_CAT( elem, _t ) = decltype( elem );
+#define AOC_DETAILS_ANON_RET_EXPAND_TYPES( r, data, elem ) using BOOST_PP_CAT( elem, _t ) = std::decay_t<decltype( elem )>;
 
 #define AOC_DETAILS_ANON_RET_EXPAND_MEMBERS( r, data, elem ) BOOST_PP_CAT( elem, _t ) elem;
 

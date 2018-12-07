@@ -63,7 +63,7 @@ Cmd parse_cmd_line( const std::string& line )
   x3::symbols<Cmd::Mode> toggle_modes;
   toggle_modes.add( "toggle", Cmd::Mode::toggle );
 
-  const auto coord_parser = x3::rule<struct _point, AoC::UPoint>{} = AoC::x3_size_t_parser > ',' > AoC::x3_size_t_parser;
+  const auto coord_parser = x3::rule<struct _point, AoC::UPoint>{} = AoC::x3_size_t_ > ',' > AoC::x3_size_t_;
   const auto rect_parser = x3::rule<struct _rect, AoC::URectangle>{} = coord_parser > "through" > coord_parser;
   const auto parser = ( "turn" > on_off_modes > rect_parser ) | ( toggle_modes > rect_parser );
 

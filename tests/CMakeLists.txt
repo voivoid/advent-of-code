@@ -1,27 +1,16 @@
+macro(append_tests_srcs TestsSources Year)
+  foreach(ProblemNum ${ARGN})
+    list(APPEND ${TestsSources} ${Year}_${ProblemNum}.cpp)
+  endforeach(ProblemNum)
+endmacro()
+
+append_tests_srcs(AocTestsSources 2015 01 02 03 05 06 07 08 09 11 12 13 15 19 20 23 24 25)
+append_tests_srcs(AocTestsSources 2016 01 02)
+append_tests_srcs(AocTestsSources 2018 01 02 03 04)
+
 # AocLibTests
 add_executable(AocLibTests
-  2015_01.cpp
-  2015_02.cpp
-  2015_03.cpp
-  2015_05.cpp
-  2015_06.cpp
-  2015_07.cpp
-  2015_08.cpp
-  2015_09.cpp
-  2015_11.cpp
-  2015_12.cpp
-  2015_13.cpp
-  2015_15.cpp
-  2015_19.cpp
-  2015_20.cpp
-  2015_23.cpp
-  2015_24.cpp
-  2015_25.cpp
-  2016_01.cpp
-  2016_02.cpp
-  2018_01.cpp
-  2018_02.cpp
-  2018_03.cpp
+  ${AocTestsSources}
   impl_test.cpp
   AoC_utils_tests/2d_array.cpp
   AoC_utils_tests/algo.cpp
@@ -98,5 +87,6 @@ if(Bash)
   add_aoc_test(2018_01 411 56360)
   add_aoc_test(2018_02 5681 uqyoeizfvmbistpkgnocjtwld)
   add_aoc_test(2018_03 116491 707)
+  add_aoc_test(2018_04 39584 55053)
 
 endif()

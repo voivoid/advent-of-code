@@ -1,6 +1,7 @@
 #include "AoC/2015/problem_13.h"
 
 #include "AoC/problems_map.h"
+#include "AoC/utils/parse.h"
 
 #include "range/v3/action/sort.hpp"
 #include "range/v3/action/unique.hpp"
@@ -73,7 +74,11 @@ Behavior parse_behavior( const std::string& line )
   const auto parser = name > "would" > mode_parser > x3::int_ > "happiness" > "units" > "by" > "sitting" > "next" > "to" > name > ".";
 
   boost::fusion::vector<Name, Mode, ModDiff, Name> attrs;
-  x3::phrase_parse( line.cbegin(), line.cend(), parser, x3::space, attrs );
+  const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, attrs );
+  if ( !is_parsed )
+  {
+    throw std::runtime_error( "Failed to parse behavior input" );
+  }
 
   auto neighbour_1 = boost::fusion::at_c<0>( attrs );
   auto neighbour_2 = boost::fusion::at_c<3>( attrs );

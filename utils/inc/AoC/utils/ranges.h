@@ -32,7 +32,7 @@ class interleave_view : public ranges::view_facade<interleave_view<Rngs>>
     return { 0, &rngs_, ranges::view::transform( rngs_, ranges::begin ) };
   }
 
-    public:
+public:
   interleave_view() = default;
   explicit interleave_view( Rngs rngs ) : rngs_( std::move( rngs ) )
   {

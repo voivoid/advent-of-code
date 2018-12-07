@@ -22,7 +22,7 @@ using Array = std::array<std::array<T, width>, height>;
 template <typename T, size_t width, size_t height>
 class dd_array_stack_impl
 {
-    public:
+public:
   using Array = Details::Array<T, width, height>;
 
   dd_array_stack_impl() : data{}
@@ -42,14 +42,14 @@ class dd_array_stack_impl
     return data[ y ][ x ];
   }
 
-    private:
+private:
   Array data;
 };
 
 template <typename T, size_t width, size_t height>
 class dd_array_heap_impl
 {
-    public:
+public:
   using Array = Details::Array<T, width, height>;
 
   dd_array_heap_impl() : data( std::make_unique<Array>() )
@@ -69,7 +69,7 @@ class dd_array_heap_impl
     return ( *data )[ y ][ x ];
   }
 
-    private:
+private:
   std::unique_ptr<Array> data;
 };
 }  // namespace Details
@@ -90,7 +90,7 @@ class dd_array
                                   Details::dd_array_stack_impl<T, width, height>,
                                   Details::dd_array_heap_impl<T, width, height>>;
 
-    public:
+public:
   dd_array()
   {
   }
@@ -154,7 +154,7 @@ class dd_array
     return cbegin() + size();
   }
 
-    private:
+private:
   template <typename Arr>
   struct Proxy
   {
@@ -170,7 +170,7 @@ class dd_array
     Arr& arr;
   };
 
-    private:
+private:
   Impl impl;
 };
 

@@ -19,7 +19,7 @@ bool x3_parse( Iter begin, Iter end, const Parser& parser, const Skipper& skippe
   return parsed && ( begin == end );
 }
 
-constexpr auto x3_size_t_parser = boost::spirit::x3::ulong_;
+constexpr auto x3_size_t_ = boost::spirit::x3::ulong_;
 
 
 

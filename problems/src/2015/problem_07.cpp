@@ -6,6 +6,7 @@
 #include "range/v3/algorithm/all_of.hpp"
 #include "range/v3/getlines.hpp"
 #include "range/v3/numeric/accumulate.hpp"
+#include "range/v3/to_container.hpp"
 #include "range/v3/view/transform.hpp"
 
 #include "AoC/utils/match.h"
@@ -56,12 +57,6 @@ struct BinaryGate
 
 using Instruction = std::variant<Source, UnaryGate, BinaryGate>;
 using Circuit     = std::map<Wire, Instruction>;
-
-struct CircuitInstruction
-{
-  Instruction instruction;
-  Wire destination;
-};
 
 bool is_alpha( const char c )
 {
@@ -169,7 +164,7 @@ Instruction parse_binary_gate( const std::string& gate, const std::string& arg1,
   return BinaryGate{ op, parse_source( arg1 ), parse_source( arg2 ) };
 }
 
-CircuitInstruction parse_instruction( const std::string& line )
+std::pair<Wire, Instruction> parse_instruction( const std::string& line )
 {
   const auto tokens = ranges::action::split( line, ' ' );
 
@@ -185,20 +180,12 @@ CircuitInstruction parse_instruction( const std::string& line )
 
   const std::string& destination = tokens.back();
 
-  return { instruction, destination };
+  return { destination, instruction };
 }
 
 Circuit parse_circuit( std::istream& input )
 {
-  auto instructions = ranges::getlines( input ) | ranges::view::transform( &parse_instruction );
-
-  Circuit circuit;
-  for ( const auto& [ instruction, destination ] : instructions )
-  {
-    circuit[ destination ] = instruction;
-  };
-
-  return circuit;
+  return ranges::getlines( input ) | ranges::view::transform( &parse_instruction );
 }
 
 }  // namespace

@@ -71,7 +71,7 @@ struct Shield : EffectfulSpell
   static constexpr int mana_cost      = 113;
   static constexpr int turns_duration = 6;
 
-    private:
+private:
   static constexpr int armor_modifier = +7;
 };
 
@@ -105,7 +105,7 @@ struct Player
   template <typename Spell>
   void play_turn_with_spell( Boss& boss );
 
-    private:
+private:
   template <typename Spell>
   void cast_spell( Boss& boss );
 
@@ -117,7 +117,7 @@ struct Player
 
   void update_effectful_spells( Boss& boss );
 
-    private:
+private:
   template <typename Spell>
   using IsEffectfulSpell    = boost::mp11::mp_bool<!std::is_base_of<EffectfulSpell, Spell>::value>;
   using EffectfulSpellsList = boost::mp11::mp_remove_if<SpellsList, IsEffectfulSpell>;
@@ -129,7 +129,7 @@ struct Player
   template <typename Spell>
   constexpr static bool is_effectful();
 
-    private:
+private:
   SpellEffects spell_effects;
 };
 
