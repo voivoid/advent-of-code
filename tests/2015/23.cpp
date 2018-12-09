@@ -2,7 +2,7 @@
 
 
 #include "AoC/2015/problem_23.h"
-#include "utils/aoc_fixture.h"
+#include "aoc_fixture.h"
 
 using namespace AoC_2015::problem_23;
 

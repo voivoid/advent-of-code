@@ -1,17 +1,16 @@
 macro(append_tests_srcs TestsSources Year)
   foreach(ProblemNum ${ARGN})
-    list(APPEND ${TestsSources} ${Year}_${ProblemNum}.cpp)
+    list(APPEND ${TestsSources} ${Year}/${ProblemNum}.cpp)
   endforeach(ProblemNum)
 endmacro()
 
 append_tests_srcs(AocTestsSources 2015 01 02 03 05 06 07 08 09 11 12 13 15 19 20 23 24 25)
 append_tests_srcs(AocTestsSources 2016 01 02)
-append_tests_srcs(AocTestsSources 2018 01 02 03 04)
+append_tests_srcs(AocTestsSources 2018 01 02 03 04 05)
 
 # AocLibTests
 add_executable(AocLibTests
   ${AocTestsSources}
-  impl_test.cpp
   AoC_utils_tests/2d_array.cpp
   AoC_utils_tests/algo.cpp
   AoC_utils_tests/anon_ret.cpp
@@ -21,10 +20,12 @@ add_executable(AocLibTests
   AoC_utils_tests/ranges.cpp
   AoC_utils_tests/string.cpp
   AoC_utils_tests/utils.cpp
-  utils/aoc_fixture.cpp
-  utils/aoc_fixture.h
-  utils/boost_unit_test_module.cpp)
+  impl_test.cpp
+  aoc_fixture.cpp
+  aoc_fixture.h
+  boost_unit_test_module.cpp)
 target_link_libraries(AocLibTests PRIVATE AocProblems AocUtils Boost::boost Boost::unit_test_framework)
+target_include_directories(AocLibTests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 
 find_program(Bash bash)
@@ -88,5 +89,6 @@ if(Bash)
   add_aoc_test(2018_02 5681 uqyoeizfvmbistpkgnocjtwld)
   add_aoc_test(2018_03 116491 707)
   add_aoc_test(2018_04 39584 55053)
+  add_aoc_test(2018_05 11242 5492)
 
 endif()

@@ -1,7 +1,7 @@
 #include "boost/test/unit_test.hpp"
 
 #include "AoC/2015/problem_15.h"
-#include "utils/aoc_fixture.h"
+#include "aoc_fixture.h"
 
 namespace
 {

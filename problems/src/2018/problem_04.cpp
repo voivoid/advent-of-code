@@ -147,7 +147,7 @@ auto get_guards_stats( const GuardShifts& shifts )
          } );
 }
 
-bool sort_by_sleep_time( const GuardStats& g1, const GuardStats& g2 )
+bool sort_by_total_sleep_time( const GuardStats& g1, const GuardStats& g2 )
 {
   return g1.total_sleep_time < g2.total_sleep_time;
 }
@@ -178,7 +178,7 @@ namespace problem_04
 
 int solve_1( std::istream& input )
 {
-  return solve<&sort_by_sleep_time>( input );
+  return solve<&sort_by_total_sleep_time>( input );
 }
 
 int solve_2( std::istream& input )
