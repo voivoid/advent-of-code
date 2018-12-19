@@ -51,7 +51,7 @@ namespace
 
 using Lamp = size_t;
 template <size_t grid_side>
-using Lamps = AoC::dd_array<Lamp, grid_side, grid_side>;
+using Lamps = AoC::dd_static_stack_array<Lamp, grid_side, grid_side>;
 
 Cmd parse_cmd_line( const std::string& line )
 {

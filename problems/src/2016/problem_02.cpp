@@ -31,7 +31,7 @@ using CursorPos    = AoC::UPoint;
 constexpr char NoButton = '0';
 
 template <size_t side>
-using Keypad = AoC::dd_array<char, side, side>;
+using Keypad = AoC::dd_static_stack_array<char, side, side>;
 
 Instructions parse_instructions( const std::string& line )
 {

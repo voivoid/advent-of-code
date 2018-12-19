@@ -8,17 +8,19 @@
 namespace
 {
 
-template <AoC::dd_array_alloc_type alloc>
+template <typename Array>
 struct dd_array_fixture
 {
   dd_array_fixture() : array{ { { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 } } } }
   {
   }
 
-  AoC::dd_array<int, 4, 3, alloc> array;
+  Array array;
 };
 
-using Fixtures = boost::mpl::vector<dd_array_fixture<AoC::dd_array_alloc_type::stack>, dd_array_fixture<AoC::dd_array_alloc_type::heap>>;
+using Fixtures = boost::mpl::vector<dd_array_fixture<AoC::dd_static_stack_array<int, 4, 3>>,
+                                    dd_array_fixture<AoC::dd_static_heap_array<int, 4, 3>>,
+                                    dd_array_fixture<AoC::dd_dynamic_heap_array<int>>>;
 
 }  // namespace
 
@@ -78,4 +80,12 @@ BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_writing, T, Fixtures, T )
 
   arr[ 0 ][ 0 ] = 42;
   BOOST_CHECK_EQUAL( 42, arr[ 0 ][ 0 ] );
+}
+
+BOOST_AUTO_TEST_CASE( AoC_utils_dd_dynamic_array )
+{
+  AoC::dd_dynamic_heap_array<int> arr( size_t{ 10 }, size_t{ 20 } );
+  BOOST_CHECK_EQUAL( 200, arr.size() );
+  BOOST_CHECK_EQUAL( 10, arr.get_width() );
+  BOOST_CHECK_EQUAL( 20, arr.get_height() );
 }

@@ -53,6 +53,9 @@ BOOST_AUTO_TEST_CASE( AoC_utils_geo_rect )
   BOOST_CHECK_EQUAL( r1.right_bottom, ( AoC::Point{ 3, 4 } ) );
   BOOST_CHECK_EQUAL( r1, r1 );
 
+  BOOST_CHECK_EQUAL( 3, AoC::get_width( r1 ) );
+  BOOST_CHECK_EQUAL( 3, AoC::get_height( r1 ) );
+
   AoC::Rectangle r2{ { 5, 6 }, { 7, 8 } };
   AoC::Rectangle r3 = r2;
   BOOST_CHECK_NE( r1, r2 );

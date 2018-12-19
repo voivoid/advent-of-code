@@ -75,6 +75,18 @@ bool contains( const GenericRectangle<T>& rect, const GenericPoint<T> p )
   return p >= rect.left_top && p <= rect.right_bottom;
 }
 
+template <typename T>
+T get_width( const GenericRectangle<T>& rect )
+{
+  return rect.right_bottom.x - rect.left_top.x + 1;
+}
+
+template <typename T>
+T get_height( const GenericRectangle<T>& rect )
+{
+  return rect.right_bottom.y - rect.left_top.y + 1;
+}
+
 using Point  = GenericPoint<int>;
 using UPoint = GenericPoint<size_t>;
 

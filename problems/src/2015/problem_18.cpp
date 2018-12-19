@@ -23,7 +23,7 @@ enum class Cell
 };
 
 template <size_t side>
-using Field = AoC::dd_array<Cell, side, side>;
+using Field = AoC::dd_static_stack_array<Cell, side, side>;
 using Cells = std::vector<Cell>;
 struct Coord
 {
@@ -48,12 +48,10 @@ Field<side> populate_field( std::istream& input )
 
 Coords get_neighbours( const size_t x, const size_t y, const size_t max_index )
 {
-  Coords coords = { { x - 1, y - 1 }, { x, y - 1 },     { x + 1, y - 1 }, { x - 1, y },
-                    { x + 1, y },     { x - 1, y + 1 }, { x, y + 1 },     { x + 1, y + 1 } };
+  const std::initializer_list<Coord> coords = { { x - 1, y - 1 }, { x, y - 1 },     { x + 1, y - 1 }, { x - 1, y },
+                                                { x + 1, y },     { x - 1, y + 1 }, { x, y + 1 },     { x + 1, y + 1 } };
 
-  return coords | ranges::view::filter( [max_index]( const auto coord ) {
-           return coord.x >= 0 && coord.x < max_index && coord.y >= 0 && coord.y < max_index;
-         } );
+  return coords | ranges::view::filter( [max_index]( const auto coord ) { return coord.x < max_index && coord.y < max_index; } );
 }
 
 template <size_t side>

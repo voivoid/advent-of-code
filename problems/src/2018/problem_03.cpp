@@ -39,7 +39,7 @@ namespace
 {
 
 constexpr size_t side                  = 1000;
-using Overlaps                         = AoC::dd_array<ClaimId, side, side, AoC::dd_array_alloc_type::heap>;
+using Overlaps                         = AoC::dd_static_heap_array<ClaimId, side, side>;
 constexpr ClaimId overlapped_area      = -1;
 constexpr ClaimId non_initialized_area = 0;
 

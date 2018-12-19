@@ -6,7 +6,7 @@ endmacro()
 
 append_tests_srcs(AocTestsSources 2015 01 02 03 05 06 07 08 09 11 12 13 15 19 20 23 24 25)
 append_tests_srcs(AocTestsSources 2016 01 02)
-append_tests_srcs(AocTestsSources 2018 01 02 03 04 05)
+append_tests_srcs(AocTestsSources 2018 01 02 03 04 05 06)
 
 # AocLibTests
 add_executable(AocLibTests
@@ -90,5 +90,6 @@ if(Bash)
   add_aoc_test(2018_03 116491 707)
   add_aoc_test(2018_04 39584 55053)
   add_aoc_test(2018_05 11242 5492)
+  add_aoc_test(2018_06 3358 45909)
 
 endif()
