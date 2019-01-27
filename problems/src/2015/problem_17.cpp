@@ -57,7 +57,7 @@ ContainersCombinations
 
   if ( volume_left == 0 )
   {
-    return ranges::view::single( ranges::view::empty<Volume>() );
+    return ranges::view::single( ranges::view::empty<Volume> );
   }
   else if ( containers.empty() || volume_left < 0 )
   {

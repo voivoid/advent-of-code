@@ -1,10 +1,29 @@
-cmake_minimum_required(VERSION 3.12.0)
+cmake_minimum_required(VERSION 3.13.0)
 project(CppAoc LANGUAGES CXX)
 
 include(cmake/thirdparties/boost.cmake)
 include(cmake/thirdparties/rangev3.cmake)
 include(cmake/thirdparties/json.cmake)
 include(cmake/build_utils.cmake)
+
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+  set(AocExcludedProblems 2015_15     # https://github.com/ericniebler/range-v3/issues/1007
+                          2015_23     # boost variant has a problem that should be fixed in boost 1.70 - https://github.com/boostorg/variant/pull/51
+                          2015_24     # https://github.com/ericniebler/range-v3/issues/1007
+  )
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+  set(AocExcludedProblems 2015_08     # MSVC raw string issues
+                          2015_14     # looks like MSVC has issues with range-v3
+                          2015_23     # looks like MSVC has issues with boost::hof issue
+                          2018_02
+                          2018_04
+                          2018_06
+  )
+endif()
+
+foreach(Problem ${AocExcludedProblems})
+  message("Problem ${Problem} excluded")
+endforeach()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

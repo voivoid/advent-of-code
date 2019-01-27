@@ -1,15 +1,82 @@
---- ./boost/coroutine2/detail/pull_coroutine.hpp	2018-08-01 23:50:47.000000000 +0300
-+++ ./boost/coroutine2/detail/pull_coroutine.hpp	2018-11-21 12:25:26.172784403 +0300
-@@ -127,7 +127,11 @@
+--- ./boost/coroutine2/detail/pull_coroutine.hpp
++++ ./boost/coroutine2/detail/pull_coroutine.hpp
+@@ -55,7 +55,6 @@ class pull_coroutine {
+     pull_coroutine( pull_coroutine &&) noexcept;
+ 
+     pull_coroutine & operator=( pull_coroutine && other) noexcept {
+-        if ( this == & other) return * this;
+         std::swap( cb_, other.cb_);
+         return * this;
+     }
+@@ -104,16 +103,6 @@ class pull_coroutine {
+             fetch_();
+         }
+ 
+-        iterator( iterator const& other) noexcept :
+-            c_{ other.c_ } {
+-        }
+-
+-        iterator & operator=( iterator const& other) noexcept {
+-            if ( this == & other) return * this;
+-            c_ = other.c_;
+-            return * this;
+-        }
+-
+         bool operator==( iterator const& other) const noexcept {
+             return other.c_ == c_;
+         }
+@@ -127,7 +116,9 @@ class pull_coroutine {
              return * this;
          }
  
 -        iterator operator++( int) = delete;
-+        iterator operator++( int) {
-+            iterator i = *this;
++        void operator++( int) {
 +            increment_();
-+            return i;
 +        }
  
          reference_t operator*() const noexcept {
              return c_->cb_->get();
+@@ -172,7 +163,6 @@ class pull_coroutine< T & > {
+     pull_coroutine( pull_coroutine &&) noexcept;
+ 
+     pull_coroutine & operator=( pull_coroutine && other) noexcept {
+-        if ( this == & other) return * this;
+         std::swap( cb_, other.cb_);
+         return * this;
+     }
+@@ -221,16 +211,6 @@ class pull_coroutine< T & > {
+             fetch_();
+         }
+ 
+-        iterator( iterator const& other) noexcept :
+-            c_{ other.c_ } {
+-        }
+-
+-        iterator & operator=( iterator const& other) noexcept {
+-            if ( this == & other) return * this;
+-            c_ = other.c_;
+-            return * this;
+-        }
+-
+         bool operator==( iterator const& other) const noexcept {
+             return other.c_ == c_;
+         }
+@@ -244,7 +224,9 @@ class pull_coroutine< T & > {
+             return * this;
+         }
+ 
+-        iterator operator++( int) = delete;
++        void operator++( int) {
++            increment_();
++        }
+ 
+         reference_t operator*() const noexcept {
+             return c_->cb_->get();
+@@ -287,6 +269,5 @@ class pull_coroutine< void > {
+     pull_coroutine( pull_coroutine &&) noexcept;
+ 
+     pull_coroutine & operator=( pull_coroutine && other) noexcept {
+-        if ( this == & other) return * this;
+         std::swap( cb_, other.cb_);
+         return * this;
+     }

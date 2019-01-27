@@ -1,12 +1,15 @@
 macro(append_tests_srcs TestsSources Year)
   foreach(ProblemNum ${ARGN})
-    list(APPEND ${TestsSources} ${Year}/${ProblemNum}.cpp)
+    if(NOT "${Year}_${ProblemNum}" IN_LIST AocExcludedProblems)
+      list(APPEND ${TestsSources} ${Year}/${ProblemNum}.cpp)
+    endif()
   endforeach(ProblemNum)
+  source_group(${Year} ${Year}/*)
 endmacro()
 
 append_tests_srcs(AocTestsSources 2015 01 02 03 05 06 07 08 09 11 12 13 15 19 20 23 24 25)
 append_tests_srcs(AocTestsSources 2016 01 02)
-append_tests_srcs(AocTestsSources 2018 01 02 03 04 05 06)
+append_tests_srcs(AocTestsSources 2018 01 02 03 04 05 06 07)
 
 # AocLibTests
 add_executable(AocLibTests
@@ -19,7 +22,6 @@ add_executable(AocLibTests
   AoC_utils_tests/md5.cpp
   AoC_utils_tests/ranges.cpp
   AoC_utils_tests/string.cpp
-  AoC_utils_tests/utils.cpp
   impl_test.cpp
   aoc_fixture.cpp
   aoc_fixture.h
@@ -32,16 +34,18 @@ find_program(Bash bash)
 if(Bash)
 
   function(add_aoc_test problem result1 result2)
-    set(App $<TARGET_FILE:AocApp>)
-    set(Input ${CMAKE_CURRENT_SOURCE_DIR}/input/${problem})
+    if(NOT ${problem} IN_LIST AocExcludedProblems)
+      set(App $<TARGET_FILE:AocApp>)
+      set(Input ${CMAKE_CURRENT_SOURCE_DIR}/input/${problem})
 
-    add_test(NAME ${problem}_1
-      COMMAND bash -c "${App} ${problem}_1 < ${Input}" )
-    set_tests_properties(${problem}_1 PROPERTIES PASS_REGULAR_EXPRESSION "^${result1}\n$")
+      add_test(NAME ${problem}_1
+        COMMAND bash -c "${App} ${problem}_1 < ${Input}" )
+      set_tests_properties(${problem}_1 PROPERTIES PASS_REGULAR_EXPRESSION "^${result1}\n$")
 
-    add_test(NAME ${problem}_2
-      COMMAND bash -c "${App} --problem ${problem}_2 < ${Input}")
-    set_tests_properties(${problem}_2 PROPERTIES PASS_REGULAR_EXPRESSION "^${result2}\n$")
+      add_test(NAME ${problem}_2
+        COMMAND bash -c "${App} --problem ${problem}_2 < ${Input}")
+      set_tests_properties(${problem}_2 PROPERTIES PASS_REGULAR_EXPRESSION "^${result2}\n$")
+    endif()
   endfunction()
 
   add_test(NAME AocUtilsTests
@@ -55,6 +59,9 @@ if(Bash)
 
   add_test(NAME AocLibTests_2018
       COMMAND $<TARGET_FILE:AocLibTests> --run_test=*2018*)
+
+  add_test(NAME AocLibTestsImpl
+      COMMAND $<TARGET_FILE:AocLibTests> --run_test=impl_test)
 
   add_aoc_test(2015_01 280 1797)
   add_aoc_test(2015_02 1586300 3737498)
@@ -91,5 +98,6 @@ if(Bash)
   add_aoc_test(2018_04 39584 55053)
   add_aoc_test(2018_05 11242 5492)
   add_aoc_test(2018_06 3358 45909)
+  add_aoc_test(2018_07 GJFMDHNBCIVTUWEQYALSPXZORK 1050)
 
 endif()

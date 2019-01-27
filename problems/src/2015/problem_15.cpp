@@ -1,5 +1,9 @@
 #include "AoC/2015/problem_15.h"
 
+#ifdef _MSC_VER
+#  define NOMINMAX
+#endif
+
 #include "AoC/problems_map.h"
 #include "AoC/utils/parse.h"
 

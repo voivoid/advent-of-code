@@ -32,12 +32,15 @@ endif()
 
 if(MSVC)
   if("${CMAKE_GENERATOR}" MATCHES "Win64")
-    set(BoostAdressModel "address-model=64")
+    set(BoostAddressModel "address-model=64")
+    set(BoostAddressModelTag "-x64")
   else()
-    set(BoostAdressModel "address-model=32")
+    set(BoostAddressModel "address-model=32")
+    set(BoostAddressModelTag "-x32")
   endif()
 
   set(BoostLayout "--layout=tagged")
+  set(BoostAsmFlags "asmflags=\\safeseh")
 endif()
 
 foreach(BoostLib ${BoostLibs})
@@ -50,9 +53,9 @@ ExternalProject_Add(
   PREFIX thirdparties
   URL "https://dl.bintray.com/boostorg/release/${BoostVersion}/source/boost_${BoostVersionUnderscored}.tar.gz"
   URL_HASH SHA256=${BoostSHA256}
-  PATCH_COMMAND patch -s -p0 < ${CMAKE_CURRENT_LIST_DIR}/boost.patch
+  PATCH_COMMAND ${Patch_EXECUTABLE} -s -p0 < ${CMAKE_CURRENT_LIST_DIR}/boost.patch # https://github.com/boostorg/coroutine2/pull/24
   CONFIGURE_COMMAND ${BoostBootstrapCmd} ${BoostBootstrapToolset}
-  BUILD_COMMAND ${BoostB2} ${BoostB2Toolset} link=static threading=multi runtime-link=shared ${BoostLayout} ${BoostAdressModel} ${BoostBuildVariant} ${BoostLibsCmdLine} -j 4
+  BUILD_COMMAND ${BoostB2} ${BoostB2Toolset} link=static threading=multi runtime-link=shared ${BoostLayout} ${BoostAddressModel} ${BoostBuildVariant} ${BoostLibsCmdLine} ${BoostAsmFlags} -j 4
   BUILD_IN_SOURCE TRUE
   INSTALL_COMMAND ""
   )
@@ -81,12 +84,12 @@ macro(set_boost_libs_location Component)
       IMPORTED_CONFIGURATIONS RELEASE)
     set_target_properties(Boost::${Component} PROPERTIES
       IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "CXX"
-      IMPORTED_LOCATION_RELEASE "${BoostLibDir}/libboost_${Component}-mt.lib")
+      IMPORTED_LOCATION_RELEASE "${BoostLibDir}/libboost_${Component}-mt${BoostAddressModelTag}.lib")
     set_property(TARGET Boost::${Component} APPEND PROPERTY
       IMPORTED_CONFIGURATIONS DEBUG)
     set_target_properties(Boost::${Component} PROPERTIES
       IMPORTED_LINK_INTERFACE_LANGUAGES_DEBUG "CXX"
-      IMPORTED_LOCATION_DEBUG "${BoostLibDir}/libboost_${Component}-mt-gd.lib")
+      IMPORTED_LOCATION_DEBUG "${BoostLibDir}/libboost_${Component}-mt-gd${BoostAddressModelTag}.lib")
   else()
     set_target_properties(Boost::${Component} PROPERTIES
       IMPORTED_LINK_INTERFACE_LANGUAGES "CXX"

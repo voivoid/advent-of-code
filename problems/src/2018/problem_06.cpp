@@ -74,7 +74,7 @@ Rect get_bound_rect( const Locations& locations )
   const auto xs     = ranges::minmax( coords, std::less<CoordType>{}, &Coord::x );
   const auto ys     = ranges::minmax( coords, std::less<CoordType>{}, &Coord::y );
 
-  return { { xs.first.x, ys.first.y }, { xs.second.x, ys.second.y } };
+  return { { xs.min.x, ys.min.y }, { xs.max.x, ys.max.y } };
 }
 
 template <typename Range>
@@ -175,7 +175,7 @@ int solve_1( std::istream& input )
   const auto locations     = parse_locations( input );
   const auto locations_map = make_locations_map<&find_closest_location_index>( locations );
 
-  const auto border_location_indices = find_border_indices( locations ) | ranges::to_<std::set>();
+  const auto border_location_indices = find_border_indices( locations ) | ranges::to<std::set>;
 
   auto finite_location_indices =
       locations_map | ranges::view::filter( [&border_location_indices]( const LocationIndex index ) {

@@ -2,10 +2,10 @@
 
 #include "AoC/problems_map.h"
 
-#include "range/v3/istream_range.hpp"
 #include "range/v3/numeric/accumulate.hpp"
 #include "range/v3/to_container.hpp"
 #include "range/v3/view/cycle.hpp"
+#include "range/v3/view/istream.hpp"
 #include "range/v3/view/partial_sum.hpp"
 
 #include <istream>
@@ -20,13 +20,12 @@ namespace problem_01
 
 int solve_1( std::istream& input )
 {
-  ranges::istream_range<int> frequencies( input );
-  return ranges::accumulate( frequencies, 0 );
+  return ranges::accumulate( ranges::istream<int>( input ), 0 );
 }
 
 int solve_2( std::istream& input )
 {
-  const auto frequencies = ranges::istream_range<int>( input ) | ranges::to_vector;
+  const auto frequencies = ranges::istream<int>( input ) | ranges::to_vector;
 
   std::unordered_set<int> resulting_frequencies = { 0 };
   for ( const auto f : frequencies | ranges::view::cycle | ranges::view::partial_sum )

@@ -2,7 +2,7 @@ include(ExternalProject)
 
 find_package(Git REQUIRED)
 
-set(JsonVer v3.4.0)
+set(JsonVer v3.5.0)
 
 ExternalProject_Add(
   get_json

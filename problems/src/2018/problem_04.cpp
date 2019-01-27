@@ -105,7 +105,7 @@ GuardShifts parse_shifts( const std::string& input )
   const auto date_parser  = ( '[' > x3::omit[ x3_size_t_ ] > '-' > x3::omit[ x3_size_t_ ] > '-' > x3::omit[ x3::lexeme[ x3_size_t_ ] ] >
                              x3::omit[ x3_size_t_ ] > ':' > x3_size_t_ > ']' );
   const auto guard_parser = x3::omit[ date_parser ] > "Guard" > '#' > x3_size_t_ > "begins" > "shift";
-  const auto falls_asleep_parser = date_parser >> "falls" > "asleep";
+  const auto falls_asleep_parser = ( date_parser >> "falls" ) > "asleep";
   const auto wakes_up_parser     = date_parser > "wakes" > "up";
   const auto sleep_parser = x3::rule<struct _sleep, SleepInterval>{} = falls_asleep_parser > wakes_up_parser;
   const auto shift_parser = x3::rule<struct _shift, GuardShift>{} = ( guard_parser > *( sleep_parser ) );

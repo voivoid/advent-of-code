@@ -2,7 +2,7 @@ include(ExternalProject)
 
 find_package(Git REQUIRED)
 
-set(RangeV3Ver master)
+set(RangeV3Ver v1.0-beta)
 
 ExternalProject_Add(
   get_rangev3

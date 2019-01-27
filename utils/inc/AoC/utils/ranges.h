@@ -25,7 +25,7 @@ template <class Rngs>
 class interleave_view : public ranges::view_facade<interleave_view<Rngs>>
 {
   friend ranges::range_access;
-  std::vector<ranges::range_value_type_t<Rngs>> rngs_;
+  std::vector<ranges::range_value_t<Rngs>> rngs_;
   struct cursor;
   cursor begin_cursor()
   {
@@ -43,8 +43,8 @@ template <class Rngs>
 struct interleave_view<Rngs>::cursor
 {
   std::size_t n_;
-  std::vector<ranges::range_value_type_t<Rngs>>* rngs_;
-  std::vector<ranges::iterator_t<ranges::range_value_type_t<Rngs>>> its_;
+  std::vector<ranges::range_value_t<Rngs>>* rngs_;
+  std::vector<ranges::iterator_t<ranges::range_value_t<Rngs>>> its_;
   decltype( auto ) read() const
   {
     return *its_[ n_ ];
@@ -54,12 +54,14 @@ struct interleave_view<Rngs>::cursor
     if ( 0 == ( ( ++n_ ) %= its_.size() ) )
       ranges::for_each( its_, []( auto& it ) { ++it; } );
   }
-  bool equal( ranges::default_sentinel ) const
+  bool equal( ranges::default_sentinel_t ) const
   {
-    return n_ == 0 && its_.end() != ranges::mismatch( its_, *rngs_, std::not_equal_to<>(), ranges::ident(), ranges::end ).in1();
+    if ( n_ != 0 )
+      return false;
+    auto ends = *rngs_ | ranges::view::transform( ranges::end );
+    return its_.end() != std::mismatch( its_.begin(), its_.end(), ends.begin(), std::not_equal_to<>{} ).first;
   }
-  CONCEPT_REQUIRES( ranges::ForwardRange<ranges::range_value_type_t<Rngs>>() )
-  bool equal( cursor const& that ) const
+  CPP_member auto equal( cursor const& that ) const -> CPP_ret( bool )( requires ranges::ForwardRange<ranges::range_value_t<Rngs>> )
   {
     return n_ == that.n_ && its_ == that.its_;
   }
@@ -84,7 +86,7 @@ inline auto transpose()
 {
   return ranges::make_pipeable( []( auto&& rngs ) {
     using Rngs = decltype( rngs );
-    CONCEPT_ASSERT( ranges::ForwardRange<Rngs>() );
+    CPP_assert( ranges::ForwardRange<Rngs> );
     return std::forward<Rngs>( rngs ) | interleave() | ranges::view::chunk( static_cast<std::size_t>( ranges::distance( rngs ) ) );
   } );
 }

@@ -5,8 +5,8 @@
 
 #include "range/v3/algorithm/min.hpp"
 #include "range/v3/algorithm/sort.hpp"
-#include "range/v3/istream_range.hpp"
 #include "range/v3/numeric/accumulate.hpp"
+#include "range/v3/view/istream.hpp"
 #include "range/v3/view/transform.hpp"
 
 #include "boost/algorithm/string.hpp"
@@ -84,8 +84,8 @@ int calc_ribbon_area( const Dimensions dims )
 }
 
 using AreaFunc = int ( * )( Dimensions );
-template <AreaFunc area_func>
-int solve( ranges::istream_range<std::string> dimensions )
+template <AreaFunc area_func, typename Range>
+int solve( Range dimensions )
 {
   auto areas = dimensions | ranges::view::transform( &parse_dimensions ) | ranges::view::transform( area_func );
   return ranges::accumulate( areas, 0 );
@@ -101,12 +101,12 @@ namespace problem_02
 
 int solve_1( std::istream& input )
 {
-  return solve<&calc_box_area>( ranges::istream_range<std::string>( input ) );
+  return solve<&calc_box_area>( ranges::istream<std::string>( input ) );
 }
 
 int solve_2( std::istream& input )
 {
-  return solve<&calc_ribbon_area>( ranges::istream_range<std::string>( input ) );
+  return solve<&calc_ribbon_area>( ranges::istream<std::string>( input ) );
 }
 
 AOC_REGISTER_PROBLEM( 2015_02, solve_1, solve_2 );

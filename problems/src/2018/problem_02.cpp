@@ -16,6 +16,8 @@
 #include <istream>
 #include <string>
 
+#include <cassert>
+
 
 namespace
 {

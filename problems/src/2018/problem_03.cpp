@@ -38,10 +38,10 @@ BOOST_FUSION_ADAPT_STRUCT( Claim, id, area )
 namespace
 {
 
-constexpr size_t side                  = 1000;
-using Overlaps                         = AoC::dd_static_heap_array<ClaimId, side, side>;
-constexpr ClaimId overlapped_area      = -1;
-constexpr ClaimId non_initialized_area = 0;
+constexpr size_t side                                   = 1000;
+using Overlaps                                          = AoC::dd_static_heap_array<ClaimId, side, side>;
+constexpr ClaimId overlapped_area                       = -1;
+[[maybe_unused]] constexpr ClaimId non_initialized_area = 0;
 
 Claim parse_claim( const std::string& line )
 {
