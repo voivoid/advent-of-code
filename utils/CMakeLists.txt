@@ -9,6 +9,7 @@ add_library(AocUtils
   inc/AoC/utils/parse.h
   inc/AoC/utils/ranges.h
   inc/AoC/utils/string.h src/string.cpp
+  inc/AoC/utils/zipper.h
   )
 
 target_include_directories(AocUtils PUBLIC inc)

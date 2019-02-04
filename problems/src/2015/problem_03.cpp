@@ -10,6 +10,7 @@
 #include "range/v3/view/transform.hpp"
 
 #include "AoC/problems_map.h"
+#include "AoC/utils/geo.h"
 
 #include <istream>
 #include <set>
@@ -18,21 +19,7 @@
 
 namespace
 {
-struct Pos
-{
-  const int x;
-  const int y;
-};
-
-Pos operator+( const Pos p1, const Pos p2 )
-{
-  return { p1.x + p2.x, p1.y + p2.y };
-}
-
-bool operator<( const Pos p1, const Pos p2 )
-{
-  return std::tie( p1.x, p1.y ) < std::tie( p2.x, p2.y );
-}
+using Pos = AoC::Coord;
 
 using Instruction   = char;
 using VisitedHouses = std::set<Pos>;

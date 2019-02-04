@@ -9,7 +9,7 @@ endmacro()
 
 append_tests_srcs(AocTestsSources 2015 01 02 03    05 06 07 08 09    11 12 13    15          19 20       23 24 25)
 append_tests_srcs(AocTestsSources 2016 01 02)
-append_tests_srcs(AocTestsSources 2018 01 02 03 04 05 06 07 08)
+append_tests_srcs(AocTestsSources 2018 01 02 03 04 05 06 07 08 09)
 
 # AocLibTests
 add_executable(AocLibTests
@@ -22,6 +22,7 @@ add_executable(AocLibTests
   AoC_utils_tests/md5.cpp
   AoC_utils_tests/ranges.cpp
   AoC_utils_tests/string.cpp
+  AoC_utils_tests/zipper.cpp
   impl_test.cpp
   aoc_fixture.cpp
   aoc_fixture.h
@@ -100,5 +101,6 @@ if(Bash)
   add_aoc_test(2018_06 3358 45909)
   add_aoc_test(2018_07 GJFMDHNBCIVTUWEQYALSPXZORK 1050)
   add_aoc_test(2018_08 47464 23054)
+  add_aoc_test(2018_09 398730 3349635509)
 
 endif()

@@ -13,39 +13,45 @@ struct GenericPoint
 };
 
 template <typename T>
-bool operator==( const GenericPoint<T>& p1, const GenericPoint<T>& p2 )
+bool operator==( const GenericPoint<T> p1, const GenericPoint<T> p2 )
 {
   return p1.x == p2.x && p1.y == p2.y;
 }
 
 template <typename T>
-bool operator!=( const GenericPoint<T>& p1, const GenericPoint<T>& p2 )
+bool operator!=( const GenericPoint<T> p1, const GenericPoint<T> p2 )
 {
   return !( p1 == p2 );
 }
 
 template <typename T>
-bool operator<( const GenericPoint<T>& p1, const GenericPoint<T>& p2 )
+bool operator<( const GenericPoint<T> p1, const GenericPoint<T> p2 )
 {
   return std::tie( p1.x, p1.y ) < std::tie( p2.x, p2.y );
 }
 
 template <typename T>
-bool operator>( const GenericPoint<T>& p1, const GenericPoint<T>& p2 )
+bool operator>( const GenericPoint<T> p1, const GenericPoint<T> p2 )
 {
   return !( p1 < p2 ) && p1 != p2;
 }
 
 template <typename T>
-bool operator<=( const GenericPoint<T>& p1, const GenericPoint<T>& p2 )
+bool operator<=( const GenericPoint<T> p1, const GenericPoint<T> p2 )
 {
   return p1 < p2 || p1 == p2;
 }
 
 template <typename T>
-bool operator>=( const GenericPoint<T>& p1, const GenericPoint<T>& p2 )
+bool operator>=( const GenericPoint<T> p1, const GenericPoint<T> p2 )
 {
   return p1 > p2 || p1 == p2;
+}
+
+template <typename T>
+GenericPoint<T> operator+( const GenericPoint<T> p1, const GenericPoint<T> p2 )
+{
+  return { p1.x + p2.x, p1.y + p2.y };
 }
 
 

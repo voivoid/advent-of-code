@@ -7,9 +7,7 @@ include(cmake/thirdparties/json.cmake)
 include(cmake/build_utils.cmake)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  set(AocExcludedProblems 2015_15     # https://github.com/ericniebler/range-v3/issues/1007
-                          2015_23     # boost variant has a problem that should be fixed in boost 1.70 - https://github.com/boostorg/variant/pull/51
-                          2015_24     # https://github.com/ericniebler/range-v3/issues/1007
+  set(AocExcludedProblems 2015_23     # boost variant has a problem that should be fixed in boost 1.70 - https://github.com/boostorg/variant/pull/51
   )
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
   set(AocExcludedProblems 2015_08     # MSVC raw string issues

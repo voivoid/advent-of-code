@@ -6,12 +6,8 @@
 #include <istream>
 #include <vector>
 
-namespace AoC_2018
+namespace
 {
-
-namespace problem_08
-{
-
 auto read_node_data( std::istream& input )
 {
   size_t child_nodes      = 0;
@@ -85,6 +81,15 @@ size_t calc_metadata_sum_2( std::istream& input )
 
   return metadata_sum;
 }
+
+
+}  // namespace
+
+namespace AoC_2018
+{
+
+namespace problem_08
+{
 
 int solve_1( std::istream& input )
 {

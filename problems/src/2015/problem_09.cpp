@@ -47,17 +47,16 @@ PathDistance parse_path_distance( const std::string& s )
   namespace x3 = boost::spirit::x3;
 
   const auto location_parser = x3::lexeme[ +x3::alpha ];
-  const auto parser          = location_parser > "to" > location_parser > "=" > x3::int_;
+  const auto parser          = location_parser > "to" > location_parser > "=" > AoC::x3_size_t_;
 
-  boost::fusion::vector<std::string, std::string, int> parsed_data;
+  boost::fusion::vector<std::string, std::string, size_t> parsed_data;
   const bool is_parsed = AoC::x3_parse( s.cbegin(), s.cend(), parser, x3::space, parsed_data );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse input path data" );
   }
 
-  return { { boost::fusion::at_c<0>( parsed_data ), boost::fusion::at_c<1>( parsed_data ) },
-           static_cast<size_t>( boost::fusion::at_c<2>( parsed_data ) ) };
+  return { { boost::fusion::at_c<0>( parsed_data ), boost::fusion::at_c<1>( parsed_data ) }, boost::fusion::at_c<2>( parsed_data ) };
 }
 
 size_t get_distance( const Path& path, const PathMap& path_map )
