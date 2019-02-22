@@ -23,7 +23,7 @@ enum class Cell
 };
 
 template <size_t side>
-using Field = AoC::dd_static_stack_array<Cell, side, side>;
+using Field = AoC::dd_static_heap_array<Cell, side, side>;
 using Cells = std::vector<Cell>;
 struct Coord
 {

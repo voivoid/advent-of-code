@@ -23,10 +23,13 @@ namespace Details
 template <typename T, size_t width, size_t height>
 using Array = std::array<std::array<T, width>, height>;
 
-template <typename T, size_t width, size_t height>
+template <typename T, size_t w, size_t h>
 class dd_array_stack_impl
 {
 public:
+  static constexpr size_t width  = w;
+  static constexpr size_t height = h;
+
   using Array = Details::Array<T, width, height>;
   using Init  = Array;
 
@@ -65,10 +68,13 @@ private:
   Array data;
 };
 
-template <typename T, size_t width, size_t height>
+template <typename T, size_t w, size_t h>
 class dd_array_heap_impl
 {
 public:
+  static constexpr size_t width  = w;
+  static constexpr size_t height = h;
+
   using Array = Details::Array<T, width, height>;
   using Init  = Array;
 
@@ -172,14 +178,10 @@ enum class dd_array_alloc_type
 };
 
 template <typename T, size_t width, size_t height, dd_array_alloc_type alloc>
-struct static_array
-{
-};
+struct static_array;
 
 template <typename T>
-struct dynamic_array
-{
-};
+struct dynamic_array;
 
 template <typename T>
 struct select_impl;
@@ -205,6 +207,9 @@ class dd_array
   struct Proxy;
 
   using Impl = typename Details::select_impl<Array>::Impl;
+
+  static constexpr size_t width  = Impl::width;
+  static constexpr size_t height = Impl::height;
 
 public:
   dd_array()
