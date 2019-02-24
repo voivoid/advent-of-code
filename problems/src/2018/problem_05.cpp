@@ -8,7 +8,7 @@
 #include "range/v3/view/filter.hpp"
 #include "range/v3/view/transform.hpp"
 
-#include "boost/hof.hpp"
+#include "boost/hof/lift.hpp"
 
 #include <istream>
 #include <set>

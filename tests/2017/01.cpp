@@ -16,9 +16,9 @@ BOOST_FIXTURE_TEST_CASE( problem2017_01_1, AocFixture )
 
 BOOST_FIXTURE_TEST_CASE( problem2017_01_2, AocFixture )
 {
-  BOOST_CHECK_EQUAL( 6, run( &solve_1, "1212" ) );
-  BOOST_CHECK_EQUAL( 0, run( &solve_1, "1221" ) );
-  BOOST_CHECK_EQUAL( 4, run( &solve_1, "123425" ) );
-  BOOST_CHECK_EQUAL( 12, run( &solve_1, "123123" ) );
-  BOOST_CHECK_EQUAL( 4, run( &solve_1, "12131415" ) );
+  BOOST_CHECK_EQUAL( 6, run( &solve_2, "1212" ) );
+  BOOST_CHECK_EQUAL( 0, run( &solve_2, "1221" ) );
+  BOOST_CHECK_EQUAL( 4, run( &solve_2, "123425" ) );
+  BOOST_CHECK_EQUAL( 12, run( &solve_2, "123123" ) );
+  BOOST_CHECK_EQUAL( 4, run( &solve_2, "12131415" ) );
 }
