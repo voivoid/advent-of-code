@@ -172,7 +172,7 @@ Coord find_already_visited_coord( Range coords )
 
 auto parse_instructions( std::istream& input )
 {
-  return ranges::istream_range<std::string>( input ) | ranges::view::transform( &parse_instruction );
+  return ranges::istream<std::string>( input ) | ranges::view::transform( &parse_instruction );
 }
 
 constexpr State start_state = { State::Heading::North, { 0, 0 } };

@@ -38,7 +38,7 @@ bool is_not_space( const char c )
 
 auto get_instructions( std::istream& input )
 {
-  return ranges::istream_range<Instruction>( input ) | ranges::view::filter( &is_not_space ) |
+  return ranges::istream<Instruction>( input ) | ranges::view::filter( &is_not_space ) |
          ranges::view::transform( &parse_instruction );
 }
 

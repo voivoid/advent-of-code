@@ -72,7 +72,7 @@ namespace problem_02
 
 int solve_1( std::istream& input )
 {
-  auto box_stats          = ranges::istream_range<std::string>( input ) | ranges::view::transform( &analyze_box_id );
+  auto box_stats          = ranges::istream<std::string>( input ) | ranges::view::transform( &analyze_box_id );
   const auto result_stats = ranges::accumulate( box_stats, BoxStats{} );
 
   return static_cast<int>( result_stats.doubles * result_stats.triples );
@@ -80,7 +80,7 @@ int solve_1( std::istream& input )
 
 std::string solve_2( std::istream& input )
 {
-  const auto boxes              = ranges::istream_range<std::string>( input ) | ranges::to_vector;
+  const auto boxes              = ranges::istream<std::string>( input ) | ranges::to_vector;
   const auto boxes_combinations = ranges::view::cartesian_product( boxes, boxes );
 
   auto boxes_with_one_mismatch = boxes_combinations | ranges::view::filter( []( const auto box_pair ) {

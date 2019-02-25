@@ -95,7 +95,7 @@ bool check_range_can_be_split_into_groups( ranges::any_view<Weight> rest_weights
 
 auto solve( std::istream& input, const size_t number_of_compartments )
 {
-  const auto sorted_weights       = ranges::istream_range<size_t>( input ) | ranges::to_vector | ranges::action::sort;
+  const auto sorted_weights       = ranges::istream<size_t>( input ) | ranges::to_vector | ranges::action::sort;
   const Weight total_weight       = ranges::accumulate( sorted_weights, size_t{ 0 } );
   const Weight compartment_weight = total_weight / number_of_compartments;
 

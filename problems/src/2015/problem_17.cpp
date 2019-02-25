@@ -87,7 +87,7 @@ ContainersCombinations
 
 ContainersCombinations generate_combinations( std::istream& input, const Volume volume_to_store )
 {
-  auto containers = ranges::istream_range<Volume>( input ) | ranges::to_vector | ranges::action::sort;
+  auto containers = ranges::istream<Volume>( input ) | ranges::to_vector | ranges::action::sort;
   Cache cache;
   return generate_combinations( containers, volume_to_store, cache );
 }

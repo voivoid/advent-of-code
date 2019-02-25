@@ -71,7 +71,7 @@ namespace problem_05
 
 int solve_1( std::istream& input )
 {
-  return static_cast<int>( do_reductions( ranges::istream_range<char>( input ) ) );
+  return static_cast<int>( do_reductions( ranges::istream<char>( input ) ) );
 }
 
 int solve_2( std::istream& input )

@@ -55,7 +55,7 @@ namespace problem_03
 {
 int solve_1( std::istream& input )
 {
-  auto instructions         = ranges::istream_range<Instruction>( input );
+  auto instructions         = ranges::istream<Instruction>( input );
   const auto visited_houses = solve( instructions );
   return static_cast<int>( visited_houses.size() );
 }
