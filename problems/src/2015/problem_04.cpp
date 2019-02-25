@@ -5,6 +5,10 @@
 
 #include "boost/algorithm/string/predicate.hpp"
 
+#include "range/v3/algorithm/find_if.hpp"
+#include "range/v3/view/iota.hpp"
+
+#include <functional>
 #include <istream>
 #include <string>
 
@@ -15,19 +19,16 @@ std::string make_md5( const std::string& secret, const size_t index )
   return AoC::md5( secret + std::to_string( index ) );
 }
 
+bool is_desired_md5_index( size_t index, const std::string& prefix, const std::string& secret )
+{
+  const auto md5 = make_md5( secret, index );
+  return boost::algorithm::starts_with( md5, prefix );
+}
+
 size_t find_md5_that_starts_with( const std::string& prefix, const std::string& secret )
 {
-  size_t index = 0;
-  for ( ;; ++index )
-  {
-    const auto md5 = make_md5( secret, index );
-    if ( boost::algorithm::starts_with( md5, prefix ) )
-    {
-      break;
-    }
-  }
-
-  return index;
+  const auto indices = ranges::view::iota( size_t{ 0 } );
+  return *ranges::find_if( indices, std::bind( &is_desired_md5_index, std::placeholders::_1, std::ref( prefix ), std::ref( secret ) ) );
 }
 
 int solve( std::istream& input, const std::string& prefix )

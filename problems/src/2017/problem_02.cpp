@@ -56,8 +56,8 @@ Num get_minmax_diff( const Nums& nums )
 
 Num get_evenly_div( const Nums& nums )
 {
-  const auto pairs = ranges::view::cartesian_product( nums, nums );
-  const auto pairs_iter  = ranges::find_if( pairs, BOOST_HOF_LIFT( is_divisible ) );
+  const auto pairs      = ranges::view::cartesian_product( nums, nums );
+  const auto pairs_iter = ranges::find_if( pairs, BOOST_HOF_LIFT( is_divisible ) );
   assert( pairs_iter != pairs.end() );
 
   const auto [ x, y ] = *pairs_iter;

@@ -38,7 +38,7 @@ Pos parse_instruction( const Instruction instruction )
 }
 
 template <typename Range>
-VisitedHouses solve( Range instructions )
+VisitedHouses solve( Range&& instructions )
 {
   const auto initial_pos = ranges::view::single( Pos{ 0, 0 } );
   auto positions         = ranges::view::concat( initial_pos, instructions | ranges::view::transform( parse_instruction ) );

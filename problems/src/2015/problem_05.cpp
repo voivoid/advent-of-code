@@ -20,13 +20,11 @@
 namespace
 {
 
-using IsGoodLinePred = bool ( * )( const std::string& );
-
-template <IsGoodLinePred is_good_line_pred>
+template <bool ( *is_good_line )( const std::string& )>
 int solve( std::istream& input )
 {
   auto lines = ranges::getlines( input );
-  return static_cast<int>( ranges::count_if( lines, is_good_line_pred ) );
+  return static_cast<int>( ranges::count_if( lines, is_good_line ) );
 }
 
 bool is_vowel( const char c )

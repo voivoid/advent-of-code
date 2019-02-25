@@ -4,7 +4,6 @@
 #include "AoC/utils/parse.h"
 
 #include "range/v3/algorithm/min.hpp"
-#include "range/v3/algorithm/sort.hpp"
 #include "range/v3/numeric/accumulate.hpp"
 #include "range/v3/view/istream.hpp"
 #include "range/v3/view/transform.hpp"
@@ -60,22 +59,24 @@ int calc_box_area( const Dimensions dims )
 {
   const auto [ l, w, h ]   = dims;
   const auto sides         = { l * w, w * h, h * l };
-  const auto area          = ranges::accumulate( sides | ranges::view::transform( []( int s ) { return s * 2; } ), 0 );
+  const auto double_sides  = sides | ranges::view::transform( []( int s ) { return s * 2; } );
+  const auto area          = ranges::accumulate( double_sides, 0 );
   const auto smallest_side = ranges::min( sides );
   return area + smallest_side;
 }
 
-std::pair<Dim, Dim> get_largest_dims( const Dim d1, const Dim d2, const Dim d3 )
+std::pair<Dim, Dim> get_smallest_dims( const Dim d1, const Dim d2, const Dim d3 )
 {
-  std::vector dims = { d1, d2, d3 };
-  ranges::sort( dims );
-  return { dims[ 0 ], dims[ 1 ] };
+  const auto max = std::max( std::max( d1, d2 ), d3 );
+  const auto min = std::min( std::min( d1, d2 ), d3 );
+  const auto mid = d1 + d2 + d3 - max - min;
+  return { min, mid };
 }
 
 int calc_ribbon_area( const Dimensions dims )
 {
   const auto [ l, w, h ] = dims;
-  const auto [ d1, d2 ]  = get_largest_dims( l, w, h );
+  const auto [ d1, d2 ]  = get_smallest_dims( l, w, h );
 
   const auto wrap = d1 * 2 + d2 * 2;
   const auto bow  = l * w * h;
@@ -84,10 +85,10 @@ int calc_ribbon_area( const Dimensions dims )
 }
 
 using AreaFunc = int ( * )( Dimensions );
-template <AreaFunc area_func, typename Range>
-int solve( Range dimensions )
+template <AreaFunc calc_area, typename Range>
+int solve( Range&& dimensions )
 {
-  auto areas = dimensions | ranges::view::transform( &parse_dimensions ) | ranges::view::transform( area_func );
+  auto areas = dimensions | ranges::view::transform( &parse_dimensions ) | ranges::view::transform( calc_area );
   return ranges::accumulate( areas, 0 );
 }
 
