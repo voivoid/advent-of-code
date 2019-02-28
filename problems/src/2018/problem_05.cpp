@@ -53,10 +53,13 @@ auto reduce_polymer( std::stack<char>& stack, const char p )
 }
 
 template <typename Range>
-size_t do_reductions( Range data )
+size_t do_reductions( Range&& data )
 {
   std::stack<char> polymers_stack;
-  ranges::accumulate( data, std::ref( polymers_stack ), &reduce_polymer );
+  for( const auto polymer : data )
+  {
+    reduce_polymer( polymers_stack, polymer );
+  }
 
   return polymers_stack.size();
 }

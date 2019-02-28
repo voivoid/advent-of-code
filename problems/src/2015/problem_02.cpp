@@ -59,8 +59,8 @@ int calc_box_area( const Dimensions dims )
 {
   const auto [ l, w, h ]   = dims;
   const auto sides         = { l * w, w * h, h * l };
-  const auto double_sides  = sides | ranges::view::transform( []( int s ) { return s * 2; } );
-  const auto area          = ranges::accumulate( double_sides, 0 );
+  const auto doubled_sides = sides | ranges::view::transform( []( int s ) { return s * 2; } );
+  const auto area          = ranges::accumulate( doubled_sides, 0 );
   const auto smallest_side = ranges::min( sides );
   return area + smallest_side;
 }

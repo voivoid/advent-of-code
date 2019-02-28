@@ -27,13 +27,13 @@ using Weight  = size_t;
 using Weights = std::vector<Weight>;
 
 template <typename Range>
-std::uint64_t calc_entanglement( Range rng )
+std::uint64_t calc_entanglement( Range&& rng )
 {
   return ranges::accumulate( rng, std::uint64_t( 1 ), std::multiplies<Weight>() );
 }
 
 template <typename Range>
-Weight calc_weights_sum( Range rng )
+Weight calc_weights_sum( Range&& rng )
 {
   return ranges::accumulate( rng, Weight( 0 ) );
 }

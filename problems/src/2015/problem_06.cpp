@@ -111,9 +111,9 @@ auto apply_cmd( Lamps<side>& lamps, const Cmd& cmd )
 {
   const auto& rect       = cmd.rect;
   const auto manipulator = manipulator_factory( cmd.mode );
-  for ( auto x = rect.left_top.x; x <= rect.right_bottom.x; ++x )
+  for ( auto y = rect.left_top.y; y <= rect.right_bottom.y; ++y )
   {
-    for ( auto y = rect.left_top.y; y <= rect.right_bottom.y; ++y )
+    for ( auto x = rect.left_top.x; x <= rect.right_bottom.x; ++x )
     {
       manipulator( lamps[ x ][ y ] );
     }
@@ -134,8 +134,10 @@ int solve( std::istream& input )
   constexpr size_t grid_side = 1000;
   Lamps<grid_side> lamps;
 
-  const auto run_cmd = &apply_cmd<manipulator_factory, grid_side>;
-  ranges::accumulate( cmds, std::ref( lamps ), run_cmd );
+  for( const auto& cmd : cmds )
+  {
+      apply_cmd<manipulator_factory, grid_side>( lamps, cmd );
+  }
 
   return static_cast<int>( calc_lamps_brightness( lamps ) );
 }

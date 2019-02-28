@@ -8,7 +8,6 @@
 #include "range/v3/algorithm/count_if.hpp"
 #include "range/v3/algorithm/find_if.hpp"
 #include "range/v3/getlines.hpp"
-#include "range/v3/numeric/accumulate.hpp"
 #include "range/v3/view/cartesian_product.hpp"
 #include "range/v3/view/indices.hpp"
 #include "range/v3/view/transform.hpp"
@@ -125,7 +124,10 @@ template <typename Claims>
 Overlaps calc_overlaps( Claims& claims )
 {
   Overlaps overlaps;
-  ranges::accumulate( claims, std::ref( overlaps ), &apply_claim );
+  for( const auto& claim : claims )
+  {
+      apply_claim( overlaps, claim );
+  }
   return overlaps;
 }
 

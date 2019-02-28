@@ -58,7 +58,7 @@ size_t calc_sleep_interval( const SleepInterval& sleep_interval )
 }
 
 template <typename Range>
-size_t sum_sleep_intervals( Range sleep_intervals )
+size_t sum_sleep_intervals( Range&& sleep_intervals )
 {
   return ranges::accumulate( sleep_intervals | ranges::view::transform( &calc_sleep_interval ), size_t{ 0 } );
 }
@@ -76,7 +76,7 @@ struct MostAsleepMinute
 };
 
 template <typename Range>
-auto find_most_asleep_minute( const Range sleep_intervals )
+auto find_most_asleep_minute( Range&& sleep_intervals )
 {
   const auto minutes_by_intervals =
       ranges::view::indices( SleepMinute{ 0 }, SleepMinute{ 60 } ) |
@@ -139,7 +139,7 @@ auto get_guards_stats( const GuardShifts& shifts )
   return shifts | ranges::view::group_by( []( const GuardShift& s1, const GuardShift& s2 ) { return s1.guard_id == s2.guard_id; } ) |
          ranges::view::transform( []( const auto guard_shifts ) {
            const auto guard_id            = guard_shifts.front().guard_id;
-           const auto all_sleep_intervals = guard_shifts | ranges::view::transform( &GuardShift::sleep_intervals ) | ranges::view::join;
+           auto all_sleep_intervals = guard_shifts | ranges::view::transform( &GuardShift::sleep_intervals ) | ranges::view::join;
            const auto total_sleep_time    = sum_sleep_intervals( all_sleep_intervals );
            const auto most_asleep_minute  = find_most_asleep_minute( all_sleep_intervals );
 

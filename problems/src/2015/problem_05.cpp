@@ -5,6 +5,7 @@
 #include "range/v3/algorithm/count_if.hpp"
 #include "range/v3/getlines.hpp"
 #include "range/v3/view/drop.hpp"
+#include "range/v3/view/sliding.hpp"
 #include "range/v3/view/zip.hpp"
 
 #include "AoC/problems_map.h"
@@ -56,7 +57,7 @@ bool has_no_forbidden_sequences( const std::string& s )
   return !ranges::any_of( pairs, is_forbidden_pair );
 }
 
-bool has_pair_of_letters( const std::string_view& s )
+bool has_repeating_pairs_of_letters( const std::string_view& s )
 {
   if ( s.size() < 2 )
     return false;
@@ -66,14 +67,14 @@ bool has_pair_of_letters( const std::string_view& s )
 
   const bool pair_found = rest_string.find( first_two_letters ) != std::string::npos;
 
-  return pair_found ? true : has_pair_of_letters( s.substr( 1 ) );
+  return pair_found ? true : has_repeating_pairs_of_letters( s.substr( 1 ) );
 }
 
-bool has_repeating_letter( const std::string& s )
+bool has_a_letter_between_same_letters( const std::string& s )
 {
-  const auto pairs             = ranges::view::zip( s, s | ranges::view::drop( 2 ) );
-  const auto is_repeating_pair = []( const auto& pair ) { return pair.first == pair.second; };
-  return ranges::any_of( pairs, is_repeating_pair );
+  const auto triples                     = s | ranges::view::sliding( 3 );
+  const auto are_first_and_last_the_same = []( const auto t ) { return t.front() == t.back(); };
+  return ranges::any_of( triples, are_first_and_last_the_same );
 }
 
 bool is_good_line_1( const std::string& s )
@@ -83,7 +84,7 @@ bool is_good_line_1( const std::string& s )
 
 bool is_good_line_2( const std::string& s )
 {
-  return has_pair_of_letters( s ) && has_repeating_letter( s );
+  return has_repeating_pairs_of_letters( s ) && has_a_letter_between_same_letters( s );
 }
 
 }  // namespace

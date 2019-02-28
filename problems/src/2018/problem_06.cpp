@@ -78,7 +78,7 @@ Rect get_bound_rect( const Locations& locations )
 }
 
 template <typename Range>
-Locations index_coords( Range coords )
+Locations index_coords( Range&& coords )
 {
   return ranges::view::zip_with( []( const Coord c, const LocationIndex i ) { return Location{ c, i }; }, coords, ranges::view::iota( 1 ) );
 }
