@@ -8,7 +8,7 @@ macro(append_tests_srcs TestsSources Year)
 endmacro()
 
 append_tests_srcs(AocTestsSources 2015 01 02 03    05 06 07 08 09    11 12 13    15          19 20       23 24 25)
-append_tests_srcs(AocTestsSources 2016 01 02)
+append_tests_srcs(AocTestsSources 2016 01 02 03)
 append_tests_srcs(AocTestsSources 2017 01 02)
 append_tests_srcs(AocTestsSources 2018 01 02 03 04 05 06 07 08 09    11)
 
@@ -96,6 +96,7 @@ if(Bash)
 
   add_aoc_test(2016_01 273 115)
   add_aoc_test(2016_02 78293 AC8C8)
+  add_aoc_test(2016_03 983 1836)
 
   add_aoc_test(2017_01 1034 1356)
   add_aoc_test(2017_02 58975 308)

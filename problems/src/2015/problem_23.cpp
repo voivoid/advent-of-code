@@ -213,8 +213,7 @@ static void impl_tests()
 {
   const auto instruction = parse_instruction( "tpl b" );
 
-  auto visitor =
-      boost::hof::first_of( []( Instructions::Tpl i ) { assert( i.reg == Register::B ); }, []( auto ) { assert( false ); } );
+  auto visitor = boost::hof::first_of( []( Instructions::Tpl i ) { assert( i.reg == Register::B ); }, []( auto ) { assert( false ); } );
 
   boost::apply_visitor( visitor, instruction );
 }

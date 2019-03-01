@@ -134,9 +134,9 @@ int solve( std::istream& input )
   constexpr size_t grid_side = 1000;
   Lamps<grid_side> lamps;
 
-  for( const auto& cmd : cmds )
+  for ( const auto& cmd : cmds )
   {
-      apply_cmd<manipulator_factory, grid_side>( lamps, cmd );
+    apply_cmd<manipulator_factory, grid_side>( lamps, cmd );
   }
 
   return static_cast<int>( calc_lamps_brightness( lamps ) );

@@ -124,9 +124,9 @@ template <typename Claims>
 Overlaps calc_overlaps( Claims& claims )
 {
   Overlaps overlaps;
-  for( const auto& claim : claims )
+  for ( const auto& claim : claims )
   {
-      apply_claim( overlaps, claim );
+    apply_claim( overlaps, claim );
   }
   return overlaps;
 }

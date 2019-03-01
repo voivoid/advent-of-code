@@ -56,7 +56,7 @@ template <typename Range>
 size_t do_reductions( Range&& data )
 {
   std::stack<char> polymers_stack;
-  for( const auto polymer : data )
+  for ( const auto polymer : data )
   {
     reduce_polymer( polymers_stack, polymer );
   }

@@ -138,10 +138,10 @@ auto get_guards_stats( const GuardShifts& shifts )
 {
   return shifts | ranges::view::group_by( []( const GuardShift& s1, const GuardShift& s2 ) { return s1.guard_id == s2.guard_id; } ) |
          ranges::view::transform( []( const auto guard_shifts ) {
-           const auto guard_id            = guard_shifts.front().guard_id;
-           auto all_sleep_intervals = guard_shifts | ranges::view::transform( &GuardShift::sleep_intervals ) | ranges::view::join;
-           const auto total_sleep_time    = sum_sleep_intervals( all_sleep_intervals );
-           const auto most_asleep_minute  = find_most_asleep_minute( all_sleep_intervals );
+           const auto guard_id           = guard_shifts.front().guard_id;
+           auto all_sleep_intervals      = guard_shifts | ranges::view::transform( &GuardShift::sleep_intervals ) | ranges::view::join;
+           const auto total_sleep_time   = sum_sleep_intervals( all_sleep_intervals );
+           const auto most_asleep_minute = find_most_asleep_minute( all_sleep_intervals );
 
            return GuardStats{ guard_id, total_sleep_time, most_asleep_minute };
          } );
