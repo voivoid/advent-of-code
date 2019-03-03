@@ -9,9 +9,9 @@
 #include "range/v3/view/filter.hpp"
 #include "range/v3/view/group_by.hpp"
 #include "range/v3/view/reverse.hpp"
+#include "range/v3/view/sliding.hpp"
 #include "range/v3/view/transform.hpp"
 #include "range/v3/view/unique.hpp"
-#include "range/v3/view/zip.hpp"
 
 #include <functional>
 #include <istream>
@@ -36,12 +36,11 @@ char next_char( char c )
 
 bool has_incrementing_letters( const Password& password )
 {
-  const auto triples =
-      ranges::view::zip( ranges::view::zip( password, password | ranges::view::drop( 1 ) ), password | ranges::view::drop( 2 ) );
+  const auto triples = password | ranges::view::sliding( 3 );
 
-  for ( const auto [ ab, c ] : triples )
+  for ( const auto triple : triples )
   {
-    const auto [ a, b ] = ab;
+    const auto [ a, b, c ] = std::tie( triple[ 0 ], triple[ 1 ], triple[ 2 ] );
     assert_char( a );
     assert_char( b );
     assert_char( c );

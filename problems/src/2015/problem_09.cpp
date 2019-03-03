@@ -10,9 +10,9 @@
 #include "range/v3/to_container.hpp"
 #include "range/v3/view/drop.hpp"
 #include "range/v3/view/map.hpp"
+#include "range/v3/view/sliding.hpp"
 #include "range/v3/view/transform.hpp"
 #include "range/v3/view/unique.hpp"
-#include "range/v3/view/zip.hpp"
 
 #include "boost/fusion/include/vector.hpp"
 #include "boost/spirit/home/x3.hpp"
@@ -69,10 +69,11 @@ size_t get_distance( const Path& path, const PathMap& path_map )
 
 size_t calc_route_distance( const Route& route, const PathMap& path_map )
 {
-  const auto paths = ranges::view::zip( route, route | ranges::view::drop( 1 ) );
-  return ranges::accumulate( paths, size_t{ 0 }, [&path_map]( size_t acc_distance, const auto& path ) {
-    return acc_distance + get_distance( { path.first, path.second }, path_map );
-  } );
+  const auto distances = route | ranges::view::sliding( 2 ) | ranges::view::transform( [&path_map]( const auto paths ) {
+                           assert( paths.size() == 2 );
+                           return get_distance( { paths[ 0 ], paths[ 1 ] }, path_map );
+                         } );
+  return ranges::accumulate( distances, size_t{ 0 } );
 }
 
 PathMap parse_path_map( std::istream& input )
