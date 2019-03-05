@@ -1,4 +1,4 @@
-#include "AoC/2016/problem_02.h"
+#include "AoC/2016/problem_03.h"
 
 #include "AoC/problems_map.h"
 #include "AoC/utils/parse.h"
