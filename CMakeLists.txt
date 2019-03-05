@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.13.0)
 project(CppAoc LANGUAGES CXX)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 include(cmake/thirdparties/boost.cmake)
 include(cmake/thirdparties/rangev3.cmake)
 include(cmake/thirdparties/json.cmake)
@@ -20,12 +24,8 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 endif()
 
 foreach(Problem ${AocExcludedProblems})
-  message("Problem ${Problem} excluded")
+  message("Problem ${Problem} would not be built due to ${CMAKE_CXX_COMPILER_ID} compiler issues")
 endforeach()
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_subdirectory(utils)
 add_subdirectory(problems)
