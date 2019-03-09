@@ -28,23 +28,23 @@ constexpr size_t abba_len = 4;
 constexpr size_t aba_len  = 3;
 
 template <typename Range>
-bool is_abba_chars( const Range& chars )
+bool is_abba_seq( const Range& seq )
 {
-  assert( chars.size() == abba_len );
-  return chars[ 0 ] == chars[ 3 ] && chars[ 1 ] == chars[ 2 ] && chars[ 0 ] != chars[ 1 ];
+  assert( seq.size() == abba_len );
+  return seq[ 0 ] == seq[ 3 ] && seq[ 1 ] == seq[ 2 ] && seq[ 0 ] != seq[ 1 ];
 }
 
 template <typename Range>
-bool is_aba_chars( const Range& chars )
+bool is_aba_seq( const Range& seq )
 {
-  assert( chars.size() == aba_len );
-  return chars[ 0 ] == chars[ 2 ] && chars[ 0 ] != chars[ 1 ];
+  assert( seq.size() == aba_len );
+  return seq[ 0 ] == seq[ 2 ] && seq[ 0 ] != seq[ 1 ];
 }
 
 template <typename Range>
-bool has_abba( const Range& range )
+bool has_abba( const Range& part )
 {
-  return ranges::any_of( range | ranges::view::sliding( abba_len ), BOOST_HOF_LIFT( is_abba_chars ) );
+  return ranges::any_of( part | ranges::view::sliding( abba_len ), BOOST_HOF_LIFT( is_abba_seq ) );
 }
 
 template <typename Range>
@@ -66,7 +66,7 @@ bool is_aba( const R1& parts_outside_square_brackets, const R2& parts_inside_squ
 {
   static const auto get_3chars_sequences = ranges::view::transform( ranges::view::sliding( aba_len ) ) | ranges::view::join;
 
-  auto aba_sequences = parts_outside_square_brackets | get_3chars_sequences | ranges::view::filter( BOOST_HOF_LIFT( is_aba_chars ) );
+  auto aba_sequences = parts_outside_square_brackets | get_3chars_sequences | ranges::view::filter( BOOST_HOF_LIFT( is_aba_seq ) );
   auto bab_sequences = aba_sequences | ranges::view::transform( BOOST_HOF_LIFT( aba_to_bab ) );
 
 
