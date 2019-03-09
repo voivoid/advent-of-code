@@ -6,6 +6,7 @@
 #include "range/v3/view/indices.hpp"
 #include "range/v3/view/join.hpp"
 #include "range/v3/view/move.hpp"
+#include "range/v3/view/transform.hpp"
 
 #include <algorithm>
 #include <array>
@@ -311,8 +312,8 @@ using dd_static_heap_array = Details::dd_array<T, Details::static_array<T, width
 template <typename T>
 using dd_dynamic_heap_array = Details::dd_array<T, Details::dynamic_array<T>>;
 
-template <typename Array, typename T>
-std::optional<UPoint> dd_array_find_elem_indices( const Array& arr, const T& elem )
+template <typename T, typename Impl>
+std::optional<UPoint> dd_array_find_elem_indices( const Details::dd_array<T, Impl>& arr, const T& elem )
 {
   const auto xs = ranges::view::indices( size_t{ 0 }, arr.get_width() );
   const auto ys = ranges::view::indices( size_t{ 0 }, arr.get_height() );
@@ -326,6 +327,50 @@ std::optional<UPoint> dd_array_find_elem_indices( const Array& arr, const T& ele
   }
 
   return {};
+}
+
+namespace Details
+{
+template <typename E, typename T>
+auto column_impl( T& arr, const size_t n )
+{
+  assert( n < arr.get_width() );
+  return ranges::view::indices( size_t{ 0 }, arr.get_height() ) |
+         ranges::view::transform( [&arr, n]( const size_t i ) -> E& { return arr[ n ][ i ]; } );
+}
+
+template <typename E, typename T>
+auto row_impl( T& arr, const size_t n )
+{
+  assert( n < arr.get_height() );
+  return ranges::view::indices( size_t{ 0 }, arr.get_width() ) |
+         ranges::view::transform( [&arr, n]( const size_t i ) -> E& { return arr[ i ][ n ]; } );
+}
+
+}  // namespace Details
+
+template <typename T, typename Impl>
+auto column( Details::dd_array<T, Impl>& arr, const size_t n )
+{
+  return Details::column_impl<T>( arr, n );
+}
+
+template <typename T, typename Impl>
+auto column( const Details::dd_array<T, Impl>& arr, const size_t n )
+{
+  return Details::column_impl<const T>( arr, n );
+}
+
+template <typename T, typename Impl>
+auto row( Details::dd_array<T, Impl>& arr, const size_t n )
+{
+  return Details::row_impl<T>( arr, n );
+}
+
+template <typename T, typename Impl>
+auto row( const Details::dd_array<T, Impl>& arr, const size_t n )
+{
+  return Details::row_impl<const T>( arr, n );
 }
 
 }  // namespace AoC

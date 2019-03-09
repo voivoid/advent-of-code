@@ -1,9 +1,15 @@
-#include "boost/mpl/vector.hpp"
 #include "boost/test/unit_test.hpp"
+
+#include "boost/mpl/placeholders.hpp"
+#include "boost/mpl/transform.hpp"
+#include "boost/mpl/vector.hpp"
+#include <boost/mpl/joint_view.hpp>
 
 #include "AoC/utils/2d_array.h"
 
-#include <algorithm>
+#include "range/v3/algorithm/copy.hpp"
+#include "range/v3/algorithm/equal.hpp"
+#include "range/v3/view/reverse.hpp"
 
 namespace
 {
@@ -18,13 +24,26 @@ struct dd_array_fixture
   Array array;
 };
 
-using Fixtures = boost::mpl::vector<dd_array_fixture<AoC::dd_static_stack_array<int, 4, 3>>,
-                                    dd_array_fixture<AoC::dd_static_heap_array<int, 4, 3>>,
-                                    dd_array_fixture<AoC::dd_dynamic_heap_array<int>>>;
+template <typename T>
+struct AddConstnessToFixture;
+
+template <typename T>
+struct AddConstnessToFixture<dd_array_fixture<T>>
+{
+  using type = dd_array_fixture<const T>;
+};
+
+using NonConstFixtures = boost::mpl::vector<dd_array_fixture<AoC::dd_static_stack_array<int, 4, 3>>,
+                                            dd_array_fixture<AoC::dd_static_heap_array<int, 4, 3>>,
+                                            dd_array_fixture<AoC::dd_dynamic_heap_array<int>>>;
+
+using ConstFixtures = boost::mpl::transform<NonConstFixtures, AddConstnessToFixture<boost::mpl::_1>>::type;
+
+using AllFixtures = boost::mpl::joint_view<NonConstFixtures, ConstFixtures>;
 
 }  // namespace
 
-BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_sizes, T, Fixtures, T )
+BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_sizes, T, AllFixtures, T )
 {
   auto& arr = T::array;
 
@@ -33,7 +52,7 @@ BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_sizes, T, Fixtures, T )
   BOOST_CHECK_EQUAL( 12, arr.size() );
 }
 
-BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_reading, T, Fixtures, T )
+BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_reading, T, AllFixtures, T )
 {
   auto& arr = T::array;
 
@@ -43,12 +62,9 @@ BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_reading, T, Fixtures, T )
   BOOST_CHECK_EQUAL( 11, arr[ 2 ][ 2 ] );
   BOOST_CHECK_EQUAL( 8, arr[ 3 ][ 1 ] );
   BOOST_CHECK_EQUAL( 12, arr[ 3 ][ 2 ] );
-
-  const auto& carr = arr;
-  BOOST_CHECK_EQUAL( 6, carr[ 1 ][ 1 ] );
 }
 
-BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_find_elem, T, Fixtures, T )
+BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_find_elem, T, AllFixtures, T )
 {
   auto& arr = T::array;
 
@@ -60,26 +76,86 @@ BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_find_elem, T, Fixtures, T )
   BOOST_CHECK( !AoC::dd_array_find_elem_indices( arr, 42 ) );
 }
 
-BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_iterators, T, Fixtures, T )
+BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_iterators_reading, T, AllFixtures, T )
 {
-  auto& arr        = T::array;
-  const auto& carr = arr;
+  auto& arr = T::array;
 
-  std::vector<int> v = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-  BOOST_CHECK_EQUAL_COLLECTIONS( arr.begin(), arr.end(), v.cbegin(), v.cend() );
-  BOOST_CHECK_EQUAL_COLLECTIONS( carr.begin(), carr.end(), v.cbegin(), v.cend() );
-  BOOST_CHECK_EQUAL_COLLECTIONS( arr.cbegin(), arr.cend(), v.cbegin(), v.cend() );
-
-  std::copy( v.crbegin(), v.crend(), arr.begin() );
-  BOOST_CHECK_EQUAL_COLLECTIONS( arr.cbegin(), arr.cend(), v.crbegin(), v.crend() );
+  const std::initializer_list<int> v = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+  BOOST_CHECK_EQUAL_COLLECTIONS( arr.begin(), arr.end(), v.begin(), v.end() );
+  BOOST_CHECK_EQUAL_COLLECTIONS( arr.cbegin(), arr.cend(), v.begin(), v.end() );
 }
 
-BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_writing, T, Fixtures, T )
+BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_iterators_writing, T, NonConstFixtures, T )
+{
+  auto& arr = T::array;
+
+  const std::initializer_list<int> v = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+  ranges::copy( v | ranges::view::reverse, arr.begin() );
+  BOOST_CHECK_EQUAL_COLLECTIONS( arr.cbegin(), arr.cend(), std::crbegin( v ), std::crend( v ) );
+}
+
+BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_writing, T, NonConstFixtures, T )
 {
   auto& arr = T::array;
 
   arr[ 0 ][ 0 ] = 42;
+  arr[ 1 ][ 2 ] = 12;
+  arr[ 2 ][ 1 ] = 21;
   BOOST_CHECK_EQUAL( 42, arr[ 0 ][ 0 ] );
+  BOOST_CHECK_EQUAL( 12, arr[ 1 ][ 2 ] );
+  BOOST_CHECK_EQUAL( 21, arr[ 2 ][ 1 ] );
+
+  const std::initializer_list<int> expected = { 42, 2, 3, 4, 5, 6, 21, 8, 9, 12, 11, 12 };
+  BOOST_CHECK_EQUAL_COLLECTIONS( arr.cbegin(), arr.cend(), expected.begin(), expected.end() );
+}
+
+BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_column_reading, T, AllFixtures, T )
+{
+  auto& arr = T::array;
+
+  auto col = AoC::column( arr, 0 );
+  BOOST_CHECK_EQUAL( 3, col.size() );
+  const std::initializer_list<int> expected = { 1, 5, 9 };
+  BOOST_CHECK_EQUAL_COLLECTIONS( col.begin(), col.end(), expected.begin(), expected.end() );
+}
+
+BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_row_reading, T, AllFixtures, T )
+{
+  auto& arr = T::array;
+
+  auto row = AoC::row( arr, 0 );
+  BOOST_CHECK_EQUAL( 4, row.size() );
+  const std::initializer_list<int> expected = { 1, 2, 3, 4 };
+  BOOST_CHECK_EQUAL_COLLECTIONS( row.begin(), row.end(), expected.begin(), expected.end() );
+}
+
+BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_column_writing, T, NonConstFixtures, T )
+{
+  auto& arr = T::array;
+
+  auto col = AoC::column( arr, 1 );
+  BOOST_CHECK_EQUAL( 3, col.size() );
+  col[0] = 10;
+  col[1] = 20;
+  col[2] = 30;
+
+  const std::initializer_list<int> expected = { 1, 10, 3, 4, 5, 20, 7, 8, 9, 30, 11, 12 };
+  BOOST_CHECK_EQUAL_COLLECTIONS( arr.cbegin(), arr.cend(), expected.begin(), expected.end() );
+}
+
+BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_row_writing, T, NonConstFixtures, T )
+{
+  auto& arr = T::array;
+
+  auto row = AoC::row( arr, 1 );
+  BOOST_CHECK_EQUAL( 4, row.size() );
+  row[0] = 10;
+  row[1] = 20;
+  row[2] = 30;
+  row[3] = 40;
+
+  const std::initializer_list<int> expected = { 1, 2, 3, 4, 10, 20, 30, 40, 9, 10, 11, 12 };
+  BOOST_CHECK_EQUAL_COLLECTIONS( arr.cbegin(), arr.cend(), expected.begin(), expected.end() );
 }
 
 BOOST_AUTO_TEST_CASE( AoC_utils_dd_dynamic_array )
