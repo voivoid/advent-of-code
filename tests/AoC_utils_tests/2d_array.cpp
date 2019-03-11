@@ -135,9 +135,9 @@ BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_column_writing, T, NonConst
 
   auto col = AoC::column( arr, 1 );
   BOOST_CHECK_EQUAL( 3, col.size() );
-  col[0] = 10;
-  col[1] = 20;
-  col[2] = 30;
+  col[ 0 ] = 10;
+  col[ 1 ] = 20;
+  col[ 2 ] = 30;
 
   const std::initializer_list<int> expected = { 1, 10, 3, 4, 5, 20, 7, 8, 9, 30, 11, 12 };
   BOOST_CHECK_EQUAL_COLLECTIONS( arr.cbegin(), arr.cend(), expected.begin(), expected.end() );
@@ -149,13 +149,21 @@ BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_row_writing, T, NonConstFix
 
   auto row = AoC::row( arr, 1 );
   BOOST_CHECK_EQUAL( 4, row.size() );
-  row[0] = 10;
-  row[1] = 20;
-  row[2] = 30;
-  row[3] = 40;
+  row[ 0 ] = 10;
+  row[ 1 ] = 20;
+  row[ 2 ] = 30;
+  row[ 3 ] = 40;
 
   const std::initializer_list<int> expected = { 1, 2, 3, 4, 10, 20, 30, 40, 9, 10, 11, 12 };
   BOOST_CHECK_EQUAL_COLLECTIONS( arr.cbegin(), arr.cend(), expected.begin(), expected.end() );
+}
+
+BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_equal_op, T, AllFixtures, T )
+{
+  auto& arr = T::array;
+
+  BOOST_CHECK( arr == arr );
+  BOOST_CHECK( !( arr != arr ) );
 }
 
 BOOST_AUTO_TEST_CASE( AoC_utils_dd_dynamic_array )

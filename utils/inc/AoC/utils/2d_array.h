@@ -2,6 +2,7 @@
 
 #include "AoC/utils/geo.h"
 
+#include "range/v3/algorithm/equal.hpp"
 #include "range/v3/view/cartesian_product.hpp"
 #include "range/v3/view/indices.hpp"
 #include "range/v3/view/join.hpp"
@@ -224,6 +225,16 @@ public:
   template <typename... Args>
   dd_array( Args&&... args ) : impl( std::forward<Args>( args )... )
   {
+  }
+
+  bool operator==( const dd_array<T, Array>& arr ) const
+  {
+    return ranges::equal( *this, arr );
+  }
+
+  bool operator!=( const dd_array<T, Array>& arr ) const
+  {
+    return !( *this == arr );
   }
 
   auto operator[]( const size_t x )
