@@ -1,6 +1,6 @@
-# Advent of Code in C++
+# Advent of Code in modern C++
 
-Advent of Code ( https://adventofcode.com ) 2015-2018 solutions using really modern c++ and ranges-v3
+Advent of Code ( https://adventofcode.com ) 2015-2018 solutions using c++-17 with wide usage of boost and ranges-v3
 
 Prerequisites
 -----
@@ -8,6 +8,7 @@ Prerequisites
 * C++17 compiler ( tested with gcc 8.2.1, clang 7.0.1 )
 * cmake 3.13 or later
 * git
+* bash
 
 Build
 -----
@@ -45,7 +46,7 @@ Day | 2015 | 2016 | 2017 | 2018 |
 07  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_07.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2016/problem_07.cpp)     |      | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2018/problem_07.cpp)     |
 08  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_08.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2016/problem_08.cpp)     |      | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2018/problem_08.cpp)     |
 09  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_09.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2016/problem_09.cpp)     |      | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2018/problem_09.cpp)     |
-10  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_10.cpp)     |      |      |      |
+10  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_10.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2016/problem_10.cpp)     |      |      |
 11  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_11.cpp)     |      |      | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2018/problem_11.cpp)     |
 12  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_12.cpp)     |      |      |      |
 13  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_13.cpp)     |      |      |      |

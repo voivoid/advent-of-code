@@ -16,7 +16,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
   set(AocExcludedProblems 2015_08     # MSVC raw string issues
                           2015_14     # looks like MSVC has issues with range-v3
-                          2015_23     # looks like MSVC has issues with boost::hof issue
+                          2015_23     # looks like MSVC has issues with boost::hof
                           2018_02
                           2018_04
                           2018_06

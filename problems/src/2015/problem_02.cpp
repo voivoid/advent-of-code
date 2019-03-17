@@ -46,7 +46,7 @@ Dimensions parse_dimensions( const std::string& str )
   const auto parser = x3::int_ > 'x' > x3::int_ > 'x' > x3::int_;
 
   Dimensions dims;
-  const bool is_parsed = AoC::x3_parse( str.cbegin(), str.cend(), parser, dims );
+  const bool is_parsed = AoC::x3_parse( str.cbegin(), str.cend(), parser, x3::space, dims );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse input dimensions data" );

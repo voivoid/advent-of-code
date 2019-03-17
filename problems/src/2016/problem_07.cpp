@@ -92,7 +92,7 @@ bool check_ip( const PartsChecker& check_parts, const std::string& ip )
 template <typename IpFilterPredicate>
 int solve( std::istream& istream, const IpFilterPredicate& ip_filter_predicate )
 {
-  const auto ip_filter = boost::hof::partial( BOOST_HOF_LIFT( check_ip ) )( ip_filter_predicate );
+  const auto ip_filter = boost::hof::partial( BOOST_HOF_LIFT( check_ip ) )( std::cref( ip_filter_predicate ) );
   return static_cast<int>( ranges::count_if( ranges::istream<std::string>( istream ), ip_filter ) );
 }
 
