@@ -19,6 +19,13 @@ bool x3_parse( Iter begin, Iter end, const Parser& parser, const Skipper& skippe
   return parsed && ( begin == end );
 }
 
+template <typename Iter, typename Parser, typename Skipper>
+bool x3_parse( Iter begin, Iter end, const Parser& parser, const Skipper& skipper )
+{
+  const bool parsed = boost::spirit::x3::phrase_parse( begin, end, parser, skipper );
+  return parsed && ( begin == end );
+}
+
 constexpr auto x3_size_t_ = boost::spirit::x3::ulong_;
 
 

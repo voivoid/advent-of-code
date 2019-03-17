@@ -14,7 +14,3 @@ BOOST_FIXTURE_TEST_CASE( problem2016_08_1, AocFixture )
                         rotate column x=1 by 1)";
   BOOST_CHECK_EQUAL( 6, run( &solve_1, input ) );
 }
-
-BOOST_FIXTURE_TEST_CASE( problem2016_08_2, AocFixture )
-{
-}
