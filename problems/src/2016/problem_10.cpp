@@ -5,16 +5,13 @@
 
 #include "range/v3/algorithm/find_if.hpp"
 #include "range/v3/getlines.hpp"
+#include "range/v3/numeric/accumulate.hpp"
 #include "range/v3/view/map.hpp"
 #include "range/v3/view/transform.hpp"
-#include "range/v3/numeric/accumulate.hpp"
 
-#include "boost/fusion/adapted/struct.hpp"
-#include "boost/hof/lift.hpp"
-#include "boost/hof/partial.hpp"
 #include "boost/spirit/home/x3.hpp"
-#include "boost/variant.hpp"
 
+#include <functional>
 #include <istream>
 #include <map>
 #include <optional>
@@ -27,61 +24,190 @@ namespace
 using Value = size_t;
 using Id    = size_t;
 
-struct InputInstruction
+struct SlotMaps;
+using Instruction = std::function<void( SlotMaps& )>;
+
+struct Bot
 {
-  Value value;
-  Id bot_num;
+  Id id;
+  std::optional<Instruction> instr;
+  std::optional<Value> low_val;
+  std::optional<Value> high_val;
+};
+
+struct Output
+{
+  Id id;
+  std::optional<Value> value;
+};
+
+template <typename T>
+using SlotsMap = std::map<Id, T>;
+using Bots     = SlotsMap<Bot>;
+using Outputs  = SlotsMap<Output>;
+
+struct SlotMaps
+{
+  Bots bots;
+  Outputs outputs;
 };
 
 enum class Destination
 {
-  Output,
-  Bot
+  Bot,
+  Output
 };
 
-struct OutputInstruction
+void set_value( const Value value, Bot& bot )
 {
-  Id from;
+  assert( !( bot.low_val && bot.high_val ) );
 
-  Destination low_val_destination;
-  Id low_val_dest_id;
+  if ( !bot.low_val )
+  {
+    bot.low_val = value;
+    return;
+  }
 
-  Destination high_val_destination;
-  Id high_val_dest_id;
-};
+  bot.high_val = value;
+  if ( bot.low_val > bot.high_val )
+  {
+    std::swap( bot.low_val, bot.high_val );
+  }
+}
 
-struct Bot
+void set_value( const Value value, Output& output )
 {
-  Id num;
-  std::optional<OutputInstruction> instr;
-  std::optional<Value> low;
-  std::optional<Value> high;
-  std::optional<Value> output;
-};
+  assert( !output.value );
+  output.value = value;
+}
 
-using Bots = std::map<Id, Bot>;
+template <typename T>
+T& get_slot( SlotsMap<T>& slots, const Id id )
+{
+  auto slot_iter = slots.find( id );
+  if ( slot_iter != slots.cend() )
+  {
+    return slot_iter->second;
+  }
 
-}  // namespace
+  T slot{};
+  slot.id = id;
+  return slots.emplace( id, std::move( slot ) ).first->second;
+}
 
-BOOST_FUSION_ADAPT_STRUCT( InputInstruction, value, bot_num )
-BOOST_FUSION_ADAPT_STRUCT( OutputInstruction, from, low_val_destination, low_val_dest_id, high_val_destination, high_val_dest_id )
+const auto get_bot    = get_slot<Bot>;
+const auto get_output = get_slot<Output>;
 
-namespace
+bool is_ready( const Bot& bot )
+{
+  return bot.low_val && bot.high_val && bot.instr;
+}
+
+bool try_to_run_instruction( SlotMaps& slots, Bot& bot )
+{
+  if ( !is_ready( bot ) )
+  {
+    return false;
+  }
+
+  assert( bot.instr );
+  ( *bot.instr )( slots );
+  return true;
+}
+
+void give_value( const Value value, SlotMaps& slots, const Destination dest, const Id dest_id )
 {
 
-using Instruction = boost::variant<InputInstruction, OutputInstruction>;
+  switch ( dest )
+  {
+    case Destination::Bot:
+    {
+      auto& other_bot = get_bot( slots.bots, dest_id );
+      set_value( value, other_bot );
+      try_to_run_instruction( slots, other_bot );
+      return;
+    }
+
+    case Destination::Output:
+    {
+      set_value( value, get_output( slots.outputs, dest_id ) );
+      return;
+    }
+  }
+
+  throw std::runtime_error( "Unexpected destination" );
+}
+
+void run_bot_instruction( SlotMaps& slots,
+                          Bot& bot,
+                          const Destination low_dest_type,
+                          const Id low_dest_id,
+                          const Destination high_dest_type,
+                          const Id high_dest_id )
+{
+  assert( is_ready( bot ) );
+  assert( bot.low_val );
+  assert( bot.high_val );
+
+  give_value( *bot.low_val, slots, low_dest_type, low_dest_id );
+  give_value( *bot.high_val, slots, high_dest_type, high_dest_id );
+}
+
+void process_input_instruction( SlotMaps& slots, const Value value, const Id bot_id )
+{
+  auto& bot = get_bot( slots.bots, bot_id );
+  set_value( value, bot );
+
+  try_to_run_instruction( slots, bot );
+}
+
+void process_output_instruction( SlotMaps& slots,
+                                 const Id bot_id,
+                                 const Destination low_dest_type,
+                                 const Id low_dest_id,
+                                 const Destination high_dest_type,
+                                 const Id high_dest_id )
+{
+  auto& bot = get_bot( slots.bots, bot_id );
+
+  bot.instr =
+      std::bind( &run_bot_instruction, std::placeholders::_1, std::ref( bot ), low_dest_type, low_dest_id, high_dest_type, high_dest_id );
+
+  try_to_run_instruction( slots, bot );
+}
 
 Instruction parse_instruction( const std::string& line )
 {
   namespace x3 = boost::spirit::x3;
 
-  const auto input_parser = "value" > AoC::x3_size_t_ > "goes" > "to" > "bot" > AoC::x3_size_t_;
+  const auto make_input_instruction = []( auto& ctx ) {
+    const auto val    = boost::fusion::at_c<0>( x3::_attr( ctx ) );
+    const auto bot_id = boost::fusion::at_c<1>( x3::_attr( ctx ) );
+
+    x3::_val( ctx ) = std::bind( &process_input_instruction, std::placeholders::_1, val, bot_id );
+  };
+
+  const auto make_output_instruction = []( auto& ctx ) {
+    const auto bot_id         = boost::fusion::at_c<0>( x3::_attr( ctx ) );
+    const auto low_dest_type  = boost::fusion::at_c<1>( x3::_attr( ctx ) );
+    const auto low_dest_id    = boost::fusion::at_c<2>( x3::_attr( ctx ) );
+    const auto high_dest_type = boost::fusion::at_c<3>( x3::_attr( ctx ) );
+    const auto high_dest_id   = boost::fusion::at_c<4>( x3::_attr( ctx ) );
+
+    x3::_val( ctx ) =
+        std::bind( &process_output_instruction, std::placeholders::_1, bot_id, low_dest_type, low_dest_id, high_dest_type, high_dest_id );
+  };
+
+  const auto input_parser = x3::rule<struct _input, Instruction>{} =
+      ( "value" > AoC::x3_size_t_ > "goes" > "to" > "bot" > AoC::x3_size_t_ )[ make_input_instruction ];
 
   x3::symbols<Destination> destination_parser;
   destination_parser.add( "bot", Destination::Bot )( "output", Destination::Output );
 
-  const auto output_parser = "bot" > AoC::x3_size_t_ > "gives" > "low" > "to" > destination_parser > AoC::x3_size_t_ > "and" > "high" >
-                             "to" > destination_parser > AoC::x3_size_t_;
+  const auto output_parser = x3::rule<struct _output, Instruction>{} =
+      ( "bot" > AoC::x3_size_t_ > "gives" > "low" > "to" > destination_parser > AoC::x3_size_t_ > "and" > "high" > "to" >
+        destination_parser > AoC::x3_size_t_ )[ make_output_instruction ];
+
   const auto parser = input_parser | output_parser;
 
   Instruction instruction;
@@ -94,117 +220,30 @@ Instruction parse_instruction( const std::string& line )
   return instruction;
 }
 
-void give_value( const Value value, Bot& bot )
-{
-  assert( !( bot.low && bot.high ) );
-
-  if ( !bot.low )
-  {
-    bot.low = value;
-    return;
-  }
-
-  bot.high = value;
-  if ( bot.low > bot.high )
-  {
-    std::swap( bot.low, bot.high );
-  }
-}
-
-Bot& get_bot( Bots& bots, const Id bot_num )
-{
-  auto bot_iter = bots.find( bot_num );
-  if ( bot_iter != bots.cend() )
-  {
-    return bot_iter->second;
-  }
-
-  return bots.emplace( bot_num, Bot{ bot_num, {}, {}, {}, {} } ).first->second;
-}
-
-bool is_ready( const Bot& bot )
-{
-  return bot.low && bot.high && bot.instr;
-}
-
-void try_to_run_instruction( Bots& bots, const Bot& bot )
-{
-  if ( !is_ready( bot ) )
-  {
-    return;
-  }
-
-  {
-    auto& other_bot = get_bot( bots, bot.instr->low_val_dest_id );
-    if ( bot.instr->low_val_destination == Destination::Bot )
-    {
-      give_value( *bot.low, other_bot );
-      try_to_run_instruction( bots, other_bot );
-    }
-    else
-    {
-      assert( !other_bot.output );
-      other_bot.output = *bot.low;
-    }
-  }
-
-  {
-    auto& other_bot = get_bot( bots, bot.instr->high_val_dest_id );
-    if ( bot.instr->high_val_destination == Destination::Bot )
-    {
-
-      give_value( *bot.high, other_bot );
-      try_to_run_instruction( bots, other_bot );
-    }
-    else
-    {
-      assert( !other_bot.output );
-      other_bot.output = *bot.high;
-    }
-  }
-}
-
-void load_instruction( Bots& bots, const InputInstruction instruction )
-{
-  auto& bot = get_bot( bots, instruction.bot_num );
-  give_value( instruction.value, bot );
-
-  try_to_run_instruction( bots, bot );
-}
-
-void load_instruction( Bots& bots, const OutputInstruction instruction )
-{
-  Bot& bot  = get_bot( bots, instruction.from );
-  bot.instr = instruction;
-
-  try_to_run_instruction( bots, bot );
-}
-
-Bots execute_instructions( std::istream& input )
+SlotMaps execute_instructions( std::istream& input )
 {
   auto instructions = ranges::getlines( input ) | ranges::view::transform( &parse_instruction );
 
-  Bots bots_map;
-  const auto instruction_loader = boost::hof::partial( BOOST_HOF_LIFT( load_instruction ) )( std::ref( bots_map ) );
-  for ( const auto& instruction : instructions )
+  SlotMaps slots;
+  for ( const auto& run_instruction : instructions )
   {
-    boost::apply_visitor( instruction_loader, instruction );
+    run_instruction( slots );
   }
 
-  return bots_map;
+  return slots;
 }
 
 int solve_1_impl( std::istream& input, const Value low_val_to_find, const Value high_val_to_find )
 {
-  const auto bots_map = execute_instructions( input );
+  const SlotMaps slots = execute_instructions( input );
 
-  const auto bots     = bots_map | ranges::view::values;
+  const auto bots     = slots.bots | ranges::view::values;
   const auto bot_iter = ranges::find_if( bots, [low_val_to_find, high_val_to_find]( const Bot& bot ) {
-    return bot.low && bot.high && bot.low == low_val_to_find && bot.high == high_val_to_find;
+    return bot.low_val && bot.high_val && bot.low_val == low_val_to_find && bot.high_val == high_val_to_find;
   } );
 
   assert( bot_iter != bots.end() );
-  return static_cast<int>( bot_iter->num );
+  return static_cast<int>( bot_iter->id );
 }
 
 }  // namespace
@@ -222,21 +261,18 @@ int solve_1( std::istream& input )
 
 int solve_2( std::istream& input )
 {
-  const auto bots_map = execute_instructions( input );
+  auto slots = execute_instructions( input );
 
-  const auto outputs = std::initializer_list<Id>{ 0, 1, 2 };
+  const auto get_output_val = [& outputs = slots.outputs]( const Id n ) {
+    const auto value = get_output( outputs, n ).value;
+    assert( value );
+    return *value;
+  };
 
-  const auto output_vals = outputs | ranges::view::transform( [&bots_map]( const Id n ) {
-        const auto iter = bots_map.find( n );
-        assert( iter != bots_map.cend() );
+  const auto output_ids  = std::initializer_list<Id>{ 0, 1, 2 };
+  const auto output_vals = output_ids | ranges::view::transform( get_output_val );
 
-        const auto& output = iter->second.output;
-        assert( output );
-
-        return *output;
-  });
-
-  return static_cast<int>( ranges::accumulate( output_vals, Value{1}, std::multiplies<Value>{} ) );
+  return static_cast<int>( ranges::accumulate( output_vals, Value{ 1 }, std::multiplies<Value>{} ) );
 }
 
 AOC_REGISTER_PROBLEM( 2016_10, solve_1, solve_2 );
@@ -254,30 +290,19 @@ AOC_REGISTER_PROBLEM( 2016_10, solve_1, solve_2 );
 
 static void impl_tests()
 {
-  {
-    auto i = boost::get<InputInstruction>( parse_instruction( "value 5 goes to bot 2" ) );
-    assert( 5 == i.value );
-    assert( 2 == i.bot_num );
-  }
+  SlotMaps map;
+  parse_instruction( "value 5 goes to bot 2" )( map );
+  parse_instruction( "value 1 goes to bot 2" )( map );
+  assert( map.bots[ 2 ].low_val );
+  assert( 1 == *map.bots[ 2 ].low_val );
+  assert( map.bots[ 2 ].high_val );
+  assert( 5 == *map.bots[ 2 ].high_val );
 
-  {
-    auto i = boost::get<OutputInstruction>( parse_instruction( "bot 2 gives low to output 1 and high to bot 0" ) );
-    assert( i.from == 2 );
-    assert( i.low_val_dest_id == 1 );
-    assert( i.low_val_destination == Destination::Output );
-    assert( i.high_val_dest_id == 0 );
-    assert( i.high_val_destination == Destination::Bot );
-  }
-
-  {
-    auto i = boost::get<OutputInstruction>( parse_instruction( "bot 2 gives low to bot 1 and high to output 0" ) );
-    assert( i.from == 2 );
-    assert( i.low_val_dest_id == 1 );
-    assert( i.low_val_destination == Destination::Bot );
-    assert( i.high_val_dest_id == 0 );
-    assert( i.high_val_destination == Destination::Output );
-  }
-
+  parse_instruction( "bot 2 gives low to output 1 and high to bot 0" )( map );
+  assert( map.outputs[ 1 ].value );
+  assert( 1 == *map.outputs[ 1 ].value );
+  assert( map.bots[ 0 ].low_val );
+  assert( 5 == *map.bots[ 0 ].low_val );
 
   const auto input = R"(value 5 goes to bot 2
                         bot 2 gives low to bot 1 and high to bot 0

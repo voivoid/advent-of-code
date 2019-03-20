@@ -18,6 +18,7 @@ add_executable(AocLibTests
   AoC_utils_tests/2d_array.cpp
   AoC_utils_tests/algo.cpp
   AoC_utils_tests/anon_ret.cpp
+  AoC_utils_tests/fusion.cpp
   AoC_utils_tests/geo.cpp
   AoC_utils_tests/match.cpp
   AoC_utils_tests/md5.cpp
