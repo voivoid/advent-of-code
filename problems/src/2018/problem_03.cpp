@@ -4,6 +4,7 @@
 #include "AoC/utils/2d_array.h"
 #include "AoC/utils/geo.h"
 #include "AoC/utils/parse.h"
+#include "AoC/utils/fusion.h"
 
 #include "range/v3/algorithm/count_if.hpp"
 #include "range/v3/algorithm/find_if.hpp"
@@ -49,10 +50,11 @@ Claim parse_claim( const std::string& line )
   auto set_rect_attr = []( auto& ctx ) {
     auto& rect_lt = _val( ctx ).left_top;
     auto& rect_rb = _val( ctx ).right_bottom;
-    auto& attr    = _attr( ctx );
-    rect_lt       = boost::fusion::at_c<0>( attr );
-    rect_rb.x     = rect_lt.x + boost::fusion::at_c<1>( attr ) - 1;
-    rect_rb.y     = rect_lt.y + boost::fusion::at_c<2>( attr ) - 1;
+
+    const auto [r, x, y ] = AoC::fusion_to_std_tuple( _attr( ctx ) );
+    rect_lt       = r;
+    rect_rb.x     = rect_lt.x + x - 1;
+    rect_rb.y     = rect_lt.y + y - 1;
   };
 
   const auto coord_parser = x3::rule<struct _point, AoC::UPoint>{} = AoC::x3_size_t_ > ',' > AoC::x3_size_t_;

@@ -4,6 +4,7 @@
 #include "AoC/utils/anon_ret.h"
 #include "AoC/utils/parse.h"
 #include "AoC/utils/zipper.h"
+#include "AoC/utils/fusion.h"
 
 #include "range/v3/algorithm/max.hpp"
 
@@ -35,8 +36,7 @@ auto parse_input( std::istream& input )
     throw std::runtime_error( "Failed to parse task input" );
   }
 
-  const auto players = boost::fusion::at_c<0>( parsed_data );
-  const auto points  = boost::fusion::at_c<1>( parsed_data );
+  const auto [players, points] = AoC::fusion_to_std_tuple( parsed_data );
 
   AOC_RETURN_ANONYMOUS_STRUCT( players, points );
 }

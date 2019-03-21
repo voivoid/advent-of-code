@@ -3,6 +3,7 @@
 #include "AoC/problems_map.h"
 #include "AoC/utils/parse.h"
 #include "AoC/utils/string.h"
+#include "AoC/utils/fusion.h"
 
 #include "range/v3/action/insert.hpp"
 #include "range/v3/action/sort.hpp"
@@ -14,7 +15,6 @@
 
 #include "boost/algorithm/string/replace.hpp"
 #include "boost/fusion/container/vector.hpp"
-#include "boost/fusion/include/at_c.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 #include <istream>
@@ -44,7 +44,9 @@ std::pair<Molecule, Molecule> parse_replacement( const std::string& line )
     throw std::invalid_argument( "Failed to parse replacement data" );
   }
 
-  return { boost::fusion::at_c<0>( replacements ), boost::fusion::at_c<1>( replacements ) };
+  auto [from, to] = AoC::fusion_to_std_tuple( replacements );
+
+  return { std::move( from ), std::move( to ) };
 }
 
 enum class ReplacementsMapMode

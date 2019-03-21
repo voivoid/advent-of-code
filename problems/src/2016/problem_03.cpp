@@ -3,6 +3,7 @@
 #include "AoC/problems_map.h"
 #include "AoC/utils/parse.h"
 #include "AoC/utils/ranges.h"
+#include "AoC/utils/fusion.h"
 
 #include "range/v3/algorithm/count_if.hpp"
 #include "range/v3/getlines.hpp"
@@ -29,10 +30,11 @@ Triangle parse_triangle( const std::string& line )
 
   const auto parser = x3::int_ > x3::int_ > x3::int_;
 
-  boost::fusion::vector<Side, Side, Side> result;
-  AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, result );
+  boost::fusion::vector<Side, Side, Side> sides;
+  AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, sides );
 
-  return { boost::fusion::at_c<0>( result ), boost::fusion::at_c<1>( result ), boost::fusion::at_c<2>( result ) };
+  const auto [a,b,c] = AoC::fusion_to_std_tuple( sides );
+  return { a, b, c };
 }
 
 bool are_valid_triangle_side( const Side a, const Side b, const Side c )

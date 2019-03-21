@@ -2,6 +2,7 @@
 
 #include "AoC/problems_map.h"
 #include "AoC/utils/parse.h"
+#include "AoC/utils/fusion.h"
 
 #include "range/v3/algorithm/permutation.hpp"
 #include "range/v3/algorithm/sort.hpp"
@@ -56,7 +57,8 @@ PathDistance parse_path_distance( const std::string& s )
     throw std::invalid_argument( "Failed to parse input path data" );
   }
 
-  return { { boost::fusion::at_c<0>( parsed_data ), boost::fusion::at_c<1>( parsed_data ) }, boost::fusion::at_c<2>( parsed_data ) };
+  auto [ from, to, distance ] = AoC::fusion_to_std_tuple( parsed_data );
+  return { { std::move( from ), std::move( to ) }, distance };
 }
 
 size_t get_distance( const Path& path, const PathMap& path_map )

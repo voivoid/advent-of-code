@@ -2,6 +2,7 @@
 
 #include "AoC/problems_map.h"
 #include "AoC/utils/parse.h"
+#include "AoC/utils/fusion.h"
 
 #include "range/v3/action/sort.hpp"
 #include "range/v3/action/unique.hpp"
@@ -16,7 +17,6 @@
 #include "range/v3/view/transform.hpp"
 
 #include "boost/functional/hash.hpp"
-#include "boost/fusion/include/at_c.hpp"
 #include "boost/fusion/include/vector.hpp"
 #include "boost/spirit/home/x3.hpp"
 
@@ -80,12 +80,8 @@ Behavior parse_behavior( const std::string& line )
     throw std::runtime_error( "Failed to parse behavior input" );
   }
 
-  auto neighbour_1 = boost::fusion::at_c<0>( attrs );
-  auto neighbour_2 = boost::fusion::at_c<3>( attrs );
-  const Mode mode  = boost::fusion::at_c<1>( attrs );
-  const auto diff  = boost::fusion::at_c<2>( attrs ) * ( mode == lose ? -1 : +1 );
-
-  return { std::move( neighbour_1 ), std::move( neighbour_2 ), diff };
+  auto [ neighbour_1, mode, diff, neighbour_2 ] = AoC::fusion_to_std_tuple( attrs );
+  return { std::move( neighbour_1 ), std::move( neighbour_2 ), diff * ( mode == lose ? -1 : +1 ) };
 }
 
 void add_neighbours_to_map( Name n1, Name n2, const ModDiff diff, NeighboursMap& map )

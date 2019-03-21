@@ -1,6 +1,7 @@
 #include "AoC/2016/problem_10.h"
 
 #include "AoC/problems_map.h"
+#include "AoC/utils/fusion.h"
 #include "AoC/utils/parse.h"
 
 #include "range/v3/algorithm/find_if.hpp"
@@ -181,18 +182,12 @@ Instruction parse_instruction( const std::string& line )
   namespace x3 = boost::spirit::x3;
 
   const auto make_input_instruction = []( auto& ctx ) {
-    const auto val    = boost::fusion::at_c<0>( x3::_attr( ctx ) );
-    const auto bot_id = boost::fusion::at_c<1>( x3::_attr( ctx ) );
-
-    x3::_val( ctx ) = std::bind( &process_input_instruction, std::placeholders::_1, val, bot_id );
+    const auto [ val, bot_id ] = AoC::fusion_to_std_tuple( x3::_attr( ctx ) );
+    x3::_val( ctx )      = std::bind( &process_input_instruction, std::placeholders::_1, val, bot_id );
   };
 
   const auto make_output_instruction = []( auto& ctx ) {
-    const auto bot_id         = boost::fusion::at_c<0>( x3::_attr( ctx ) );
-    const auto low_dest_type  = boost::fusion::at_c<1>( x3::_attr( ctx ) );
-    const auto low_dest_id    = boost::fusion::at_c<2>( x3::_attr( ctx ) );
-    const auto high_dest_type = boost::fusion::at_c<3>( x3::_attr( ctx ) );
-    const auto high_dest_id   = boost::fusion::at_c<4>( x3::_attr( ctx ) );
+    const auto [ bot_id, low_dest_type, low_dest_id, high_dest_type, high_dest_id ] = AoC::fusion_to_std_tuple( x3::_attr( ctx ) );
 
     x3::_val( ctx ) =
         std::bind( &process_output_instruction, std::placeholders::_1, bot_id, low_dest_type, low_dest_id, high_dest_type, high_dest_id );
