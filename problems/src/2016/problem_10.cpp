@@ -183,7 +183,7 @@ Instruction parse_instruction( const std::string& line )
 
   const auto make_input_instruction = []( auto& ctx ) {
     const auto [ val, bot_id ] = AoC::fusion_to_std_tuple( x3::_attr( ctx ) );
-    x3::_val( ctx )      = std::bind( &process_input_instruction, std::placeholders::_1, val, bot_id );
+    x3::_val( ctx )            = std::bind( &process_input_instruction, std::placeholders::_1, val, bot_id );
   };
 
   const auto make_output_instruction = []( auto& ctx ) {

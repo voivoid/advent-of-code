@@ -2,6 +2,7 @@
 
 #include "AoC/problems_map.h"
 #include "AoC/utils/2d_array.h"
+#include "AoC/utils/curry.h"
 #include "AoC/utils/parse.h"
 
 #include "range/v3/algorithm/count.hpp"
@@ -16,7 +17,6 @@
 
 #include "boost/fusion/adapted/struct.hpp"
 #include "boost/hof/lift.hpp"
-#include "boost/hof/partial.hpp"
 #include "boost/spirit/home/x3.hpp"
 #include "boost/variant.hpp"
 
@@ -127,7 +127,7 @@ void apply_command( Screen& screen, const Commands::RotateRow cmd )
 
 void run_command( Screen& screen, const Command& command )
 {
-  const auto visitor = boost::hof::partial( BOOST_HOF_LIFT( apply_command ) )( std::ref( screen ) );
+  const auto visitor = AoC::curry( BOOST_HOF_LIFT( apply_command ) )( std::ref( screen ) );
   boost::apply_visitor( visitor, command );
 }
 
@@ -200,7 +200,10 @@ char get_char_from_charcode( const CharCode charcode )
 {
   const auto& map = get_charcode_map();
   auto iter       = map.find( charcode );
-  assert( iter != map.cend() );
+  if( iter == map.cend() )
+  {
+      throw std::runtime_error("Unexpected charcode");
+  }
 
   return iter->second;
 }

@@ -1,8 +1,8 @@
 #include "AoC/2016/problem_09.h"
 
 #include "AoC/problems_map.h"
-#include "AoC/utils/parse.h"
 #include "AoC/utils/fusion.h"
+#include "AoC/utils/parse.h"
 
 #include "boost/spirit/home/x3.hpp"
 
@@ -28,7 +28,7 @@ size_t decompress( const Iter begin, const Iter end )
   size_t result  = 0;
 
   const auto decompress_marker = [&to_skip, &result]( auto& ctx ) {
-    const auto [chars, to_repeat] = AoC::fusion_to_std_tuple( x3::_attr( ctx ) );
+    const auto [ chars, to_repeat ] = AoC::fusion_to_std_tuple( x3::_attr( ctx ) );
 
     assert( to_skip == 0 );
     to_skip = chars;

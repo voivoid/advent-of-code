@@ -29,7 +29,7 @@ class interleave_view : public ranges::view_facade<interleave_view<Rngs>>
   struct cursor;
   cursor begin_cursor()
   {
-    return { 0, &rngs_, ranges::view::transform( rngs_, ranges::begin ) };
+    return { 0, &rngs_, rngs_ | ranges::view::transform( ranges::begin ) };
   }
 
 public:
@@ -42,26 +42,35 @@ public:
 template <class Rngs>
 struct interleave_view<Rngs>::cursor
 {
+  using RngVal = ranges::range_value_t<Rngs>;
+
   std::size_t n_;
-  std::vector<ranges::range_value_t<Rngs>>* rngs_;
-  std::vector<ranges::iterator_t<ranges::range_value_t<Rngs>>> its_;
-  decltype( auto ) read() const
+  std::vector<RngVal>* rngs_;
+  std::vector<ranges::iterator_t<RngVal>> its_;
+
+  auto read() const
   {
     return *its_[ n_ ];
   }
+
   void next()
   {
     if ( 0 == ( ( ++n_ ) %= its_.size() ) )
       ranges::for_each( its_, []( auto& it ) { ++it; } );
   }
+
   bool equal( ranges::default_sentinel_t ) const
   {
     if ( n_ != 0 )
+    {
       return false;
+    }
+
     auto ends = *rngs_ | ranges::view::transform( ranges::end );
     return its_.end() != std::mismatch( its_.begin(), its_.end(), ends.begin(), std::not_equal_to<>{} ).first;
   }
-  CPP_member auto equal( cursor const& that ) const -> CPP_ret( bool )( requires ranges::ForwardRange<ranges::range_value_t<Rngs>> )
+
+  CPP_member auto equal( cursor const& that ) const -> CPP_ret( bool )( requires ranges::ForwardRange<RngVal> )
   {
     return n_ == that.n_ && its_ == that.its_;
   }

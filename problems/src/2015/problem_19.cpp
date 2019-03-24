@@ -1,9 +1,9 @@
 #include "AoC/2015/problem_19.h"
 
 #include "AoC/problems_map.h"
+#include "AoC/utils/fusion.h"
 #include "AoC/utils/parse.h"
 #include "AoC/utils/string.h"
-#include "AoC/utils/fusion.h"
 
 #include "range/v3/action/insert.hpp"
 #include "range/v3/action/sort.hpp"
@@ -44,7 +44,7 @@ std::pair<Molecule, Molecule> parse_replacement( const std::string& line )
     throw std::invalid_argument( "Failed to parse replacement data" );
   }
 
-  auto [from, to] = AoC::fusion_to_std_tuple( replacements );
+  auto [ from, to ] = AoC::fusion_to_std_tuple( replacements );
 
   return { std::move( from ), std::move( to ) };
 }

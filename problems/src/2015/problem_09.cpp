@@ -1,8 +1,8 @@
 #include "AoC/2015/problem_09.h"
 
 #include "AoC/problems_map.h"
-#include "AoC/utils/parse.h"
 #include "AoC/utils/fusion.h"
+#include "AoC/utils/parse.h"
 
 #include "range/v3/algorithm/permutation.hpp"
 #include "range/v3/algorithm/sort.hpp"

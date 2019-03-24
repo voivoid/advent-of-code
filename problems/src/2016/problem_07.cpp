@@ -1,6 +1,7 @@
 #include "AoC/2016/problem_07.h"
 
 #include "AoC/problems_map.h"
+#include "AoC/utils/curry.h"
 
 #include "range/v3/algorithm/any_of.hpp"
 #include "range/v3/algorithm/count_if.hpp"
@@ -15,7 +16,6 @@
 #include "range/v3/view/transform.hpp"
 
 #include "boost/hof/lift.hpp"
-#include "boost/hof/partial.hpp"
 
 #include <array>
 #include <functional>
@@ -92,7 +92,7 @@ bool check_ip( const PartsChecker& check_parts, const std::string& ip )
 template <typename IpFilterPredicate>
 int solve( std::istream& istream, const IpFilterPredicate& ip_filter_predicate )
 {
-  const auto ip_filter = boost::hof::partial( BOOST_HOF_LIFT( check_ip ) )( std::cref( ip_filter_predicate ) );
+  const auto ip_filter = AoC::curry( BOOST_HOF_LIFT( check_ip ) )( std::cref( ip_filter_predicate ) );
   return static_cast<int>( ranges::count_if( ranges::istream<std::string>( istream ), ip_filter ) );
 }
 
