@@ -1,4 +1,4 @@
-#include "AoC/2017/problem_02.h"
+#include "AoC/2017/problem_03.h"
 
 #include "AoC/problems_map.h"
 #include "AoC/utils/2d_array.h"
