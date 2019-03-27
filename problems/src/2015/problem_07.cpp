@@ -1,6 +1,8 @@
 #include "AoC/2015/problem_07.h"
 
 #include "AoC/problems_map.h"
+#include "AoC/utils/fusion.h"
+#include "AoC/utils/parse.h"
 
 #include "range/v3/action/split.hpp"
 #include "range/v3/algorithm/all_of.hpp"
@@ -12,13 +14,16 @@
 #include "AoC/utils/match.h"
 
 #include "boost/functional/overloaded_function.hpp"
+#include "boost/fusion/adapted/struct.hpp"
+#include "boost/fusion/container/vector.hpp"
+#include "boost/spirit/home/x3.hpp"
+#include "boost/variant.hpp"
 
 #include <istream>
 #include <limits>
 #include <map>
 #include <stdexcept>
 #include <string>
-#include <variant>
 
 #include <cctype>
 #include <cstdint>
@@ -29,7 +34,7 @@ namespace
 {
 using Signal = std::uint16_t;
 using Wire   = std::string;
-using Source = std::variant<Signal, Wire>;
+using Source = boost::variant<Signal, Wire>;
 
 struct UnaryGate
 {
@@ -55,13 +60,16 @@ struct BinaryGate
   Source arg2;
 };
 
-using Instruction = std::variant<Source, UnaryGate, BinaryGate>;
-using Circuit     = std::map<Wire, Instruction>;
+}  // namespace
 
-bool is_alpha( const char c )
+BOOST_FUSION_ADAPT_STRUCT( UnaryGate, op, arg )
+BOOST_FUSION_ADAPT_STRUCT( BinaryGate, arg1, op, arg2 )
+
+namespace
 {
-  return std::isalpha( c ) != 0;
-}
+
+using Instruction = boost::variant<Source, UnaryGate, BinaryGate>;
+using Circuit     = std::map<Wire, Instruction>;
 
 Signal calc_unary_gate( const UnaryGate::Op op, const Signal arg )
 {
@@ -95,7 +103,7 @@ Signal run_instruction( const Instruction& instruction, Circuit& circuit )
       [&circuit]( const BinaryGate& gate ) {
         return calc_binary_gate( gate.op, get_signal( gate.arg1, circuit ), get_signal( gate.arg2, circuit ) );
       } );
-  return std::visit( instruction_visitor, instruction );
+  return boost::apply_visitor( instruction_visitor, instruction );
 }
 
 const Instruction& get_instruction( const Wire& wire, const Circuit& circuit )
@@ -121,66 +129,39 @@ Signal get_signal( const Source& source, Circuit& circuit )
                                                                  return result;
                                                                } );
 
-  return std::visit( source_visitor, source );
-}
-
-Source parse_source( const std::string& arg )
-{
-  if ( ranges::all_of( arg, is_alpha ) )
-  {
-    return Source{ arg };
-  }
-
-  const auto signal = std::stoi( arg );
-  assert( signal <= std::numeric_limits<Signal>::max() );
-  return Source{ signal };
-}
-
-Instruction parse_unary_gate( const std::string& gate, const std::string& arg )
-{
-  if ( gate == "NOT" )
-  {
-    return UnaryGate{ UnaryGate::Op::Not, parse_source( arg ) };
-  }
-
-  THROW_WRONG_INSTRUCTION_EX();
-}
-
-Instruction parse_binary_gate( const std::string& gate, const std::string& arg1, const std::string& arg2 )
-{
-  const auto op = [&gate]() {
-    if ( gate == "AND" )
-      return BinaryGate::Op::And;
-    else if ( gate == "OR" )
-      return BinaryGate::Op::Or;
-    else if ( gate == "LSHIFT" )
-      return BinaryGate::Op::LShift;
-    else if ( gate == "RSHIFT" )
-      return BinaryGate::Op::RShift;
-
-    THROW_WRONG_INSTRUCTION_EX();
-  }();
-
-  return BinaryGate{ op, parse_source( arg1 ), parse_source( arg2 ) };
+  return boost::apply_visitor( source_visitor, source );
 }
 
 std::pair<Wire, Instruction> parse_instruction( const std::string& line )
 {
-  const auto tokens = ranges::action::split( line, ' ' );
+  namespace x3 = boost::spirit::x3;
 
-  using S                = std::string;
-  const auto instruction = AoC::match_container(
-      tokens,
-      []( const S& arg1, const S& binary_op, const S& arg2, const S& /*->*/, const S& /*dest*/ ) {
-        return parse_binary_gate( binary_op, arg1, arg2 );
-      },
-      []( const S& unary_op, const S& arg, const S& /*->*/, const S& /*dest*/ ) { return parse_unary_gate( unary_op, arg ); },
-      []( const S& source, const S& /*->*/, const S& /*dest*/ ) { return Instruction{ parse_source( source ) }; },
-      []( const auto& ) -> Instruction { THROW_WRONG_INSTRUCTION_EX(); } );
+  x3::symbols<UnaryGate::Op> unary_op;
+  unary_op.add( "NOT", UnaryGate::Op::Not );
 
-  const std::string& destination = tokens.back();
+  x3::symbols<BinaryGate::Op> binary_op;
+  binary_op.add( "AND", BinaryGate::Op::And )( "OR", BinaryGate::Op::Or )( "LSHIFT", BinaryGate::Op::LShift )( "RSHIFT",
+                                                                                                               BinaryGate::Op::RShift );
 
-  return { destination, instruction };
+  const auto signal      = x3::uint16;
+  const auto wire        = +x3::lower;
+  const auto source      = signal | wire;
+  const auto unary_gate  = unary_op > source;
+  const auto binary_gate = source >> binary_op > source;
+  const auto instruction = unary_gate | binary_gate | source;
+
+  const auto parser = instruction > "->" > wire;
+
+  boost::fusion::vector<Instruction, Wire> result;
+  const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, result );
+  if ( !is_parsed )
+  {
+    throw std::invalid_argument( "Failed to parse input instruction data" );
+  }
+
+  auto [ instr, dest ] = AoC::fusion_to_std_tuple( result );
+
+  return { dest, instr };
 }
 
 Circuit parse_circuit( std::istream& input )
@@ -218,3 +199,41 @@ AOC_REGISTER_PROBLEM( 2015_07, solve_1, solve_2 );
 }  // namespace problem_07
 
 }  // namespace AoC_2015
+
+#ifndef NDEBUG
+
+#  include "impl_tests.h"
+#  include <cassert>
+
+static void impl_tests()
+{
+  {
+    const auto i = parse_instruction( "123 -> x" );
+    i.first == "x";
+    const auto source = boost::get<Source>( i.second );
+    const auto signal = boost::get<Signal>( source );
+    assert( signal == 123 );
+  }
+  {
+    const auto i = parse_instruction( "NOT x -> h" );
+    i.first == "h";
+    const auto gate = boost::get<UnaryGate>( i.second );
+    assert( gate.op == UnaryGate::Op::Not );
+    const auto wire = boost::get<Wire>( gate.arg );
+    assert( wire == "x" );
+  }
+  {
+    const auto i = parse_instruction( "x AND y -> d" );
+    i.first == "d";
+    const auto gate = boost::get<BinaryGate>( i.second );
+    assert( gate.op == BinaryGate::Op::And );
+    const auto wire1 = boost::get<Wire>( gate.arg1 );
+    assert( wire1 == "x" );
+    const auto wire2 = boost::get<Wire>( gate.arg2 );
+    assert( wire2 == "y" );
+  }
+}
+
+REGISTER_IMPL_TEST( impl_tests );
+
+#endif
