@@ -19,7 +19,7 @@ std::string make_md5( const std::string& secret, const size_t index )
   return AoC::md5( secret + std::to_string( index ) );
 }
 
-bool is_desired_md5_index( size_t index, const std::string& prefix, const std::string& secret )
+bool is_desired_md5_index( const size_t index, const std::string& prefix, const std::string& secret )
 {
   const auto md5 = make_md5( secret, index );
   return boost::algorithm::starts_with( md5, prefix );

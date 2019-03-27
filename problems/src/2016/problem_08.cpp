@@ -200,9 +200,9 @@ char get_char_from_charcode( const CharCode charcode )
 {
   const auto& map = get_charcode_map();
   auto iter       = map.find( charcode );
-  if( iter == map.cend() )
+  if ( iter == map.cend() )
   {
-      throw std::runtime_error("Unexpected charcode");
+    throw std::runtime_error( "Unexpected charcode" );
   }
 
   return iter->second;

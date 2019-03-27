@@ -1,5 +1,8 @@
 #include "AoC/2015/problem_03.h"
 
+#include "AoC/problems_map.h"
+#include "AoC/utils/geo.h"
+
 #include "range/v3/istream_range.hpp"
 #include "range/v3/to_container.hpp"
 #include "range/v3/view/concat.hpp"
@@ -8,9 +11,6 @@
 #include "range/v3/view/single.hpp"
 #include "range/v3/view/stride.hpp"
 #include "range/v3/view/transform.hpp"
-
-#include "AoC/problems_map.h"
-#include "AoC/utils/geo.h"
 
 #include <istream>
 #include <set>

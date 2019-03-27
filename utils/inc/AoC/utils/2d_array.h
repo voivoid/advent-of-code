@@ -35,9 +35,25 @@ public:
   using Array = Details::Array<T, width, height>;
   using Init  = Array;
 
+  T& get( const size_t x, const size_t y )
+  {
+    assert( x < width );
+    assert( y < height );
+    return data[ y ][ x ];
+  }
+
+  const T& get( const size_t x, const size_t y ) const
+  {
+    assert( x < width );
+    assert( y < height );
+    return data[ y ][ x ];
+  }
+
+protected:
   dd_array_stack_impl() : data{}
   {
   }
+
   dd_array_stack_impl( Array init ) : data( std::move( init ) )
   {
   }
@@ -52,20 +68,6 @@ public:
     return height;
   }
 
-  T& get( const size_t x, const size_t y )
-  {
-    assert( x <= width );
-    assert( y <= height );
-    return data[ y ][ x ];
-  }
-
-  const T& get( const size_t x, const size_t y ) const
-  {
-    assert( x <= width );
-    assert( y <= height );
-    return data[ y ][ x ];
-  }
-
 private:
   Array data;
 };
@@ -77,12 +79,28 @@ public:
   static constexpr size_t width  = w;
   static constexpr size_t height = h;
 
+  T& get( const size_t x, const size_t y )
+  {
+    assert( x < width );
+    assert( y < height );
+    return ( *data )[ y ][ x ];
+  }
+
+  const T& get( const size_t x, const size_t y ) const
+  {
+    assert( x < width );
+    assert( y < height );
+    return ( *data )[ y ][ x ];
+  }
+
+protected:
   using Array = Details::Array<T, width, height>;
   using Init  = Array;
 
   dd_array_heap_impl() : data( std::make_unique<Array>() )
   {
   }
+
   dd_array_heap_impl( Array init ) : data( std::make_unique<Array>( std::move( init ) ) )
   {
   }
@@ -97,20 +115,6 @@ public:
     return height;
   }
 
-  T& get( const size_t x, const size_t y )
-  {
-    assert( x <= width );
-    assert( y <= height );
-    return ( *data )[ y ][ x ];
-  }
-
-  const T& get( const size_t x, const size_t y ) const
-  {
-    assert( x <= width );
-    assert( y <= height );
-    return ( *data )[ y ][ x ];
-  }
-
 private:
   std::unique_ptr<Array> data;
 };
@@ -119,12 +123,51 @@ template <typename T>
 class dd_array_dynamic_impl
 {
 public:
+  T& get( const size_t x, const size_t y )
+  {
+    assert( x < get_width() );
+    assert( y < get_height() );
+    return data[ get_elem_index( x, y ) ];
+  }
+
+  const T& get( const size_t x, const size_t y ) const
+  {
+    assert( x < get_width() );
+    assert( y < get_height() );
+    return data[ get_elem_index( x, y ) ];
+  }
+
+  void resize( size_t new_width, size_t new_height )
+  {
+    if ( new_width <= get_width() && new_height <= get_height() )
+    {
+      return;
+    }
+
+    new_width  = std::max( get_width(), new_width );
+    new_height = std::max( get_height(), new_height );
+
+    Array new_data( new_width * new_height );
+    for ( size_t y = 0; y < get_height(); ++y )
+    {
+      for ( size_t x = 0; x < get_width(); ++x )
+      {
+        new_data[ get_elem_index( x, y, new_width ) ] = get( x, y );
+      }
+    }
+    data   = std::move( new_data );
+    width  = new_width;
+    height = new_height;
+  }
+
+protected:
   using Array = std::vector<T>;
   using Init  = std::vector<std::vector<T>>;
 
-  dd_array_dynamic_impl()
+  dd_array_dynamic_impl() : height( 0 ), width( 0 )
   {
   }
+
   dd_array_dynamic_impl( Init arr ) :
       height( arr.size() ),
       width( height ? arr.front().size() : size_t{ 0 } ),
@@ -132,9 +175,8 @@ public:
   {
   }
 
-  dd_array_dynamic_impl( size_t w, size_t h ) : height( h ), width( w )
+  dd_array_dynamic_impl( size_t w, size_t h ) : height( h ), width( w ), data( width * height )
   {
-    data.resize( width * height );
   }
 
   size_t get_width() const
@@ -147,24 +189,15 @@ public:
     return height;
   }
 
-  T& get( const size_t x, const size_t y )
-  {
-    assert( x <= get_width() );
-    assert( y <= get_height() );
-    return data[ get_elem_index( x, y ) ];
-  }
-
-  const T& get( const size_t x, const size_t y ) const
-  {
-    assert( x <= width );
-    assert( y <= height );
-    return data[ get_elem_index( x, y ) ];
-  }
-
 private:
-  size_t get_elem_index( size_t x, size_t y ) const
+  size_t get_elem_index( const size_t x, const size_t y ) const
   {
-    return y * width + x;
+    return get_elem_index( x, y, width );
+  }
+
+  size_t get_elem_index( const size_t x, const size_t y, const size_t w ) const
+  {
+    return y * w + x;
   }
 
 private:
@@ -203,27 +236,24 @@ struct select_impl<dynamic_array<T>>
 };
 
 template <typename T, typename Array>
-class dd_array
+class dd_array : public Details::select_impl<Array>::Impl
 {
   template <typename Arr>
   struct Proxy;
 
   using Impl = typename Details::select_impl<Array>::Impl;
 
-  static constexpr size_t width  = Impl::width;
-  static constexpr size_t height = Impl::height;
-
 public:
   dd_array()
   {
   }
 
-  dd_array( typename Impl::Init arr ) : impl( std::move( arr ) )
+  dd_array( typename Impl::Init arr ) : Impl( std::move( arr ) )
   {
   }
 
   template <typename... Args>
-  dd_array( Args&&... args ) : impl( std::forward<Args>( args )... )
+  dd_array( Args&&... args ) : Impl( std::forward<Args>( args )... )
   {
   }
 
@@ -249,12 +279,12 @@ public:
 
   size_t get_width() const
   {
-    return impl.get_width();
+    return Impl::get_width();
   }
 
   size_t get_height() const
   {
-    return impl.get_height();
+    return Impl::get_height();
   }
 
   size_t size() const
@@ -264,7 +294,7 @@ public:
 
   T* begin()
   {
-    return &( impl.get( 0, 0 ) );
+    return &( Impl::get( 0, 0 ) );
   }
 
   const T* begin() const
@@ -284,7 +314,7 @@ public:
 
   const T* cbegin() const
   {
-    return &( impl.get( 0, 0 ) );
+    return &( Impl::get( 0, 0 ) );
   }
 
   const T* cend() const
@@ -299,15 +329,12 @@ private:
 
     auto& operator[]( const size_t y )
     {
-      return arr.impl.get( x, y );
+      return arr.get( x, y );
     }
 
     const size_t x;
     Arr& arr;
   };
-
-private:
-  Impl impl;
 };
 
 }  // namespace Details

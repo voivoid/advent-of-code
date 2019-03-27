@@ -106,7 +106,7 @@ LampManipulator make_lamp_manipulator_2( const Cmd::Mode mode )
 }
 
 template <ManipulatorFactory manipulator_factory, size_t side>
-auto apply_cmd( Lamps<side>& lamps, const Cmd& cmd )
+void apply_cmd( Lamps<side>& lamps, const Cmd& cmd )
 {
   const auto& rect       = cmd.rect;
   const auto manipulator = manipulator_factory( cmd.mode );
@@ -117,7 +117,6 @@ auto apply_cmd( Lamps<side>& lamps, const Cmd& cmd )
       manipulator( lamps[ x ][ y ] );
     }
   }
-  return std::ref( lamps );
 }
 
 template <size_t side>

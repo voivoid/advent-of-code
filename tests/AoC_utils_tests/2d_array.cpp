@@ -173,3 +173,19 @@ BOOST_AUTO_TEST_CASE( AoC_utils_dd_dynamic_array )
   BOOST_CHECK_EQUAL( 10, arr.get_width() );
   BOOST_CHECK_EQUAL( 20, arr.get_height() );
 }
+
+BOOST_AUTO_TEST_CASE( AoC_utils_dd_dynamic_array_resize )
+{
+  AoC::dd_dynamic_heap_array<int> arr( size_t{ 10 }, size_t{ 20 } );
+
+  arr[ 9 ][ 19 ] = 42;
+  arr.resize( 20, 30 );
+  BOOST_CHECK_EQUAL( 20, arr.get_width() );
+  BOOST_CHECK_EQUAL( 30, arr.get_height() );
+  BOOST_CHECK_EQUAL( 42, arr[ 9 ][ 19 ] );
+
+
+  BOOST_CHECK_EQUAL( 0, arr[ 19 ][ 29 ] );
+  arr[ 19 ][ 29 ] = 111;
+  BOOST_CHECK_EQUAL( 111, arr[ 19 ][ 29 ] );
+}
