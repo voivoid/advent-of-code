@@ -8,8 +8,8 @@
 #include "range/v3/to_container.hpp"
 #include "range/v3/view/split.hpp"
 
-#include <set>
 #include <string>
+#include <unordered_set>
 
 namespace
 {
@@ -24,13 +24,13 @@ std::string sort_by_letters( std::string s )
   return std::move( s ) | ranges::action::sort;
 }
 
-template <std::string ( *transform_word )( std::string )>
+template <std::string ( *rearrange_word )( std::string )>
 bool is_secure_passphrase( const std::string& line )
 {
-  std::set<std::string> words;
+  std::unordered_set<std::string> words;
   for ( const auto word_range : line | ranges::view::split( ' ' ) )
   {
-    const auto word            = transform_word( word_range | ranges::to<std::string> );
+    const auto word            = rearrange_word( word_range | ranges::to<std::string> );
     const auto [ _, inserted ] = words.insert( word );
     if ( !inserted )
     {
@@ -41,10 +41,10 @@ bool is_secure_passphrase( const std::string& line )
   return true;
 }
 
-template <std::string ( *transform_word )( std::string )>
+template <std::string ( *rearrange_word )( std::string )>
 int calc_secure_passphrases( std::istream& input )
 {
-  return static_cast<int>( ranges::count_if( ranges::getlines( input ), &is_secure_passphrase<transform_word> ) );
+  return static_cast<int>( ranges::count_if( ranges::getlines( input ), &is_secure_passphrase<rearrange_word> ) );
 }
 
 }  // namespace

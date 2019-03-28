@@ -12,11 +12,9 @@
 #include "boost/fusion/include/adapt_struct.hpp"
 #include "boost/spirit/home/x3.hpp"
 
-#include <functional>
 #include <stdexcept>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include <cassert>
 
@@ -36,9 +34,6 @@ BOOST_FUSION_ADAPT_STRUCT( Dimensions, l, w, h )
 
 namespace
 {
-
-
-using CalcAreaFunc = std::function<int( Dimensions )>;
 
 Dimensions parse_dimensions( const std::string& str )
 {

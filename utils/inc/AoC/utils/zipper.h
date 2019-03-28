@@ -26,6 +26,16 @@ public:
 
   void next( size_t n = 1 )
   {
+    if ( n >= size() )
+    {
+      n = n % size();
+    }
+
+    if ( n == 0 )
+    {
+      return;
+    }
+
     assert( current_elem_iter != container.cend() );
     ++current_elem_iter;
 
@@ -34,14 +44,21 @@ public:
       current_elem_iter = container.begin();
     }
 
-    if ( n > 1 )
-    {
-      next( n - 1 );
-    }
+    next( n - 1 );
   }
 
   void prev( size_t n = 1 )
   {
+    if ( n >= size() )
+    {
+      n = n % size();
+    }
+
+    if ( n == 0 )
+    {
+      return;
+    }
+
     assert( current_elem_iter != container.cend() );
     if ( current_elem_iter == container.cbegin() )
     {
@@ -52,9 +69,18 @@ public:
       --current_elem_iter;
     }
 
-    if ( n > 1 )
+    prev( n - 1 );
+  }
+
+  void move( int n )
+  {
+    if ( n >= 0 )
     {
-      prev( n - 1 );
+      next( static_cast<size_t>( n ) );
+    }
+    else
+    {
+      prev( static_cast<size_t>( n ) );
     }
   }
 

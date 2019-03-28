@@ -161,7 +161,7 @@ std::pair<Wire, Instruction> parse_instruction( const std::string& line )
 
   auto [ instr, dest ] = AoC::fusion_to_std_tuple( result );
 
-  return { dest, instr };
+  return { std::move( dest ), std::move( instr ) };
 }
 
 Circuit parse_circuit( std::istream& input )
