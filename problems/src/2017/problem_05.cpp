@@ -18,7 +18,7 @@ int solve( std::istream& input )
   auto nums = ranges::istream<Value>( input ) | ranges::to_vector;
 
   int steps_num = 0;
-  auto iter = nums.begin();
+  auto iter     = nums.begin();
   while ( true )
   {
     const Value current_val = mod_value( *iter );

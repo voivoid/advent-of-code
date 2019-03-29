@@ -19,6 +19,10 @@ public:
     }
   }
 
+  Zipper( Container& c, typename Container::iterator i ) : container( c ), current_elem_iter( i )
+  {
+  }
+
   Zipper( const Zipper& ) = delete;
   Zipper& operator=( const Zipper& ) = delete;
 
