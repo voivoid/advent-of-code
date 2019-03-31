@@ -92,6 +92,7 @@ auto& get_value( Quads& quads, const Coord x, const Coord y )
     return quads.right_bottom[ ix ][ iy ];
   }
 
+  assert( false );
   throw std::runtime_error( "This should be never executed" );
 }
 
@@ -161,6 +162,7 @@ Pos get_next_pos( const Pos current_pos, const Dir dir )
     case Dir::Right: return { x + 1, y };
   }
 
+  assert( false );
   throw std::runtime_error( "This should be never executed" );
 }
 
@@ -212,6 +214,7 @@ int solve_2( std::istream& input )
     }
   }
 
+  assert( false );
   throw std::runtime_error( "This should be never executed" );
 }
 

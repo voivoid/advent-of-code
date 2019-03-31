@@ -38,6 +38,7 @@ int solve_2( std::istream& input )
     resulting_frequencies.insert( f );
   }
 
+  assert( false );
   throw std::runtime_error( "This should never be executed" );
 }
 

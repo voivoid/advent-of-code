@@ -74,6 +74,7 @@ int solve_1( std::istream& input )
 
 int solve_2( std::istream& )
 {
+  // there is no part 2 in the problem
   return 0;
 }
 
