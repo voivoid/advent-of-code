@@ -10,6 +10,7 @@
 #include "range/v3/view/map.hpp"
 #include "range/v3/view/transform.hpp"
 
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 #include <functional>
@@ -238,7 +239,7 @@ int solve_1_impl( std::istream& input, const Value low_val_to_find, const Value 
   } );
 
   assert( bot_iter != bots.end() );
-  return static_cast<int>( bot_iter->id );
+  return boost::numeric_cast<int>( bot_iter->id );
 }
 
 }  // namespace
@@ -267,7 +268,7 @@ int solve_2( std::istream& input )
   const auto output_ids  = std::initializer_list<Id>{ 0, 1, 2 };
   const auto output_vals = output_ids | ranges::view::transform( get_output_val );
 
-  return static_cast<int>( ranges::accumulate( output_vals, Value{ 1 }, std::multiplies<Value>{} ) );
+  return boost::numeric_cast<int>( ranges::accumulate( output_vals, Value{ 1 }, std::multiplies<Value>{} ) );
 }
 
 AOC_REGISTER_PROBLEM( 2016_10, solve_1, solve_2 );

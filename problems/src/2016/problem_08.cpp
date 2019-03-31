@@ -17,6 +17,7 @@
 
 #include "boost/fusion/adapted/struct.hpp"
 #include "boost/hof/lift.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 #include "boost/variant.hpp"
 
@@ -107,22 +108,23 @@ void apply_command( Screen& screen, const Commands::Rect cmd )
   }
 }
 
+template <typename T>
+void rotate( const T& colrow, const size_t by )
+{
+  const auto rotate_steps = boost::numeric_cast<std::ptrdiff_t>( by % colrow.size() );
+  std::rotate( ranges::rbegin( colrow ), ranges::rbegin( colrow ) + rotate_steps, ranges::rend( colrow ) );
+}
+
 void apply_command( Screen& screen, const Commands::RotateCol cmd )
 {
   assert( cmd.x < screen.get_width() );
-  auto column = AoC::column( screen, cmd.x );
-
-  const auto rotate_steps = static_cast<std::ptrdiff_t>( cmd.by % column.size() );
-  std::rotate( ranges::rbegin( column ), ranges::rbegin( column ) + rotate_steps, ranges::rend( column ) );
+  rotate( AoC::column( screen, cmd.x ), cmd.by );
 }
 
 void apply_command( Screen& screen, const Commands::RotateRow cmd )
 {
   assert( cmd.y < screen.get_height() );
-  auto row = AoC::row( screen, cmd.y );
-
-  const auto rotate_steps = static_cast<std::ptrdiff_t>( cmd.by % row.size() );
-  std::rotate( ranges::rbegin( row ), ranges::rbegin( row ) + rotate_steps, ranges::rend( row ) );
+  rotate( AoC::row( screen, cmd.y ), cmd.by );
 }
 
 void run_command( Screen& screen, const Command& command )
@@ -133,7 +135,7 @@ void run_command( Screen& screen, const Command& command )
 
 int calc_lit_pixels( const Screen& screen )
 {
-  return static_cast<int>( ranges::count( screen, true ) );
+  return boost::numeric_cast<int>( ranges::count( screen, true ) );
 }
 
 Screen run_commands( std::istream& istream )
@@ -169,7 +171,7 @@ auto bits_to_letters( const Range& bits, const size_t letters_num, const B bit1 
   return ranges::view::indices( letters_num ) | ranges::view::transform( [letter_chunks]( const auto n ) {
            return letter_chunks | ranges::view::transform( [n]( const auto line ) {
                     assert( n < line.size() );
-                    return line[ static_cast<ptrdiff_t>( n ) ];
+                    return line[ boost::numeric_cast<ptrdiff_t>( n ) ];
                   } );
          } );
 }

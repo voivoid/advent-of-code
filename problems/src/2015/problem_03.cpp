@@ -12,6 +12,8 @@
 #include "range/v3/view/stride.hpp"
 #include "range/v3/view/transform.hpp"
 
+#include "boost/numeric/conversion/cast.hpp"
+
 #include <istream>
 #include <set>
 #include <stdexcept>
@@ -57,7 +59,7 @@ int solve_1( std::istream& input )
 {
   auto instructions         = ranges::istream<Instruction>( input );
   const auto visited_houses = solve( instructions );
-  return static_cast<int>( visited_houses.size() );
+  return boost::numeric_cast<int>( visited_houses.size() );
 }
 
 int solve_2( std::istream& input )
@@ -73,7 +75,7 @@ int solve_2( std::istream& input )
   visited_houses.insert( santas_houses.cbegin(), santas_houses.cend() );
   visited_houses.insert( robo_houses.cbegin(), robo_houses.cend() );
 
-  return static_cast<int>( visited_houses.size() );
+  return boost::numeric_cast<int>( visited_houses.size() );
 }
 
 AOC_REGISTER_PROBLEM( 2015_03, solve_1, solve_2 );

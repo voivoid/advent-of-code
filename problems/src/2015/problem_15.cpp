@@ -19,6 +19,7 @@
 
 #include "boost/coroutine2/all.hpp"
 #include "boost/fusion/adapted/struct.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 #include <algorithm>
@@ -58,7 +59,7 @@ Ingredient operator+( Ingredient i1, const Ingredient& i2 )
 
 Ingredient operator*( Ingredient i, const Quantity q )
 {
-  const int qi = static_cast<int>( q );
+  const int qi = boost::numeric_cast<int>( q );
   i.capacity *= qi;
   i.durability *= qi;
   i.flavor *= qi;

@@ -9,6 +9,7 @@
 
 #include "boost/fusion/adapted/struct.hpp"
 #include "boost/fusion/include/std_pair.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/optional/optional.hpp"
 #include "boost/spirit/home/x3.hpp"
 
@@ -133,7 +134,7 @@ int find_aunt( std::istream& input )
   }
 
   const Aunt aunt = *result_aunt;
-  return static_cast<int>( aunt.index );
+  return boost::numeric_cast<int>( aunt.index );
 }
 
 }  // namespace

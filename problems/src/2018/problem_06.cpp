@@ -22,6 +22,7 @@
 #include "range/v3/view/zip.hpp"
 
 #include "boost/fusion/adapted/struct.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 #include <cmath>
@@ -158,7 +159,7 @@ int solve_2( std::istream& input, const int total_distance_limit )
 {
   const auto locations     = parse_locations( input );
   const auto locations_map = make_locations_map<&sum_all_distances>( locations );
-  return static_cast<int>( ranges::distance(
+  return boost::numeric_cast<int>( ranges::distance(
       locations_map | ranges::view::filter( [total_distance_limit]( const auto sum ) { return sum < total_distance_limit; } ) ) );
 }
 

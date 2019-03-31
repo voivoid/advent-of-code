@@ -8,6 +8,7 @@
 #include "range/v3/numeric/accumulate.hpp"
 #include "range/v3/view/transform.hpp"
 
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 #include <istream>
@@ -94,12 +95,12 @@ namespace problem_08
 
 int solve_1( std::istream& input )
 {
-  return static_cast<int>( calc_lines<&calc_encoded_line_len_1>( input ) );
+  return boost::numeric_cast<int>( calc_lines<&calc_encoded_line_len_1>( input ) );
 }
 
 int solve_2( std::istream& input )
 {
-  return static_cast<int>( calc_lines<&calc_encoded_line_len_2>( input ) );
+  return boost::numeric_cast<int>( calc_lines<&calc_encoded_line_len_2>( input ) );
 }
 
 AOC_REGISTER_PROBLEM( 2015_08, solve_1, solve_2 );

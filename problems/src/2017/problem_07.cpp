@@ -9,7 +9,9 @@
 #include "range/v3/view/transform.hpp"
 
 #include "boost/fusion/adapted/struct.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
+#include "boost/safe_numerics/safe_integer.hpp"
 
 #include <iostream>
 #include <optional>
@@ -107,8 +109,14 @@ Name get_bottom_name( const TopToBottomMap& top_to_bottom_map )
   }
 }
 
+struct Mismatch
+{
+    size_t subprog_index;
+    int diff;
+};
+
 template <typename Range>
-boost::optional<std::pair<size_t, int>> find_mismatch( const Range& range )
+boost::optional<Mismatch> find_mismatch( const Range& range )
 {
   if ( range.size() <= 1 )
   {
@@ -121,9 +129,9 @@ boost::optional<std::pair<size_t, int>> find_mismatch( const Range& range )
     return {};
   }
 
-  const auto a = range[ 0 ];
-  const auto b = range[ 1 ];
-  const auto c = range[ 2 ];
+  const boost::safe_numerics::safe<int> a = range[ 0 ];
+  const boost::safe_numerics::safe<int> b = range[ 1 ];
+  const boost::safe_numerics::safe<int> c = range[ 2 ];
 
   if ( a == b )
   {
@@ -134,17 +142,17 @@ boost::optional<std::pair<size_t, int>> find_mismatch( const Range& range )
       return {};
     }
 
-    return { { iter - range.begin(), a - *iter } };
+    return { Mismatch{ boost::numeric_cast<size_t>( iter - range.begin() ), a - *iter } };
   }
 
   if ( a != b && b == c )
   {
-    return { { 0, b - a } };
+    return { Mismatch{ 0, b - a } };
   }
 
   if ( a != b && b != c )
   {
-    return { { 1, a - b } };
+    return { Mismatch{ 1, a - b } };
   }
 
   assert( false );
@@ -169,12 +177,11 @@ Weight get_weights_sum( const std::string& name, const ProgamMap& program_map )
 
   if ( const auto mismatch = find_mismatch( subprogram_sums ); mismatch )
   {
-    const auto [ sub_prog_idx, diff ] = *mismatch;
-    const auto mismatched_weight  = get_program( subprograms[ sub_prog_idx ], program_map ).weight;
-    const auto correct_weight = static_cast<int>( mismatched_weight ) + diff;
+    const auto mismatched_weight      = get_program( subprograms[ mismatch->subprog_index ], program_map ).weight;
+    const auto correct_weight         = boost::numeric_cast<int>( mismatched_weight ) + mismatch->diff;
 
     WeightMismatch ex;
-    ex.correct_weight = static_cast<size_t>( correct_weight );
+    ex.correct_weight = boost::numeric_cast<size_t>( correct_weight );
     throw ex;
   }
 
@@ -219,7 +226,7 @@ int solve_2( std::istream& input )
 
   const auto bottom_name = get_bottom_name( top_to_bottom_map );
 
-  return static_cast<int>( find_weights_mismatch( bottom_name, program_map ) );
+  return boost::numeric_cast<int>( find_weights_mismatch( bottom_name, program_map ) );
 }
 
 AOC_REGISTER_PROBLEM( 2017_07, solve_1, solve_2 );
@@ -262,22 +269,22 @@ static void impl_tests()
   {
     const auto m = find_mismatch( Ws{ 15, 10, 10 } );
     assert( m );
-    assert( m->first == 0 );
-    assert( m->second == -5 );
+    assert( m->subprog_index == 0 );
+    assert( m->diff == -5 );
   }
 
   {
     const auto m = find_mismatch( Ws{ 10, 15, 10 } );
     assert( m );
-    assert( m->first == 1 );
-    assert( m->second == -5 );
+    assert( m->subprog_index == 1 );
+    assert( m->diff == -5 );
   }
 
   {
     const auto m = find_mismatch( Ws{ 10, 10, 15 } );
     assert( m );
-    assert( m->first == 2 );
-    assert( m->second == -5 );
+    assert( m->subprog_index == 2 );
+    assert( m->diff == -5 );
   }
 }
 

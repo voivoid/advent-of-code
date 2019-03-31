@@ -8,6 +8,8 @@
 #include "range/v3/view/filter.hpp"
 #include "range/v3/view/transform.hpp"
 
+#include "boost/numeric/conversion/cast.hpp"
+
 #include <algorithm>
 #include <functional>
 #include <istream>
@@ -75,7 +77,7 @@ void set_cell( Field<side>& field, const size_t x, const size_t y, const Cell ce
 template <typename Cells>
 size_t count_alive_cells( const Cells& cells )
 {
-  return static_cast<size_t>( ranges::count( cells, Cell::Alive ) );
+  return boost::numeric_cast<size_t>( ranges::count( cells, Cell::Alive ) );
 }
 
 template <size_t side>
@@ -153,7 +155,7 @@ int solve( std::istream& input, size_t steps, const CornerLightsMode corner_ligh
     }
   }
 
-  return static_cast<int>( count_alive_cells( field ) );
+  return boost::numeric_cast<int>( count_alive_cells( field ) );
 }
 }  // namespace
 

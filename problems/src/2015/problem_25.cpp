@@ -5,6 +5,7 @@
 #include "AoC/utils/parse.h"
 
 #include "boost/fusion/adapted/struct.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 namespace
@@ -52,7 +53,7 @@ int calc_code( const size_t code_index )
 {
   std::uint64_t code = 20151125;
   AoC::iterate_n( code, []( const auto c ) { return ( c * 252533 ) % 33554393; }, code_index - 1 );
-  return static_cast<int>( code );
+  return boost::numeric_cast<int>( code );
 }
 
 }  // namespace

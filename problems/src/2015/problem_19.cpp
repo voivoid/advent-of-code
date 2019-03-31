@@ -15,6 +15,7 @@
 
 #include "boost/algorithm/string/replace.hpp"
 #include "boost/fusion/container/vector.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 #include <istream>
@@ -83,8 +84,8 @@ std::vector<Formula> do_replacements( const Formula& formula, const Molecule& fr
       break;
     }
 
-    const auto begin = formula.cbegin() + static_cast<std::string::difference_type>( pos_to_search );
-    const auto end   = begin + static_cast<std::string::difference_type>( from.length() );
+    const auto begin = formula.cbegin() + boost::numeric_cast<std::string::difference_type>( pos_to_search );
+    const auto end   = begin + boost::numeric_cast<std::string::difference_type>( from.length() );
 
     std::string replace_result( formula.length() + ( to.length() - from.length() ), '\0' );
     boost::algorithm::replace_range_copy( replace_result.begin(), formula, boost::make_iterator_range( begin, end ), to );
@@ -169,7 +170,7 @@ int solve_1( std::istream& input )
   const auto& [ replacements_map, formula ] = parse_input( input, ReplacementsMapMode::Normal );
   const auto all_replacements               = get_all_replacements( replacements_map, formula );
 
-  return static_cast<int>( all_replacements.size() );
+  return boost::numeric_cast<int>( all_replacements.size() );
 }
 
 int solve_2( std::istream& /*input*/ )

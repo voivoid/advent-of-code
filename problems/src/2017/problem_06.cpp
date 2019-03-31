@@ -7,6 +7,8 @@
 #include "range/v3/to_container.hpp"
 #include "range/v3/view/istream.hpp"
 
+#include "boost/numeric/conversion/cast.hpp"
+
 #include <iostream>
 #include <set>
 #include <vector>
@@ -58,14 +60,14 @@ namespace problem_06
 int solve_1( std::istream& input )
 {
   auto configuration = get_configuration( input );
-  return static_cast<int>( solve( configuration ) );
+  return boost::numeric_cast<int>( solve( configuration ) );
 }
 
 int solve_2( std::istream& input )
 {
   auto configuration = get_configuration( input );
   solve( configuration );
-  return static_cast<int>( solve( configuration ) );
+  return boost::numeric_cast<int>( solve( configuration ) );
 }
 
 AOC_REGISTER_PROBLEM( 2017_06, solve_1, solve_2 );

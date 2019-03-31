@@ -6,6 +6,7 @@
 
 #include "boost/spirit/home/x3.hpp"
 
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/include/phoenix_core.hpp"
 #include "boost/spirit/include/phoenix_operator.hpp"
 
@@ -36,7 +37,7 @@ size_t decompress( const Iter begin, const Iter end )
     if constexpr ( recursive )
     {
       auto decompress_begin = x3::_where( ctx ).begin();
-      auto decompress_end   = decompress_begin + static_cast<ptrdiff_t>( to_skip );
+      auto decompress_end   = decompress_begin + boost::numeric_cast<ptrdiff_t>( to_skip );
       result += ( decompress<true>( decompress_begin, decompress_end ) * to_repeat );
     }
     else

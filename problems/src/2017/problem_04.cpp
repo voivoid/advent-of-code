@@ -8,6 +8,8 @@
 #include "range/v3/to_container.hpp"
 #include "range/v3/view/split.hpp"
 
+#include "boost/numeric/conversion/cast.hpp"
+
 #include <string>
 #include <unordered_set>
 
@@ -44,7 +46,7 @@ bool is_secure_passphrase( const std::string& line )
 template <std::string ( *rearrange_word )( std::string )>
 int calc_secure_passphrases( std::istream& input )
 {
-  return static_cast<int>( ranges::count_if( ranges::getlines( input ), &is_secure_passphrase<rearrange_word> ) );
+  return boost::numeric_cast<int>( ranges::count_if( ranges::getlines( input ), &is_secure_passphrase<rearrange_word> ) );
 }
 
 }  // namespace

@@ -18,6 +18,8 @@
 #include "range/v3/view/tail.hpp"
 #include "range/v3/view/transform.hpp"
 
+#include "boost/numeric/conversion/cast.hpp"
+
 #include <istream>
 #include <map>
 
@@ -122,12 +124,12 @@ namespace problem_17
 
 int solve_1( std::istream& input )
 {
-  return static_cast<int>( get_possible_combinations_num( input, 150 ) );
+  return boost::numeric_cast<int>( get_possible_combinations_num( input, 150 ) );
 }
 
 int solve_2( std::istream& input )
 {
-  return static_cast<int>( get_min_containers_combinations_num( input, 150 ) );
+  return boost::numeric_cast<int>( get_min_containers_combinations_num( input, 150 ) );
 }
 
 AOC_REGISTER_PROBLEM( 2015_17, solve_1, solve_2 );

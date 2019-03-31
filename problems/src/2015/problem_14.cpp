@@ -16,6 +16,7 @@
 #include "range/v3/view/transform.hpp"
 
 #include "boost/fusion/adapted/struct.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 #include <functional>
@@ -105,7 +106,7 @@ int solve_1( std::istream& input )
 {
   auto travelled_distances = ranges::getlines( input ) | ranges::view::transform( &parse_deer ) |
                              ranges::view::transform( std::bind( &calc_distance, std::placeholders::_1, santas_time ) );
-  return static_cast<int>( ranges::max( travelled_distances ) );
+  return boost::numeric_cast<int>( ranges::max( travelled_distances ) );
 }
 
 int solve_2( std::istream& input )

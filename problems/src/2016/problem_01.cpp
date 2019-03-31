@@ -14,6 +14,7 @@
 #include "range/v3/view/zip_with.hpp"
 
 #include "boost/fusion/adapted/struct.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 #include <istream>
@@ -107,7 +108,7 @@ State::Heading turn_left( const State::Heading heading )
 Coord move( const Coord coord, const State::Heading heading, const size_t steps_num )
 {
   const auto diff = [=]() -> Coord {
-    const int d = static_cast<int>( steps_num );
+    const int d = boost::numeric_cast<int>( steps_num );
     switch ( heading )
     {
       case State::Heading::North: return { 0, -d };

@@ -13,6 +13,8 @@
 #include "range/v3/view/transform.hpp"
 #include "range/v3/view/zip.hpp"
 
+#include "boost/numeric/conversion/cast.hpp"
+
 #include <istream>
 #include <string>
 
@@ -49,7 +51,7 @@ size_t count_mismatches( const BoxId& b1, const BoxId& b2 )
 {
   assert( b1.size() == b2.size() );
   const auto mismatches = ranges::view::transform( b1, b2, std::equal_to<char>() );
-  return static_cast<size_t>( ranges::count( mismatches, false ) );
+  return boost::numeric_cast<size_t>( ranges::count( mismatches, false ) );
 }
 
 std::string find_common_letters( const BoxId& b1, const BoxId& b2 )
@@ -75,7 +77,7 @@ int solve_1( std::istream& input )
   auto box_stats          = ranges::istream<std::string>( input ) | ranges::view::transform( &analyze_box_id );
   const auto result_stats = ranges::accumulate( box_stats, BoxStats{} );
 
-  return static_cast<int>( result_stats.doubles * result_stats.triples );
+  return boost::numeric_cast<int>( result_stats.doubles * result_stats.triples );
 }
 
 std::string solve_2( std::istream& input )

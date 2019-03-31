@@ -4,6 +4,7 @@
 #include "AoC/utils/md5.h"
 
 #include "boost/algorithm/string/predicate.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 
 #include "range/v3/algorithm/find_if.hpp"
 #include "range/v3/view/iota.hpp"
@@ -36,7 +37,7 @@ int solve( std::istream& input, const std::string& prefix )
   std::string secret;
   input >> secret;
 
-  return static_cast<int>( find_md5_that_starts_with( prefix, secret ) );
+  return boost::numeric_cast<int>( find_md5_that_starts_with( prefix, secret ) );
 }
 }  // namespace
 

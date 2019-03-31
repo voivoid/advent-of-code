@@ -15,6 +15,7 @@
 
 #include "boost/fusion/adapted/struct.hpp"
 #include "boost/fusion/container/vector.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 #include <functional>
@@ -165,7 +166,7 @@ int solve( std::istream& input )
 
   const auto guard_with_max_sleep_time = ranges::max( guards, cmp );
 
-  return static_cast<int>( guard_with_max_sleep_time.guard_id * guard_with_max_sleep_time.most_asleep_minute.minute );
+  return boost::numeric_cast<int>( guard_with_max_sleep_time.guard_id * guard_with_max_sleep_time.most_asleep_minute.minute );
 }
 
 }  // namespace

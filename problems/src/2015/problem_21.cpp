@@ -3,15 +3,16 @@
 #include "AoC/problems_map.h"
 #include "AoC/utils/parse.h"
 
-#include "boost/fusion/adapted/struct.hpp"
-#include "boost/spirit/home/x3.hpp"
-
 #include "range/v3/algorithm/min.hpp"
 #include "range/v3/numeric/accumulate.hpp"
 #include "range/v3/view/filter.hpp"
 #include "range/v3/view/for_each.hpp"
 #include "range/v3/view/iota.hpp"
 #include "range/v3/view/transform.hpp"
+
+#include "boost/fusion/adapted/struct.hpp"
+#include "boost/numeric/conversion/cast.hpp"
+#include "boost/spirit/home/x3.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -60,8 +61,10 @@ const Char& fight( const Char& char1, const Char& char2 )
   const int char1_dmg = std::max( 1, char1.damage - char2.armor );
   const int char2_dmg = std::max( 1, char2.damage - char1.armor );
 
-  const int char1_round_to_win = static_cast<int>( std::ceil( static_cast<float>( char2.hp ) / static_cast<float>( char1_dmg ) ) );
-  const int char2_round_to_win = static_cast<int>( std::ceil( static_cast<float>( char1.hp ) / static_cast<float>( char2_dmg ) ) );
+  const int char1_round_to_win =
+      boost::numeric_cast<int>( std::ceil( boost::numeric_cast<float>( char2.hp ) / boost::numeric_cast<float>( char1_dmg ) ) );
+  const int char2_round_to_win =
+      boost::numeric_cast<int>( std::ceil( boost::numeric_cast<float>( char1.hp ) / boost::numeric_cast<float>( char2_dmg ) ) );
 
   const Char& winner = char2_round_to_win < char1_round_to_win ? char2 : char1;
   return winner;

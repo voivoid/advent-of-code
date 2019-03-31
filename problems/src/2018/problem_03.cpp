@@ -15,6 +15,7 @@
 
 #include "boost/fusion/adapted/struct.hpp"
 #include "boost/fusion/container/vector.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 #include <istream>
@@ -147,7 +148,7 @@ int solve_1( std::istream& input )
 
   const auto overlaps     = calc_overlaps( claims );
   const auto overlaps_num = ranges::count_if( overlaps, []( const ClaimId claim_id ) { return claim_id == overlapped_area; } );
-  return static_cast<int>( overlaps_num );
+  return boost::numeric_cast<int>( overlaps_num );
 }
 
 int solve_2( std::istream& input )

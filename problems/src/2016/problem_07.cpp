@@ -16,6 +16,7 @@
 #include "range/v3/view/transform.hpp"
 
 #include "boost/hof/lift.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 
 #include <array>
 #include <functional>
@@ -93,7 +94,7 @@ template <typename IpFilterPredicate>
 int solve( std::istream& istream, const IpFilterPredicate& ip_filter_predicate )
 {
   const auto ip_filter = AoC::curry( BOOST_HOF_LIFT( check_ip ) )( std::cref( ip_filter_predicate ) );
-  return static_cast<int>( ranges::count_if( ranges::istream<std::string>( istream ), ip_filter ) );
+  return boost::numeric_cast<int>( ranges::count_if( ranges::istream<std::string>( istream ), ip_filter ) );
 }
 
 }  // namespace

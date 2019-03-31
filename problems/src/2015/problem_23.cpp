@@ -10,6 +10,7 @@
 
 #include "boost/fusion/adapted/struct.hpp"
 #include "boost/hof.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 #include "boost/variant.hpp"
 
@@ -155,20 +156,20 @@ void run_instructions( const std::vector<Instruction>& instructions, State& stat
   const auto visitor      = std::bind( BOOST_HOF_LIFT( run_instruction ), std::placeholders::_1, std::ref( state ) );
   const int index_offset  = boost::apply_visitor( visitor, instruction );
 
-  const int next_index = index_offset + static_cast<int>( instruction_index );
+  const int next_index = index_offset + boost::numeric_cast<int>( instruction_index );
   if ( next_index < 0 )
   {
     return;
   }
 
-  run_instructions( instructions, state, static_cast<size_t>( next_index ) );
+  run_instructions( instructions, state, boost::numeric_cast<size_t>( next_index ) );
 }
 
 int solve( std::istream& input, State& state )
 {
   const auto instructions = ranges::getlines( input ) | ranges::view::transform( &parse_instruction ) | ranges::to_vector;
   run_instructions( instructions, state, 0 );
-  return static_cast<int>( state.registers[ Register::B ] );
+  return boost::numeric_cast<int>( state.registers[ Register::B ] );
 }
 
 }  // namespace

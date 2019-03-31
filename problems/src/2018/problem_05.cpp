@@ -9,6 +9,7 @@
 #include "range/v3/view/transform.hpp"
 
 #include "boost/hof/lift.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 
 #include <istream>
 #include <set>
@@ -20,12 +21,12 @@ namespace
 {
 char to_lower( const char c )
 {
-  return static_cast<char>( std::tolower( static_cast<int>( c ) ) );
+  return boost::numeric_cast<char>( std::tolower( boost::numeric_cast<int>( c ) ) );
 }
 
 bool is_uppercase( const char c )
 {
-  return std::isupper( static_cast<int>( c ) );
+  return std::isupper( boost::numeric_cast<int>( c ) );
 }
 
 bool should_be_reduced( const char c1, const char c2 )
@@ -74,7 +75,7 @@ namespace problem_05
 
 int solve_1( std::istream& input )
 {
-  return static_cast<int>( do_reductions( ranges::istream<char>( input ) ) );
+  return boost::numeric_cast<int>( do_reductions( ranges::istream<char>( input ) ) );
 }
 
 int solve_2( std::istream& input )
@@ -87,7 +88,7 @@ int solve_2( std::istream& input )
                                } ) |
                                ranges::view::transform( BOOST_HOF_LIFT( &do_reductions ) );
 
-  return static_cast<int>( ranges::min( reduction_sizes ) );
+  return boost::numeric_cast<int>( ranges::min( reduction_sizes ) );
 }
 
 AOC_REGISTER_PROBLEM( 2018_05, solve_1, solve_2 );

@@ -9,6 +9,7 @@
 #include "range/v3/view/transform.hpp"
 
 #include "boost/algorithm/string/predicate.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 
 #include <functional>
 #include <istream>
@@ -25,7 +26,7 @@ size_t hex_digit_to_num( const char c )
 {
   assert( isdigit( c ) || is_hex_digit( c ) );
 
-  return static_cast<size_t>( isdigit( c ) ? c - '0' : 10 + c - 'a' );
+  return boost::numeric_cast<size_t>( isdigit( c ) ? c - '0' : 10 + c - 'a' );
 }
 
 std::string make_md5( const size_t index, const std::string& door_id )

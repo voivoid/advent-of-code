@@ -13,6 +13,7 @@
 #include "range/v3/view/transform.hpp"
 
 #include "boost/fusion/container/vector.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 #include <algorithm>
@@ -62,7 +63,7 @@ namespace problem_03
 int solve_1( std::istream& input )
 {
   auto triangles = ranges::getlines( input ) | ranges::view::transform( &parse_triangle );
-  return static_cast<int>( ranges::count_if( triangles, &is_valid_triangle ) );
+  return boost::numeric_cast<int>( ranges::count_if( triangles, &is_valid_triangle ) );
 }
 
 int solve_2( std::istream& input )
@@ -79,7 +80,7 @@ int solve_2( std::istream& input )
     return are_valid_triangle_side( a, b, c );
   } );
 
-  return static_cast<int>( valid_triangles_num );
+  return boost::numeric_cast<int>( valid_triangles_num );
 }
 
 AOC_REGISTER_PROBLEM( 2016_03, solve_1, solve_2 );

@@ -10,6 +10,8 @@
 #include "range/v3/view/take_while.hpp"
 #include "range/v3/view/transform.hpp"
 
+#include "boost/numeric/conversion/cast.hpp"
+
 #include <istream>
 #include <stdexcept>
 
@@ -33,7 +35,7 @@ int parse_instruction( const Instruction instruction )
 
 bool is_not_space( const char c )
 {
-  return std::isspace( static_cast<int>( c ) ) == 0;
+  return std::isspace( boost::numeric_cast<int>( c ) ) == 0;
 }
 
 auto get_instructions( std::istream& input )
@@ -51,7 +53,7 @@ int calc_number_of_steps_to_reach_basement( std::istream& input )
   auto instructions_to_reach_basement =
       get_instructions( input ) | ranges::view::partial_sum | ranges::view::take_while( []( int floor ) { return floor >= 0; } );
 
-  return 1 + static_cast<int>( ranges::distance( instructions_to_reach_basement ) );
+  return 1 + boost::numeric_cast<int>( ranges::distance( instructions_to_reach_basement ) );
 }
 
 }  // namespace

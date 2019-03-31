@@ -17,6 +17,7 @@
 #include "boost/fusion/adapted/struct.hpp"
 #include "boost/graph/adjacency_list.hpp"
 #include "boost/graph/topological_sort.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 #include <algorithm>
@@ -80,7 +81,7 @@ TaskDependency parse_dependency( const std::string& line )
 Time calc_task_time( const Task task, const Time task_base_time )
 {
   assert( isupper( task ) );
-  const Time task_time = static_cast<Time>( task - 'A' );
+  const Time task_time = boost::numeric_cast<Time>( task - 'A' );
   return task_base_time + task_time + 1;
 }
 
@@ -196,7 +197,7 @@ int solve_2( std::istream& input, const size_t workers, const size_t task_base_t
   TaskTimeSet tasks_in_work;
   const Time total_time = calc_total_time( tasks.reachable_tasks, tasks.dependency_map, tasks_in_work, workers, task_base_time, 0 );
 
-  return static_cast<int>( total_time );
+  return boost::numeric_cast<int>( total_time );
 }
 
 }  // namespace

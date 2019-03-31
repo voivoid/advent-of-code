@@ -84,7 +84,7 @@ public:
     }
     else
     {
-      prev( static_cast<size_t>( n ) );
+      prev( static_cast<size_t>( -n ) );
     }
   }
 

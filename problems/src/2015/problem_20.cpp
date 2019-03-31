@@ -6,6 +6,8 @@
 #include "range/v3/view/filter.hpp"
 #include "range/v3/view/iota.hpp"
 
+#include "boost/numeric/conversion/cast.hpp"
+
 #include <vector>
 
 #include <cassert>
@@ -19,7 +21,7 @@ std::vector<size_t> get_all_divisors( const size_t n )
   assert( n > 0 );
 
   std::vector<size_t> divisors;
-  const auto sqrtn = static_cast<size_t>( sqrt( static_cast<double>( n ) ) );
+  const auto sqrtn = boost::numeric_cast<size_t>( sqrt( boost::numeric_cast<double>( n ) ) );
   for ( size_t i = 1; i <= sqrtn; ++i )
   {
     if ( n % i == 0 )
@@ -62,7 +64,7 @@ int solve( std::istream& input )
 
   const size_t first_house = houses_with_at_least_as_many_presents.front();
 
-  return static_cast<int>( first_house );
+  return boost::numeric_cast<int>( first_house );
 }
 
 }  // namespace

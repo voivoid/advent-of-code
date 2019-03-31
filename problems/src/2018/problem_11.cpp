@@ -9,6 +9,8 @@
 #include "range/v3/view/indices.hpp"
 #include "range/v3/view/transform.hpp"
 
+#include "boost/numeric/conversion/cast.hpp"
+
 namespace
 {
 using Power = int;
@@ -25,7 +27,7 @@ size_t calc_hundreds_digit( const size_t p )
 Power calc_power_level( const size_t x, const size_t y, const size_t sn )
 {
   const auto rack_id = x + 10;
-  return static_cast<Power>( calc_hundreds_digit( ( rack_id * y + sn ) * rack_id ) ) - 5;
+  return boost::numeric_cast<Power>( calc_hundreds_digit( ( rack_id * y + sn ) * rack_id ) ) - 5;
 }
 
 auto get_grid_coords( const size_t from, const size_t to )

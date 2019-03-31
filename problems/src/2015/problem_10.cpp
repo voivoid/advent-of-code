@@ -7,6 +7,8 @@
 #include "range/v3/view/group_by.hpp"
 #include "range/v3/view/iota.hpp"
 
+#include "boost/numeric/conversion/cast.hpp"
+
 #include <functional>
 #include <istream>
 #include <sstream>
@@ -35,7 +37,7 @@ int solve( std::istream& input, const size_t iterations )
 
   digits = AoC::iterate_n( digits, &transform, iterations );
 
-  return static_cast<int>( digits.length() );
+  return boost::numeric_cast<int>( digits.length() );
 }
 }  // namespace
 

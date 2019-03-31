@@ -11,6 +11,8 @@
 #include "range/v3/view/group_by.hpp"
 #include "range/v3/view/transform.hpp"
 
+#include "boost/numeric/conversion/cast.hpp"
+
 #include <istream>
 #include <string>
 #include <vector>
@@ -28,7 +30,7 @@ char get_most_common_char( std::vector<char> chars )
 {
   chars |= ranges::action::sort;
   auto char_infos = chars | ranges::view::group_by( std::equal_to<char>{} ) | ranges::view::transform( []( const auto cs ) {
-                      return CharInfo{ static_cast<size_t>( ranges::distance( cs ) ), cs.front() };
+                      return CharInfo{ boost::numeric_cast<size_t>( ranges::distance( cs ) ), cs.front() };
                     } ) |
                     ranges::to_vector;
 

@@ -3,6 +3,8 @@
 #include "AoC/problems_map.h"
 #include "AoC/utils/anon_ret.h"
 
+#include "boost/numeric/conversion/cast.hpp"
+
 #include <istream>
 #include <vector>
 
@@ -94,13 +96,13 @@ namespace problem_08
 int solve_1( std::istream& input )
 {
   const auto sum = calc_metadata_sum_1( input );
-  return static_cast<int>( sum );
+  return boost::numeric_cast<int>( sum );
 }
 
 int solve_2( std::istream& input )
 {
   const auto sum = calc_metadata_sum_2( input );
-  return static_cast<int>( sum );
+  return boost::numeric_cast<int>( sum );
 }
 
 AOC_REGISTER_PROBLEM( 2018_08, solve_1, solve_2 );

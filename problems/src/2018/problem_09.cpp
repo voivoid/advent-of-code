@@ -9,6 +9,7 @@
 #include "range/v3/algorithm/max.hpp"
 
 #include "boost/fusion/container/vector.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 #include <istream>
@@ -83,7 +84,7 @@ namespace problem_09
 int solve_1( std::istream& input )
 {
   const auto input_data = parse_input( input );
-  return static_cast<int>( solve( input_data.players, input_data.points ) );
+  return boost::numeric_cast<int>( solve( input_data.players, input_data.points ) );
 }
 
 std::string solve_2( std::istream& input )

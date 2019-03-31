@@ -11,6 +11,7 @@
 #include "AoC/problems_map.h"
 
 #include "boost/algorithm/cxx11/any_of.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 
 #include <istream>
 #include <stdexcept>
@@ -25,7 +26,7 @@ template <bool ( *is_good_line )( const std::string& )>
 int solve( std::istream& input )
 {
   auto lines = ranges::getlines( input );
-  return static_cast<int>( ranges::count_if( lines, is_good_line ) );
+  return boost::numeric_cast<int>( ranges::count_if( lines, is_good_line ) );
 }
 
 bool is_vowel( const char c )

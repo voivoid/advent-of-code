@@ -13,6 +13,8 @@
 #include "range/v3/view/transform.hpp"
 #include "range/v3/view/zip.hpp"
 
+#include "boost/numeric/conversion/cast.hpp"
+
 #include <cmath>
 #include <iostream>
 #include <stdexcept>
@@ -26,7 +28,7 @@ int calc_steps( const int n )
     return 0;
   }
 
-  const int sqrt     = static_cast<int>( std::ceil( std::sqrt( n ) ) );
+  const int sqrt     = boost::numeric_cast<int>( std::ceil( std::sqrt( n ) ) );
   const int odd_sqrt = sqrt % 2 ? sqrt - 1 : sqrt;
   const int prev_sqr = ( odd_sqrt - 1 ) * ( odd_sqrt - 1 );
   const int offset   = n - ( prev_sqr + 1 );
@@ -72,8 +74,8 @@ void resize( Quadrants& quadrants, const size_t n )
 template <typename Quads>
 auto& get_value( Quads& quads, const Coord x, const Coord y )
 {
-  const size_t ix = static_cast<size_t>( x >= 0 ? x : std::abs( x ) + 1 );
-  const size_t iy = static_cast<size_t>( y >= 0 ? y : std::abs( y ) + 1 );
+  const size_t ix = boost::numeric_cast<size_t>( x >= 0 ? x : std::abs( x ) + 1 );
+  const size_t iy = boost::numeric_cast<size_t>( y >= 0 ? y : std::abs( y ) + 1 );
 
   if ( x >= 0 && y >= 0 )
   {
@@ -143,7 +145,7 @@ Value calc_new_value( Quadrants& quads, const Coord x, const Coord y )
 
 Value update_value( Quadrants& quads, const Coord x, const Coord y )
 {
-  resize( quads, static_cast<size_t>( std::max( std::abs( x + 2 ), std::abs( y + 2 ) ) ) );
+  resize( quads, boost::numeric_cast<size_t>( std::max( std::abs( x + 2 ), std::abs( y + 2 ) ) ) );
   assert( get_value( quads, x, y ) == 0 );
 
   const auto new_value = calc_new_value( quads, x, y );

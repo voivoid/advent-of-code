@@ -12,6 +12,7 @@
 
 #include "boost/fusion/adapted/struct.hpp"
 #include "boost/fusion/include/vector.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 #include "boost/variant.hpp"
 
@@ -137,7 +138,7 @@ int solve( std::istream& input )
     apply_cmd<manipulator_factory, grid_side>( lamps, cmd );
   }
 
-  return static_cast<int>( calc_lamps_brightness( lamps ) );
+  return boost::numeric_cast<int>( calc_lamps_brightness( lamps ) );
 }
 
 }  // namespace

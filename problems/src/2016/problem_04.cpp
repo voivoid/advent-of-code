@@ -16,6 +16,7 @@
 #include "range/v3/view/transform.hpp"
 
 #include "boost/fusion/adapted/struct.hpp"
+#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 #include <functional>
@@ -89,7 +90,7 @@ bool is_real_room( const Room& room )
 
   const auto letters_sorted_by_frequency = sorted_letters | ranges::view::group_by( std::equal_to<char>{} ) |
                                            ranges::view::transform( []( const auto range ) {
-                                             return LetterInfo{ static_cast<size_t>( ranges::distance( range ) ), range.front() };
+                                             return LetterInfo{ boost::numeric_cast<size_t>( ranges::distance( range ) ), range.front() };
                                            } ) |
                                            ranges::to_vector | ranges::action::sort( &compare_by_freq_then_by_char );
 
@@ -111,10 +112,10 @@ char rotate_char( const char c, const size_t shift )
   assert( isalpha( c ) );
   assert( islower( c ) );
 
-  const auto diff = ( c - 'a' + static_cast<int>( shift ) ) % ( ascii_letters_diff + 1 );
+  const auto diff = ( c - 'a' + boost::numeric_cast<int>( shift ) ) % ( ascii_letters_diff + 1 );
   assert( diff <= ascii_letters_diff );
 
-  return static_cast<char>( 'a' + diff );
+  return boost::numeric_cast<char>( 'a' + diff );
 }
 
 auto dechiper_room_name( const Room& room )
@@ -145,7 +146,7 @@ int solve_1( std::istream& input )
   auto real_rooms     = get_real_rooms( input );
   const auto checksum = ranges::accumulate( real_rooms, 0, std::plus<SectorId>{}, &Room::sector_id );
 
-  return static_cast<int>( checksum );
+  return boost::numeric_cast<int>( checksum );
 }
 
 int solve_2( std::istream& input )
@@ -156,7 +157,7 @@ int solve_2( std::istream& input )
   assert( storage_room_iter != real_rooms.end() );
 
   const auto& storage_room = *storage_room_iter;
-  return static_cast<int>( storage_room.sector_id );
+  return boost::numeric_cast<int>( storage_room.sector_id );
 }
 
 AOC_REGISTER_PROBLEM( 2016_04, solve_1, solve_2 );
