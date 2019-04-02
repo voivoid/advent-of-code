@@ -8,11 +8,12 @@
 BOOST_AUTO_TEST_CASE( AoC_utils_match )
 {
   const auto match = []( const std::vector<int>& v ) {
-    return AoC::match_container( v,
-                                 []( int a, int b, int c ) { return a * 100 + b * 10 + c; },
-                                 []( int a, int b ) { return a * 10 + b; },
-                                 []( int a ) { return a; },
-                                 []( const std::vector<int>& vec ) { return std::accumulate( vec.cbegin(), vec.cend(), 0 ); } );
+    return AoC::match_container(
+        v,
+        []( int a, int b, int c ) { return a * 100 + b * 10 + c; },
+        []( int a, int b ) { return a * 10 + b; },
+        []( int a ) { return a; },
+        []( const std::vector<int>& vec ) { return std::accumulate( vec.cbegin(), vec.cend(), 0 ); } );
   };
 
   BOOST_CHECK_EQUAL( 1, match( std::vector<int>{ 1 } ) );

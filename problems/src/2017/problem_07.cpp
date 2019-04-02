@@ -10,8 +10,8 @@
 
 #include "boost/fusion/adapted/struct.hpp"
 #include "boost/numeric/conversion/cast.hpp"
-#include "boost/spirit/home/x3.hpp"
 #include "boost/safe_numerics/safe_integer.hpp"
+#include "boost/spirit/home/x3.hpp"
 
 #include <iostream>
 #include <optional>
@@ -111,8 +111,8 @@ Name get_bottom_name( const TopToBottomMap& top_to_bottom_map )
 
 struct Mismatch
 {
-    size_t subprog_index;
-    int diff;
+  size_t subprog_index;
+  int diff;
 };
 
 template <typename Range>
@@ -142,7 +142,7 @@ boost::optional<Mismatch> find_mismatch( const Range& range )
       return {};
     }
 
-    return { Mismatch{ boost::numeric_cast<size_t>( iter - range.begin() ), a - *iter } };
+    return { Mismatch{ boost::numeric_cast<size_t>( iter - range.begin() ), a - boost::numeric_cast<int>( *iter ) } };
   }
 
   if ( a != b && b == c )
@@ -177,8 +177,8 @@ Weight get_weights_sum( const std::string& name, const ProgamMap& program_map )
 
   if ( const auto mismatch = find_mismatch( subprogram_sums ); mismatch )
   {
-    const auto mismatched_weight      = get_program( subprograms[ mismatch->subprog_index ], program_map ).weight;
-    const auto correct_weight         = boost::numeric_cast<int>( mismatched_weight ) + mismatch->diff;
+    const auto mismatched_weight = get_program( subprograms[ mismatch->subprog_index ], program_map ).weight;
+    const auto correct_weight    = boost::numeric_cast<int>( mismatched_weight ) + mismatch->diff;
 
     WeightMismatch ex;
     ex.correct_weight = boost::numeric_cast<size_t>( correct_weight );

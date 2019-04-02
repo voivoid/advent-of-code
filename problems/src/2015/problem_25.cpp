@@ -52,7 +52,8 @@ size_t calc_code_index( const CodePos pos )
 int calc_code( const size_t code_index )
 {
   std::uint64_t code = 20151125;
-  AoC::iterate_n( code, []( const auto c ) { return ( c * 252533 ) % 33554393; }, code_index - 1 );
+  AoC::iterate_n(
+      code, []( const auto c ) { return ( c * 252533 ) % 33554393; }, code_index - 1 );
   return boost::numeric_cast<int>( code );
 }
 
