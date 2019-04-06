@@ -18,6 +18,9 @@ Build
     $ cd advent-of-code-build
     $ cmake -DCMAKE_BUILD_TYPE=RELEASE ../advent-of-code
     $ cmake --build . -- -j4
+    
+    
+During the build several thirdparty libraries ( boost, rangev3, json for modern c++ ) will be downloaded in the build directory
 
 Tests
 -----
