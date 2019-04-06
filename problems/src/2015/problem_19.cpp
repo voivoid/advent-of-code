@@ -165,15 +165,15 @@ namespace AoC_2015
 namespace problem_19
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   const auto& [ replacements_map, formula ] = parse_input( input, ReplacementsMapMode::Normal );
   const auto all_replacements               = get_all_replacements( replacements_map, formula );
 
-  return boost::numeric_cast<int>( all_replacements.size() );
+  return all_replacements.size();
 }
 
-int solve_2( std::istream& /*input*/ )
+size_t solve_2( std::istream& /*input*/ )
 {
   //  const auto& [ replacements_map, result_molecule ] = parse_input( input, true );
 

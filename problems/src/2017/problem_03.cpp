@@ -38,7 +38,7 @@ int calc_steps( const int n )
   return half_sqrt + std::abs( rem + 1 - half_sqrt );
 }
 
-using Value    = int;
+using Value    = size_t;
 using Coord    = int;
 using Pos      = AoC::GenericPoint<Coord>;
 using Quadrant = AoC::dd_dynamic_heap_array<Value>;
@@ -95,7 +95,7 @@ auto& get_value( Quads& quads, const Coord x, const Coord y )
   }
 
   assert( false );
-  throw std::runtime_error( "This should be never executed" );
+  throw std::runtime_error( "This should never be executed" );
 }
 
 auto get_rotations()
@@ -165,7 +165,7 @@ Pos get_next_pos( const Pos current_pos, const Dir dir )
   }
 
   assert( false );
-  throw std::runtime_error( "This should be never executed" );
+  throw std::runtime_error( "This should never be executed" );
 }
 
 template <typename Move>
@@ -183,15 +183,15 @@ namespace AoC_2017
 namespace problem_03
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   int n = 0;
   input >> n;
 
-  return calc_steps( n );
+  return boost::numeric_cast<size_t>( calc_steps( n ) );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   Value n = 0;
   input >> n;
@@ -212,12 +212,11 @@ int solve_2( std::istream& input )
     if ( val > n )
     {
       return val;
-      break;
     }
   }
 
   assert( false );
-  throw std::runtime_error( "This should be never executed" );
+  throw std::runtime_error( "This should never be executed" );
 }
 
 AOC_REGISTER_PROBLEM( 2017_03, solve_1, solve_2 );

@@ -5,7 +5,6 @@
 #include "AoC/utils/parse.h"
 
 #include "boost/fusion/adapted/struct.hpp"
-#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 namespace
@@ -49,12 +48,12 @@ size_t calc_code_index( const CodePos pos )
   return row_index + pos.col - 1;
 }
 
-int calc_code( const size_t code_index )
+size_t calc_code( const size_t code_index )
 {
   std::uint64_t code = 20151125;
   AoC::iterate_n(
       code, []( const auto c ) { return ( c * 252533 ) % 33554393; }, code_index - 1 );
-  return boost::numeric_cast<int>( code );
+  return code;
 }
 
 }  // namespace
@@ -65,7 +64,7 @@ namespace AoC_2015
 namespace problem_25
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   std::string input_str;
   std::getline( input, input_str );
@@ -74,7 +73,7 @@ int solve_1( std::istream& input )
   return calc_code( code_index );
 }
 
-int solve_2( std::istream& )
+size_t solve_2( std::istream& )
 {
   // there is no part 2 in the problem
   return 0;

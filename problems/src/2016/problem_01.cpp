@@ -150,9 +150,9 @@ auto run_instruction_steps_by_step( State state, const Instruction instruction )
              state, std::bind( &run_instruction, std::placeholders::_1, Instruction{ Instruction::Rotation::Forward, 1 } ) );
 }
 
-int calc_distance( const Coord c1, const Coord c2 )
+size_t calc_distance( const Coord c1, const Coord c2 )
 {
-  return std::abs( c2.x - c1.x ) + std::abs( c2.y - c1.y );
+  return boost::numeric_cast<size_t>( std::abs( c2.x - c1.x ) + std::abs( c2.y - c1.y ) );
 }
 
 template <typename Range>
@@ -186,7 +186,7 @@ namespace AoC_2016
 namespace problem_01
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   auto instructions      = parse_instructions( input );
   const auto final_state = ranges::accumulate( instructions, start_state, &run_instruction );
@@ -194,7 +194,7 @@ int solve_1( std::istream& input )
   return calc_distance( start_state.coord, final_state.coord );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   const auto instructions  = parse_instructions( input ) | ranges::to_vector;
   const auto corner_states = instructions | ranges::view::exclusive_scan( start_state, &run_instruction );

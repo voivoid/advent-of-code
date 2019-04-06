@@ -155,7 +155,7 @@ auto make_locations_map( const Locations& locations )
          } );
 }
 
-int solve_2( std::istream& input, const int total_distance_limit )
+int solve_2_impl( std::istream& input, const int total_distance_limit )
 {
   const auto locations     = parse_locations( input );
   const auto locations_map = make_locations_map<&sum_all_distances>( locations );
@@ -195,7 +195,7 @@ int solve_1( std::istream& input )
 int solve_2( std::istream& input )
 {
   const int total_distance_limit = 10000;
-  return ::solve_2( input, total_distance_limit );
+  return solve_2_impl( input, total_distance_limit );
 }
 
 AOC_REGISTER_PROBLEM( 2018_06, solve_1, solve_2 );
@@ -232,7 +232,7 @@ static void impl_tests()
                               3, 4
                               5, 5
                               8, 9)" );
-  assert( 16 == solve_2( input, 32 ) );
+  assert( 16 == solve_2_impl( input, 32 ) );
 }
 
 REGISTER_IMPL_TEST( impl_tests );

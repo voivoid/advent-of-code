@@ -10,7 +10,6 @@
 #include "range/v3/view/map.hpp"
 #include "range/v3/view/transform.hpp"
 
-#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 #include <functional>
@@ -229,7 +228,7 @@ SlotMaps execute_instructions( std::istream& input )
   return slots;
 }
 
-int solve_1_impl( std::istream& input, const Value low_val_to_find, const Value high_val_to_find )
+size_t solve_1_impl( std::istream& input, const Value low_val_to_find, const Value high_val_to_find )
 {
   const SlotMaps slots = execute_instructions( input );
 
@@ -239,7 +238,7 @@ int solve_1_impl( std::istream& input, const Value low_val_to_find, const Value 
   } );
 
   assert( bot_iter != bots.end() );
-  return boost::numeric_cast<int>( bot_iter->id );
+  return bot_iter->id;
 }
 
 }  // namespace
@@ -250,12 +249,12 @@ namespace AoC_2016
 namespace problem_10
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   return solve_1_impl( input, 17, 61 );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   auto slots = execute_instructions( input );
 
@@ -268,7 +267,7 @@ int solve_2( std::istream& input )
   const auto output_ids  = std::initializer_list<Id>{ 0, 1, 2 };
   const auto output_vals = output_ids | ranges::view::transform( get_output_val );
 
-  return boost::numeric_cast<int>( ranges::accumulate( output_vals, Value{ 1 }, std::multiplies<Value>{} ) );
+  return ranges::accumulate( output_vals, Value{ 1 }, std::multiplies<Value>{} );
 }
 
 AOC_REGISTER_PROBLEM( 2016_10, solve_1, solve_2 );

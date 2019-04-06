@@ -111,7 +111,7 @@ void apply_command( Screen& screen, const Commands::Rect cmd )
 template <typename T>
 void rotate( const T& colrow, const size_t by )
 {
-  const auto rotate_steps = boost::numeric_cast<std::ptrdiff_t>( by % colrow.size() );
+  const auto rotate_steps = boost::numeric_cast<ptrdiff_t>( by % colrow.size() );
   std::rotate( ranges::rbegin( colrow ), ranges::rbegin( colrow ) + rotate_steps, ranges::rend( colrow ) );
 }
 
@@ -133,9 +133,9 @@ void run_command( Screen& screen, const Command& command )
   boost::apply_visitor( visitor, command );
 }
 
-int calc_lit_pixels( const Screen& screen )
+size_t calc_lit_pixels( const Screen& screen )
 {
-  return boost::numeric_cast<int>( ranges::count( screen, true ) );
+  return boost::numeric_cast<size_t>( ranges::count( screen, true ) );
 }
 
 Screen run_commands( std::istream& istream )
@@ -218,7 +218,7 @@ namespace AoC_2016
 namespace problem_08
 {
 
-int solve_1( std::istream& istream )
+size_t solve_1( std::istream& istream )
 {
   const auto screen = run_commands( istream );
   return calc_lit_pixels( screen );

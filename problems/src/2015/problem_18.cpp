@@ -137,7 +137,7 @@ enum class CornerLightsMode
 };
 
 template <size_t side>
-int solve( std::istream& input, size_t steps, const CornerLightsMode corner_lights_mode )
+size_t solve( std::istream& input, size_t steps, const CornerLightsMode corner_lights_mode )
 {
   Field<side> field = populate_field<side>( input );
   if ( corner_lights_mode == CornerLightsMode::On )
@@ -155,7 +155,7 @@ int solve( std::istream& input, size_t steps, const CornerLightsMode corner_ligh
     }
   }
 
-  return boost::numeric_cast<int>( count_alive_cells( field ) );
+  return count_alive_cells( field );
 }
 }  // namespace
 
@@ -165,12 +165,12 @@ namespace AoC_2015
 namespace problem_18
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   return solve<100>( input, 100, CornerLightsMode::Off );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   return solve<100>( input, 100, CornerLightsMode::On );
 }

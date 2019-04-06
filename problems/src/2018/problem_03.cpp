@@ -19,12 +19,13 @@
 #include "boost/spirit/home/x3.hpp"
 
 #include <istream>
+#include <limits>
 #include <stdexcept>
 #include <string>
 
 namespace
 {
-using ClaimId = int;
+using ClaimId = size_t;
 struct Claim
 {
   ClaimId id;
@@ -41,7 +42,7 @@ namespace
 
 constexpr size_t side                                   = 1000;
 using Overlaps                                          = AoC::dd_static_heap_array<ClaimId, side, side>;
-constexpr ClaimId overlapped_area                       = -1;
+constexpr ClaimId overlapped_area                       = std::numeric_limits<size_t>::max();
 [[maybe_unused]] constexpr ClaimId non_initialized_area = 0;
 
 Claim parse_claim( const std::string& line )
@@ -61,7 +62,7 @@ Claim parse_claim( const std::string& line )
   const auto coord_parser = x3::rule<struct _point, AoC::UPoint>{} = AoC::x3_size_t_ > ',' > AoC::x3_size_t_;
   const auto area_parser                                           = x3::rule<struct _rect, AoC::URectangle>{} =
       ( coord_parser > ':' > AoC::x3_size_t_ > 'x' > AoC::x3_size_t_ )[ set_rect_attr ];
-  const auto id_parser = x3::int_;
+  const auto id_parser = AoC::x3_size_t_;
   const auto parser    = '#' > id_parser > '@' > area_parser;
 
   Claim claim;
@@ -142,16 +143,16 @@ namespace AoC_2018
 namespace problem_03
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   auto claims = get_claims( input );
 
   const auto overlaps     = calc_overlaps( claims );
   const auto overlaps_num = ranges::count_if( overlaps, []( const ClaimId claim_id ) { return claim_id == overlapped_area; } );
-  return boost::numeric_cast<int>( overlaps_num );
+  return boost::numeric_cast<size_t>( overlaps_num );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   const auto claims = get_claims( input ) | ranges::to_vector;
 

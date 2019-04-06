@@ -62,12 +62,12 @@ size_t decompress( const Iter begin, const Iter end )
 }
 
 template <bool recursive>
-std::string solve( std::istream& input )
+size_t solve( std::istream& input )
 {
   std::string input_str;
   std::getline( input, input_str );
 
-  return std::to_string( decompress<recursive>( input_str.cbegin(), input_str.cend() ) );
+  return decompress<recursive>( input_str.cbegin(), input_str.cend() );
 }
 
 }  // namespace
@@ -78,12 +78,12 @@ namespace AoC_2016
 namespace problem_09
 {
 
-std::string solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   return solve<false>( input );
 }
 
-std::string solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   return solve<true>( input );
 }

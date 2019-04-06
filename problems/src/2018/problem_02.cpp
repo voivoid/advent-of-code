@@ -72,12 +72,12 @@ namespace AoC_2018
 namespace problem_02
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   auto box_stats          = ranges::istream<std::string>( input ) | ranges::view::transform( &analyze_box_id );
   const auto result_stats = ranges::accumulate( box_stats, BoxStats{} );
 
-  return boost::numeric_cast<int>( result_stats.doubles * result_stats.triples );
+  return result_stats.doubles * result_stats.triples;
 }
 
 std::string solve_2( std::istream& input )

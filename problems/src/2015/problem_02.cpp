@@ -20,7 +20,7 @@
 
 namespace
 {
-using Dim = int;
+using Dim = size_t;
 struct Dimensions
 {
   Dim l;
@@ -38,7 +38,7 @@ namespace
 Dimensions parse_dimensions( const std::string& str )
 {
   namespace x3      = boost::spirit::x3;
-  const auto parser = x3::int_ > 'x' > x3::int_ > 'x' > x3::int_;
+  const auto parser = AoC::x3_size_t_ > 'x' > AoC::x3_size_t_ > 'x' > AoC::x3_size_t_;
 
   Dimensions dims;
   const bool is_parsed = AoC::x3_parse( str.cbegin(), str.cend(), parser, x3::space, dims );
@@ -50,12 +50,12 @@ Dimensions parse_dimensions( const std::string& str )
   return dims;
 }
 
-int calc_box_area( const Dimensions dims )
+Dim calc_box_area( const Dimensions dims )
 {
   const auto [ l, w, h ]   = dims;
   const auto sides         = { l * w, w * h, h * l };
-  const auto doubled_sides = sides | ranges::view::transform( []( int s ) { return s * 2; } );
-  const auto area          = ranges::accumulate( doubled_sides, 0 );
+  const auto doubled_sides = sides | ranges::view::transform( []( const Dim s ) { return s * 2; } );
+  const auto area          = ranges::accumulate( doubled_sides, Dim{ 0 } );
   const auto smallest_side = ranges::min( sides );
   return area + smallest_side;
 }
@@ -68,7 +68,7 @@ std::pair<Dim, Dim> get_smallest_dims( const Dim d1, const Dim d2, const Dim d3 
   return { min, mid };
 }
 
-int calc_ribbon_area( const Dimensions dims )
+Dim calc_ribbon_area( const Dimensions dims )
 {
   const auto [ l, w, h ] = dims;
   const auto [ d1, d2 ]  = get_smallest_dims( l, w, h );
@@ -79,12 +79,12 @@ int calc_ribbon_area( const Dimensions dims )
   return wrap + bow;
 }
 
-using AreaFunc = int ( * )( Dimensions );
+using AreaFunc = Dim ( * )( Dimensions );
 template <AreaFunc calc_area, typename Range>
-int solve( Range&& dimensions )
+size_t solve( Range&& dimensions )
 {
   auto areas = dimensions | ranges::view::transform( &parse_dimensions ) | ranges::view::transform( calc_area );
-  return ranges::accumulate( areas, 0 );
+  return ranges::accumulate( areas, Dim{ 0 } );
 }
 
 }  // namespace
@@ -95,12 +95,12 @@ namespace AoC_2015
 namespace problem_02
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   return solve<&calc_box_area>( ranges::istream<std::string>( input ) );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   return solve<&calc_ribbon_area>( ranges::istream<std::string>( input ) );
 }

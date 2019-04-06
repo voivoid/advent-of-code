@@ -10,7 +10,7 @@
 namespace AoC
 {
 using ProblemName   = std::string;
-using ProblemResult = std::variant<int, std::string>;
+using ProblemResult = std::variant<int, size_t, std::string>;
 using ProblemFunc   = std::function<ProblemResult( std::istream& )>;
 
 std::vector<ProblemName> get_solved_problems_list();

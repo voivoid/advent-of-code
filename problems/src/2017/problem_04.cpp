@@ -44,9 +44,9 @@ bool is_secure_passphrase( const std::string& line )
 }
 
 template <std::string ( *rearrange_word )( std::string )>
-int calc_secure_passphrases( std::istream& input )
+size_t calc_secure_passphrases( std::istream& input )
 {
-  return boost::numeric_cast<int>( ranges::count_if( ranges::getlines( input ), &is_secure_passphrase<rearrange_word> ) );
+  return boost::numeric_cast<size_t>( ranges::count_if( ranges::getlines( input ), &is_secure_passphrase<rearrange_word> ) );
 }
 
 }  // namespace
@@ -57,12 +57,12 @@ namespace AoC_2017
 namespace problem_04
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   return calc_secure_passphrases<&id>( input );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   return calc_secure_passphrases<&sort_by_letters>( input );
 }

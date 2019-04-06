@@ -73,12 +73,12 @@ namespace AoC_2018
 namespace problem_05
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
-  return boost::numeric_cast<int>( do_reductions( ranges::istream<char>( input ) ) );
+  return do_reductions( ranges::istream<char>( input ) );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   const std::string data{ std::istream_iterator<char>( input ), std::istream_iterator<char>() };
   const auto unique_polymers = get_unique_polymers( data );
@@ -88,7 +88,7 @@ int solve_2( std::istream& input )
                                } ) |
                                ranges::view::transform( BOOST_HOF_LIFT( &do_reductions ) );
 
-  return boost::numeric_cast<int>( ranges::min( reduction_sizes ) );
+  return ranges::min( reduction_sizes );
 }
 
 AOC_REGISTER_PROBLEM( 2018_05, solve_1, solve_2 );

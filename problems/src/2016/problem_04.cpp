@@ -141,15 +141,15 @@ namespace AoC_2016
 namespace problem_04
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   auto real_rooms     = get_real_rooms( input );
   const auto checksum = ranges::accumulate( real_rooms, SectorId{ 0 }, std::plus<SectorId>{}, &Room::sector_id );
 
-  return boost::numeric_cast<int>( checksum );
+  return checksum;
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   auto real_rooms = get_real_rooms( input );
 
@@ -157,7 +157,7 @@ int solve_2( std::istream& input )
   assert( storage_room_iter != real_rooms.end() );
 
   const auto& storage_room = *storage_room_iter;
-  return boost::numeric_cast<int>( storage_room.sector_id );
+  return storage_room.sector_id;
 }
 
 AOC_REGISTER_PROBLEM( 2016_04, solve_1, solve_2 );

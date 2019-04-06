@@ -23,10 +23,10 @@ namespace
 {
 
 template <bool ( *is_good_line )( const std::string& )>
-int solve( std::istream& input )
+size_t solve( std::istream& input )
 {
   auto lines = ranges::getlines( input );
-  return boost::numeric_cast<int>( ranges::count_if( lines, is_good_line ) );
+  return boost::numeric_cast<size_t>( ranges::count_if( lines, is_good_line ) );
 }
 
 bool is_vowel( const char c )
@@ -96,12 +96,12 @@ namespace AoC_2015
 namespace problem_05
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   return solve<&is_good_line_1>( input );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   return solve<&is_good_line_2>( input );
 }

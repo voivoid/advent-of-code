@@ -13,12 +13,12 @@ namespace
 using Value = int;
 
 template <Value ( *mod_value )( Value& )>
-int solve( std::istream& input )
+size_t solve( std::istream& input )
 {
   auto nums = ranges::istream<Value>( input ) | ranges::to_vector;
 
-  int steps_num = 0;
-  auto iter     = nums.begin();
+  size_t steps_num = 0;
+  auto iter        = nums.begin();
   while ( true )
   {
     const Value current_val = mod_value( *iter );
@@ -58,12 +58,12 @@ namespace AoC_2017
 namespace problem_05
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   return solve<&mod_value_1>( input );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   return solve<&mod_value_2>( input );
 }

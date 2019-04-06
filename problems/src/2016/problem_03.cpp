@@ -60,13 +60,13 @@ namespace AoC_2016
 namespace problem_03
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   auto triangles = ranges::getlines( input ) | ranges::view::transform( &parse_triangle );
-  return boost::numeric_cast<int>( ranges::count_if( triangles, &is_valid_triangle ) );
+  return boost::numeric_cast<size_t>( ranges::count_if( triangles, &is_valid_triangle ) );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   auto triangles = ranges::getlines( input ) | ranges::view::transform( &parse_triangle ) | ranges::view::chunk( 3 ) |
                    ranges::view::transform( ranges::to_vector ) |
@@ -80,7 +80,7 @@ int solve_2( std::istream& input )
     return are_valid_triangle_side( a, b, c );
   } );
 
-  return boost::numeric_cast<int>( valid_triangles_num );
+  return boost::numeric_cast<size_t>( valid_triangles_num );
 }
 
 AOC_REGISTER_PROBLEM( 2016_03, solve_1, solve_2 );

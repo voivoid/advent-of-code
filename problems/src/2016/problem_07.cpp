@@ -91,10 +91,10 @@ bool check_ip( const PartsChecker& check_parts, const std::string& ip )
 }
 
 template <typename IpFilterPredicate>
-int solve( std::istream& istream, const IpFilterPredicate& ip_filter_predicate )
+size_t solve( std::istream& istream, const IpFilterPredicate& ip_filter_predicate )
 {
   const auto ip_filter = AoC::curry( BOOST_HOF_LIFT( check_ip ) )( std::cref( ip_filter_predicate ) );
-  return boost::numeric_cast<int>( ranges::count_if( ranges::istream<std::string>( istream ), ip_filter ) );
+  return boost::numeric_cast<size_t>( ranges::count_if( ranges::istream<std::string>( istream ), ip_filter ) );
 }
 
 }  // namespace
@@ -105,12 +105,12 @@ namespace AoC_2016
 namespace problem_07
 {
 
-int solve_1( std::istream& istream )
+size_t solve_1( std::istream& istream )
 {
   return solve( istream, BOOST_HOF_LIFT( is_abba ) );
 }
 
-int solve_2( std::istream& istream )
+size_t solve_2( std::istream& istream )
 {
   return solve( istream, BOOST_HOF_LIFT( is_aba ) );
 }

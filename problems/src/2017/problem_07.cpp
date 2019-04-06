@@ -156,7 +156,7 @@ boost::optional<Mismatch> find_mismatch( const Range& range )
   }
 
   assert( false );
-  throw std::runtime_error( "This should be never executed" );
+  throw std::runtime_error( "This should never be executed" );
 }
 
 const Program& get_program( const std::string& name, const ProgamMap& program_map )
@@ -200,7 +200,7 @@ Weight find_weights_mismatch( const std::string& name, const ProgamMap& program_
   }
 
   assert( false );
-  throw std::runtime_error( "This should be never executed" );
+  throw std::runtime_error( "This should never be executed" );
 }
 
 }  // namespace
@@ -219,14 +219,14 @@ std::string solve_1( std::istream& input )
   return get_bottom_name( top_to_bottom_map );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   const auto program_map       = get_program_map( input );
   const auto top_to_bottom_map = get_top_to_bottom_map( program_map );
 
   const auto bottom_name = get_bottom_name( top_to_bottom_map );
 
-  return boost::numeric_cast<int>( find_weights_mismatch( bottom_name, program_map ) );
+  return find_weights_mismatch( bottom_name, program_map );
 }
 
 AOC_REGISTER_PROBLEM( 2017_07, solve_1, solve_2 );

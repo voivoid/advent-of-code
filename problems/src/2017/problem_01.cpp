@@ -10,6 +10,8 @@
 #include "range/v3/view/transform.hpp"
 #include "range/v3/view/zip.hpp"
 
+#include "boost/numeric/conversion/cast.hpp"
+
 #include <istream>
 #include <string>
 
@@ -17,10 +19,10 @@
 
 namespace
 {
-int digit_to_num( const char c )
+size_t digit_to_num( const char c )
 {
   assert( isdigit( c ) );
-  return c - '0';
+  return boost::numeric_cast<size_t>( c - '0' );
 }
 
 std::string get_input_str( std::istream& input )
@@ -31,7 +33,7 @@ std::string get_input_str( std::istream& input )
 }
 
 template <typename Range>
-int sum_matching_pairs( const Range& pairs )
+size_t sum_matching_pairs( const Range& pairs )
 {
   auto matching_pairs = pairs | ranges::view::filter( []( const auto pair ) {
                           auto [ a, b ] = pair;
@@ -39,10 +41,10 @@ int sum_matching_pairs( const Range& pairs )
                         } ) |
                         ranges::view::transform( []( const auto pair ) { return pair.first; } );
 
-  return ranges::accumulate( matching_pairs, 0 );
+  return ranges::accumulate( matching_pairs, size_t{ 0 } );
 }
 
-int solve( std::istream& input, const bool drop_half )
+size_t solve( std::istream& input, const bool drop_half )
 {
   const std::string s = get_input_str( input );
   assert( !s.empty() );
@@ -63,12 +65,12 @@ namespace AoC_2017
 namespace problem_01
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   return solve( input, false );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   return solve( input, true );
 }

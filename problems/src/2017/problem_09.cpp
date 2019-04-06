@@ -65,14 +65,14 @@ namespace AoC_2017
 namespace problem_09
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
-  return boost::numeric_cast<int>( solve( input ).groups_score );
+  return solve( input ).groups_score;
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
-  return boost::numeric_cast<int>( solve( input ).chars_inside_garbage );
+  return solve( input ).chars_inside_garbage;
 }
 
 AOC_REGISTER_PROBLEM( 2017_09, solve_1, solve_2 );

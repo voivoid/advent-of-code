@@ -30,9 +30,9 @@ namespace
 struct Deer
 {
   std::string name;
-  unsigned int speed;
-  unsigned int time_to_fly;
-  unsigned int time_to_rest;
+  size_t speed;
+  size_t time_to_fly;
+  size_t time_to_rest;
 };
 
 using Seconds                 = size_t;
@@ -51,8 +51,8 @@ Deer parse_deer( const std::string& line )
   namespace x3 = boost::spirit::x3;
 
   const auto name_parser = x3::lexeme[ +x3::alpha ];
-  const auto parser = name_parser > "can" > "fly" > x3::uint_ > "km/s" > "for" > x3::uint_ > "seconds" > "but" > "then" > "must" > "rest" >
-                      "for" > x3::uint_ > "seconds";
+  const auto parser      = name_parser > "can" > "fly" > AoC::x3_size_t_ > "km/s" > "for" > AoC::x3_size_t_ > "seconds" > "but" > "then" >
+                      "must" > "rest" > "for" > AoC::x3_size_t_ > "seconds";
 
   Deer deer;
   const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space | x3::punct, deer );
@@ -66,8 +66,8 @@ Deer parse_deer( const std::string& line )
 
 auto get_time_speed_range( const Deer& deer, const Seconds time_to_travel )
 {
-  const auto flying_range  = ranges::view::repeat_n( deer.speed, deer.time_to_fly );
-  const auto resting_range = ranges::view::repeat_n( 0, deer.time_to_rest );
+  const auto flying_range  = ranges::view::repeat_n( deer.speed, boost::numeric_cast<ptrdiff_t>( deer.time_to_fly ) );
+  const auto resting_range = ranges::view::repeat_n( size_t{ 0 }, boost::numeric_cast<ptrdiff_t>( deer.time_to_rest ) );
 
   return ranges::view::concat( flying_range, resting_range ) | ranges::view::cycle | ranges::view::take_exactly( time_to_travel );
 }
@@ -78,18 +78,20 @@ Distance calc_distance( const Deer& deer, const Seconds time_to_travel )
   return ranges::accumulate( time_speed_range, Seconds{ 0 } );
 }
 
-int calc_max_score( const std::vector<Deer>& deers, const Seconds time_to_travel )
+size_t calc_max_score( const std::vector<Deer>& deers, const Seconds time_to_travel )
 {
   const auto distances_by_time = deers |
                                  ranges::view::transform( std::bind( &get_time_speed_range, std::placeholders::_1, time_to_travel ) ) |
                                  ranges::view::transform( ranges::view::partial_sum ) | AoC::transpose() | AoC::to_2d_vector();
 
-  auto scores =
-      distances_by_time | ranges::view::transform( []( const auto& distances ) {
-        auto max_distance = ranges::max( distances );
-        return distances | ranges::view::transform( [max_distance]( const auto& distance ) { return distance == max_distance ? 1 : 0; } );
-      } ) |
-      AoC::transpose() | ranges::view::transform( []( const auto& deer_scores ) { return ranges::accumulate( deer_scores, 0 ); } );
+  auto scores = distances_by_time | ranges::view::transform( []( const auto& distances ) {
+                  auto max_distance = ranges::max( distances );
+                  return distances | ranges::view::transform( [max_distance]( const auto& distance ) {
+                           return distance == max_distance ? size_t{ 1 } : size_t{ 0 };
+                         } );
+                } ) |
+                AoC::transpose() |
+                ranges::view::transform( []( const auto& deer_scores ) { return ranges::accumulate( deer_scores, size_t{ 0 } ); } );
 
   return ranges::max( scores );
 }
@@ -102,14 +104,14 @@ namespace AoC_2015
 namespace problem_14
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   auto travelled_distances = ranges::getlines( input ) | ranges::view::transform( &parse_deer ) |
                              ranges::view::transform( std::bind( &calc_distance, std::placeholders::_1, santas_time ) );
-  return boost::numeric_cast<int>( ranges::max( travelled_distances ) );
+  return ranges::max( travelled_distances );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   const auto deers = ranges::getlines( input ) | ranges::view::transform( &parse_deer ) | ranges::to_vector;
 

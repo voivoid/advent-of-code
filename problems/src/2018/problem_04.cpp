@@ -15,7 +15,6 @@
 
 #include "boost/fusion/adapted/struct.hpp"
 #include "boost/fusion/container/vector.hpp"
-#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 #include <functional>
@@ -159,14 +158,14 @@ bool sort_by_most_asleep_minute( const GuardStats& g1, const GuardStats& g2 )
 }
 
 template <bool ( *cmp )( const GuardStats&, const GuardStats& )>
-int solve( std::istream& input )
+size_t solve( std::istream& input )
 {
   const GuardShifts shifts = parse_shifts_and_sort_by_guard_id( input );
   const auto guards        = get_guards_stats( shifts );
 
   const auto guard_with_max_sleep_time = ranges::max( guards, cmp );
 
-  return boost::numeric_cast<int>( guard_with_max_sleep_time.guard_id * guard_with_max_sleep_time.most_asleep_minute.minute );
+  return guard_with_max_sleep_time.guard_id * guard_with_max_sleep_time.most_asleep_minute.minute;
 }
 
 }  // namespace
@@ -177,12 +176,12 @@ namespace AoC_2018
 namespace problem_04
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   return solve<&sort_by_total_sleep_time>( input );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   return solve<&sort_by_most_asleep_minute>( input );
 }

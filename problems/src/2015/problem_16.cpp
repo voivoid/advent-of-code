@@ -9,7 +9,6 @@
 
 #include "boost/fusion/adapted/struct.hpp"
 #include "boost/fusion/include/std_pair.hpp"
-#include "boost/numeric/conversion/cast.hpp"
 #include "boost/optional/optional.hpp"
 #include "boost/spirit/home/x3.hpp"
 
@@ -122,7 +121,7 @@ Aunt real_aunt()
 }
 
 template <bool ( *Comparator )( const Aunt&, const Aunt& )>
-int find_aunt( std::istream& input )
+size_t find_aunt( std::istream& input )
 {
   auto aunts       = ranges::getlines( input ) | ranges::view::transform( &parse_aunt );
   auto result_aunt = ranges::find_if( aunts, std::bind( Comparator, real_aunt(), std::placeholders::_1 ) );
@@ -130,11 +129,11 @@ int find_aunt( std::istream& input )
   if ( result_aunt == aunts.end() )
   {
     assert( false );
-    return -1;
+    throw std::runtime_error( "This should never be executed" );
   }
 
   const Aunt aunt = *result_aunt;
-  return boost::numeric_cast<int>( aunt.index );
+  return aunt.index;
 }
 
 }  // namespace
@@ -145,12 +144,12 @@ namespace AoC_2015
 namespace problem_16
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   return find_aunt<&cmp_aunt<&compound_comparator_1>>( input );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   return find_aunt<&cmp_aunt<&compound_comparator_2>>( input );
 }

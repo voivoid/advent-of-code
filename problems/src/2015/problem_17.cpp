@@ -94,12 +94,12 @@ ContainersCombinations generate_combinations( std::istream& input, const Volume 
   return generate_combinations( containers, volume_to_store, cache );
 }
 
-auto get_possible_combinations_num( std::istream& input, const Volume volume_to_store )
+size_t get_possible_combinations_num( std::istream& input, const Volume volume_to_store )
 {
-  return ranges::distance( generate_combinations( input, volume_to_store ) );
+  return boost::numeric_cast<size_t>( ranges::distance( generate_combinations( input, volume_to_store ) ) );
 }
 
-auto get_min_containers_combinations_num( std::istream& input, const Volume volume_to_store )
+size_t get_min_containers_combinations_num( std::istream& input, const Volume volume_to_store )
 {
   const auto combinations = generate_combinations( input, volume_to_store ) | AoC::to_2d_vector();
 
@@ -111,7 +111,7 @@ auto get_min_containers_combinations_num( std::istream& input, const Volume volu
   auto combitions_with_min_containers =
       combinations | ranges::view::filter( [min_num_of_containers]( const auto c ) { return c.size() == min_num_of_containers; } );
 
-  return ranges::distance( combitions_with_min_containers );
+  return boost::numeric_cast<size_t>( ranges::distance( combitions_with_min_containers ) );
 }
 
 }  // namespace
@@ -122,14 +122,14 @@ namespace AoC_2015
 namespace problem_17
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
-  return boost::numeric_cast<int>( get_possible_combinations_num( input, 150 ) );
+  return get_possible_combinations_num( input, 150 );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
-  return boost::numeric_cast<int>( get_min_containers_combinations_num( input, 150 ) );
+  return get_min_containers_combinations_num( input, 150 );
 }
 
 AOC_REGISTER_PROBLEM( 2015_17, solve_1, solve_2 );

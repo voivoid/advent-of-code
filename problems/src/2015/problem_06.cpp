@@ -12,7 +12,6 @@
 
 #include "boost/fusion/adapted/struct.hpp"
 #include "boost/fusion/include/vector.hpp"
-#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 #include "boost/variant.hpp"
 
@@ -127,7 +126,7 @@ size_t calc_lamps_brightness( const Lamps<side>& lamps )
 }
 
 template <ManipulatorFactory manipulator_factory>
-int solve( std::istream& input )
+size_t solve( std::istream& input )
 {
   auto cmds                  = ranges::getlines( input ) | ranges::view::transform( &parse_cmd_line );
   constexpr size_t grid_side = 1000;
@@ -138,7 +137,7 @@ int solve( std::istream& input )
     apply_cmd<manipulator_factory, grid_side>( lamps, cmd );
   }
 
-  return boost::numeric_cast<int>( calc_lamps_brightness( lamps ) );
+  return calc_lamps_brightness( lamps );
 }
 
 }  // namespace
@@ -149,12 +148,12 @@ namespace AoC_2015
 namespace problem_06
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   return solve<&make_lamp_manipulator_1>( input );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   return solve<&make_lamp_manipulator_2>( input );
 }

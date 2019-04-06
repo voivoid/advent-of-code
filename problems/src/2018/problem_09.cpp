@@ -81,16 +81,16 @@ namespace AoC_2018
 namespace problem_09
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   const auto input_data = parse_input( input );
-  return boost::numeric_cast<int>( solve( input_data.players, input_data.points ) );
+  return solve( input_data.players, input_data.points );
 }
 
-std::string solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   const auto input_data = parse_input( input );
-  return std::to_string( solve( input_data.players, input_data.points * 100 ) );
+  return solve( input_data.players, input_data.points * 100 );
 }
 
 AOC_REGISTER_PROBLEM( 2018_09, solve_1, solve_2 );

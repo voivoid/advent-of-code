@@ -57,8 +57,8 @@ void run_round( Nums& nums, const Range& lengths, size_t& skip_size, size_t& cur
 
     if ( len > 1 )
     {
-      auto left  = cycled_nums.begin() + boost::numeric_cast<std::ptrdiff_t>( current );
-      auto right = left + boost::numeric_cast<std::ptrdiff_t>( len );
+      auto left  = cycled_nums.begin() + boost::numeric_cast<ptrdiff_t>( current );
+      auto right = left + boost::numeric_cast<ptrdiff_t>( len );
       ranges::reverse( left, right );
     }
 
@@ -115,7 +115,7 @@ Nums make_nums( const Num max_num )
   return ranges::view::indices( max_num ) | ranges::to_vector;
 }
 
-int solve_1_impl( std::istream& input, const Num max_num )
+size_t solve_1_impl( std::istream& input, const Num max_num )
 {
   const std::string input_str = get_input_str( input );
   const Lengths lengths       = parse_lengths( input_str );
@@ -123,7 +123,7 @@ int solve_1_impl( std::istream& input, const Num max_num )
   Nums nums = make_nums( max_num );
   run_rounds( nums, lengths, 1 );
 
-  return boost::numeric_cast<int>( nums[ 0 ] * nums[ 1 ] );
+  return nums[ 0 ] * nums[ 1 ];
 }
 
 }  // namespace
@@ -134,7 +134,7 @@ namespace AoC_2017
 namespace problem_10
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   return solve_1_impl( input, 256 );
 }

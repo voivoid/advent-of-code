@@ -4,7 +4,6 @@
 #include "AoC/utils/md5.h"
 
 #include "boost/algorithm/string/predicate.hpp"
-#include "boost/numeric/conversion/cast.hpp"
 
 #include "range/v3/algorithm/find_if.hpp"
 #include "range/v3/view/iota.hpp"
@@ -32,12 +31,12 @@ size_t find_md5_that_starts_with( const std::string& prefix, const std::string& 
   return *ranges::find_if( indices, std::bind( &is_desired_md5_index, std::placeholders::_1, std::ref( prefix ), std::ref( secret ) ) );
 }
 
-int solve( std::istream& input, const std::string& prefix )
+size_t solve( std::istream& input, const std::string& prefix )
 {
   std::string secret;
   input >> secret;
 
-  return boost::numeric_cast<int>( find_md5_that_starts_with( prefix, secret ) );
+  return find_md5_that_starts_with( prefix, secret );
 }
 }  // namespace
 
@@ -47,12 +46,12 @@ namespace AoC_2015
 namespace problem_04
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   return solve( input, "00000" );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   return solve( input, "000000" );
 }

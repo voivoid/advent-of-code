@@ -177,13 +177,13 @@ namespace AoC_2015
 namespace problem_07
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   Circuit circuit = parse_circuit( input );
   return get_signal( Wire( "a" ), circuit );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   Circuit circuit1 = parse_circuit( input );
   Circuit circuit2 = circuit1;

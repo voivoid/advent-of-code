@@ -12,8 +12,6 @@
 #include "range/v3/view/stride.hpp"
 #include "range/v3/view/transform.hpp"
 
-#include "boost/numeric/conversion/cast.hpp"
-
 #include <istream>
 #include <set>
 #include <stdexcept>
@@ -55,14 +53,14 @@ namespace AoC_2015
 
 namespace problem_03
 {
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   auto instructions         = ranges::istream<Instruction>( input );
   const auto visited_houses = solve( instructions );
-  return boost::numeric_cast<int>( visited_houses.size() );
+  return visited_houses.size();
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   const auto instructions        = ranges::istream<Instruction>( input ) | ranges::to_vector;
   const auto santas_instructions = instructions | ranges::view::stride( 2 );
@@ -75,7 +73,7 @@ int solve_2( std::istream& input )
   visited_houses.insert( santas_houses.cbegin(), santas_houses.cend() );
   visited_houses.insert( robo_houses.cbegin(), robo_houses.cend() );
 
-  return boost::numeric_cast<int>( visited_houses.size() );
+  return visited_houses.size();
 }
 
 AOC_REGISTER_PROBLEM( 2015_03, solve_1, solve_2 );

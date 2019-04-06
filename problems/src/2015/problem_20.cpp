@@ -53,7 +53,7 @@ size_t calc_presents2( size_t house_index )
 }
 
 template <size_t ( *calc_presents )( size_t )>
-int solve( std::istream& input )
+size_t solve( std::istream& input )
 {
   size_t presents_num = 0;
   input >> presents_num;
@@ -64,7 +64,7 @@ int solve( std::istream& input )
 
   const size_t first_house = houses_with_at_least_as_many_presents.front();
 
-  return boost::numeric_cast<int>( first_house );
+  return first_house;
 }
 
 }  // namespace
@@ -75,12 +75,12 @@ namespace AoC_2015
 namespace problem_20
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   return solve<&calc_presents1>( input );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   return solve<&calc_presents2>( input );
 }

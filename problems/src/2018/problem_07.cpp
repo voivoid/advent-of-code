@@ -190,14 +190,14 @@ Time calc_total_time( Tasks& reachable_tasks,
       reachable_tasks, dependency_map, tasks_in_work, free_workers + 1, task_base_time, total_time + task_in_work.time );
 }
 
-int solve_2( std::istream& input, const size_t workers, const size_t task_base_time )
+size_t solve_2_impl( std::istream& input, const size_t workers, const size_t task_base_time )
 {
   auto tasks = parse_input( input );
 
   TaskTimeSet tasks_in_work;
   const Time total_time = calc_total_time( tasks.reachable_tasks, tasks.dependency_map, tasks_in_work, workers, task_base_time, 0 );
 
-  return boost::numeric_cast<int>( total_time );
+  return total_time;
 }
 
 }  // namespace
@@ -217,9 +217,9 @@ std::string solve_1( std::istream& input )
   return result;
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
-  return ::solve_2( input, 5, 60 );
+  return solve_2_impl( input, 5, 60 );
 }
 
 AOC_REGISTER_PROBLEM( 2018_07, solve_1, solve_2 );
@@ -244,7 +244,7 @@ static void impl_tests()
                                Step D must be finished before step E can begin.
                                Step F must be finished before step E can begin.)" );
 
-  assert( 15 == solve_2( input, 2, 0 ) );
+  assert( 15 == solve_2_impl( input, 2, 0 ) );
 }
 
 REGISTER_IMPL_TEST( impl_tests );

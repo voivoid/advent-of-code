@@ -165,11 +165,11 @@ void run_instructions( const std::vector<Instruction>& instructions, State& stat
   run_instructions( instructions, state, boost::numeric_cast<size_t>( next_index ) );
 }
 
-int solve( std::istream& input, State& state )
+size_t solve( std::istream& input, State& state )
 {
   const auto instructions = ranges::getlines( input ) | ranges::view::transform( &parse_instruction ) | ranges::to_vector;
   run_instructions( instructions, state, 0 );
-  return boost::numeric_cast<int>( state.registers[ Register::B ] );
+  return state.registers[ Register::B ];
 }
 
 }  // namespace
@@ -180,7 +180,7 @@ namespace AoC_2015
 namespace problem_23
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   State state;
   state.registers[ Register::A ] = 0;
@@ -189,7 +189,7 @@ int solve_1( std::istream& input )
   return solve( input, state );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   State state;
   state.registers[ Register::A ] = 1;

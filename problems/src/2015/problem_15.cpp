@@ -124,12 +124,12 @@ auto calc_scores( Recipes recipes )
 }
 
 template <typename Scores>
-int calc_max_score( Scores scores )
+size_t calc_max_score( Scores scores )
 {
   auto total_scores =
       scores | ranges::view::transform( []( const Ingredient& i ) { return i.capacity * i.durability * i.flavor * i.texture; } );
 
-  return ranges::max( total_scores );
+  return boost::numeric_cast<size_t>( ranges::max( total_scores ) );
 }
 
 QuantityCombinations generate_quantity_combinations( const size_t ingredients_num, const Quantity max_quantity )
@@ -150,7 +150,7 @@ auto generate_ingredient_combinations( QuantityCombinations& quantity_combinatio
          } );
 }
 
-int solve( std::istream& input, const Quantity max_quantity, const std::optional<int> calories = {} )
+size_t solve( std::istream& input, const Quantity max_quantity, const std::optional<int> calories = {} )
 {
   const auto ingredients = ranges::getlines( input ) | ranges::view::transform( &parse_ingredient ) | ranges::to_vector;
 
@@ -176,12 +176,12 @@ namespace AoC_2015
 namespace problem_15
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   return solve( input, 100 );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   return solve( input, 100, 500 );
 }

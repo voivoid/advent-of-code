@@ -93,7 +93,7 @@ bool check_range_can_be_split_into_groups( ranges::any_view<Weight> rest_weights
   } );
 }
 
-auto solve( std::istream& input, const size_t number_of_compartments )
+size_t solve( std::istream& input, const size_t number_of_compartments )
 {
   const auto sorted_weights       = ranges::istream<size_t>( input ) | ranges::to_vector | ranges::action::sort;
   const Weight total_weight       = ranges::accumulate( sorted_weights, size_t{ 0 } );
@@ -130,14 +130,14 @@ namespace AoC_2015
 namespace problem_24
 {
 
-std::string solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
-  return std::to_string( solve( input, 3 ) );
+  return solve( input, 3 );
 }
 
-std::string solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
-  return std::to_string( solve( input, 4 ) );
+  return solve( input, 4 );
 }
 
 AOC_REGISTER_PROBLEM( 2015_24, solve_1, solve_2 );

@@ -57,17 +57,17 @@ namespace AoC_2017
 namespace problem_06
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   auto configuration = get_configuration( input );
-  return boost::numeric_cast<int>( solve( configuration ) );
+  return solve( configuration );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   auto configuration = get_configuration( input );
   solve( configuration );
-  return boost::numeric_cast<int>( solve( configuration ) );
+  return solve( configuration );
 }
 
 AOC_REGISTER_PROBLEM( 2017_06, solve_1, solve_2 );

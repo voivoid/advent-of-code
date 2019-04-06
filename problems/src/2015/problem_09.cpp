@@ -16,7 +16,6 @@
 #include "range/v3/view/unique.hpp"
 
 #include "boost/fusion/include/vector.hpp"
-#include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/home/x3.hpp"
 
 #include <algorithm>
@@ -95,7 +94,7 @@ PathMap parse_path_map( std::istream& input )
 }
 
 template <const Distance& ( *select_distance )( const Distance&, const Distance& )>
-int solve( std::istream& input )
+size_t solve( std::istream& input )
 {
   const auto path_map = parse_path_map( input );
 
@@ -109,7 +108,7 @@ int solve( std::istream& input )
     distance = select_distance( distance, calc_route_distance( route, path_map ) );
   }
 
-  return boost::numeric_cast<int>( distance );
+  return distance;
 }
 }  // namespace
 
@@ -119,12 +118,12 @@ namespace AoC_2015
 namespace problem_09
 {
 
-int solve_1( std::istream& input )
+size_t solve_1( std::istream& input )
 {
   return solve<&std::min<Distance>>( input );
 }
 
-int solve_2( std::istream& input )
+size_t solve_2( std::istream& input )
 {
   return solve<&std::max<Distance>>( input );
 }

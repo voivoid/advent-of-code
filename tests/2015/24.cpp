@@ -16,10 +16,10 @@ auto get_input()
 
 BOOST_FIXTURE_TEST_CASE( problem2015_24_1, AocFixture )
 {
-  BOOST_CHECK_EQUAL( "99", run( &solve_1, get_input() ) );
+  BOOST_CHECK_EQUAL( 99, run( &solve_1, get_input() ) );
 }
 
 BOOST_FIXTURE_TEST_CASE( problem2015_24_2, AocFixture )
 {
-  BOOST_CHECK_EQUAL( "44", run( &solve_2, get_input() ) );
+  BOOST_CHECK_EQUAL( 44, run( &solve_2, get_input() ) );
 }
