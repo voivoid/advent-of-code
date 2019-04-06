@@ -2,6 +2,8 @@
 
 #include <utility>
 
+#include <cstddef>
+
 namespace AoC
 {
 
@@ -15,6 +17,15 @@ auto&& iterate_n( T&& val, F&& func, size_t n )
   }
 
   return std::forward<T&&>( val );
+}
+
+template <typename F>
+void repeat( const size_t n, const F& f )
+{
+  for ( size_t i = 0; i < n; ++i )
+  {
+    f();
+  }
 }
 
 }  // namespace AoC

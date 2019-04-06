@@ -15,8 +15,8 @@ namespace
 
 struct ParseResult
 {
-    size_t groups_score;
-    size_t chars_inside_garbage;
+  size_t groups_score;
+  size_t chars_inside_garbage;
 };
 
 ParseResult parse_chars( const std::string& input )
@@ -26,14 +26,17 @@ ParseResult parse_chars( const std::string& input )
   ParseResult result{};
   size_t group_num = 0;
 
-  const auto calc_garbage_action = [&result](auto&){ ++result.chars_inside_garbage; };
-  const auto group_start_action = [&group_num](auto&){ ++group_num; };
-  const auto group_end_action = [&group_num, &result](auto&){ result.groups_score += group_num; --group_num; };
+  const auto calc_garbage_action = [&result]( auto& ) { ++result.chars_inside_garbage; };
+  const auto group_start_action  = [&group_num]( auto& ) { ++group_num; };
+  const auto group_end_action    = [&group_num, &result]( auto& ) {
+    result.groups_score += group_num;
+    --group_num;
+  };
 
-  const auto cancel  = '!' > x3::char_;
-  const auto garbage = '<' > *( cancel | ( x3::char_ - '>' )[ calc_garbage_action ] ) > '>';
-  const auto group_start = x3::lit('{')[ group_start_action ];
-  const auto group_end = x3::lit('}')[ group_end_action ];
+  const auto cancel      = '!' > x3::char_;
+  const auto garbage     = '<' > *( cancel | ( x3::char_ - '>' )[ calc_garbage_action ] ) > '>';
+  const auto group_start = x3::lit( '{' )[ group_start_action ];
+  const auto group_end   = x3::lit( '}' )[ group_end_action ];
 
   const auto parser = x3::lexeme[ *( cancel | garbage | group_start | group_end | x3::char_ ) ];
 

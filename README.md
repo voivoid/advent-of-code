@@ -18,8 +18,8 @@ Build
     $ cd advent-of-code-build
     $ cmake -DCMAKE_BUILD_TYPE=RELEASE ../advent-of-code
     $ cmake --build . -- -j4
-    
-    
+
+
 During the build several thirdparty libraries ( boost, rangev3, json for modern c++ ) will be downloaded in the build directory
 
 Tests
@@ -49,7 +49,7 @@ Day | 2015 | 2016 | 2017 | 2018 |
 07  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_07.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2016/problem_07.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2017/problem_07.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2018/problem_07.cpp)     |
 08  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_08.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2016/problem_08.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2017/problem_08.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2018/problem_08.cpp)     |
 09  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_09.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2016/problem_09.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2017/problem_09.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2018/problem_09.cpp)     |
-10  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_10.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2016/problem_10.cpp)     |      |      |
+10  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_10.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2016/problem_10.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2017/problem_10.cpp)     |      |
 11  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_11.cpp)     |      |      | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2018/problem_11.cpp)     |
 12  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_12.cpp)     |      |      |      |
 13  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_13.cpp)     |      |      |      |

@@ -13,17 +13,18 @@ class Zipper
 public:
   Zipper( Container& c ) : container( c ), current_elem_iter( container.begin() )
   {
-    if ( empty() )
-    {
-      throw std::runtime_error( "Zipper should be constructed from non-empty container" );
-    }
+    ensure_is_not_empty();
   }
 
   Zipper( Container& c, typename Container::iterator i ) : container( c ), current_elem_iter( i )
   {
+    ensure_is_not_empty();
   }
 
-  Zipper( const Zipper& ) = delete;
+  Zipper( const Zipper& other ) : container( other.container ), current_elem_iter( other.current_elem_iter )
+  {
+  }
+
   Zipper& operator=( const Zipper& ) = delete;
 
   using Elem = typename Container::value_type;
@@ -125,6 +126,14 @@ public:
   }
 
 private:
+  void ensure_is_not_empty() const
+  {
+    if ( empty() )
+    {
+      throw std::runtime_error( "Zipper should be constructed from non-empty container" );
+    }
+  }
+
   bool empty() const
   {
     return container.empty();

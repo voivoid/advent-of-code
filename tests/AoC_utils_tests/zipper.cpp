@@ -17,6 +17,12 @@ BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_zipper_creation, T, Fixtures, T )
   AoC::Zipper<T>{ container };
 }
 
+BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_zipper_empty_creation, T, Fixtures, T )
+{
+  T container;
+  BOOST_CHECK_THROW( AoC::Zipper<T>{ container }, std::runtime_error );
+}
+
 BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_zipper_size, T, Fixtures, T )
 {
   T container       = { 1, 2, 3 };
@@ -137,4 +143,21 @@ BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_zipper_remove, T, Fixtures, T )
   zipper.next( 3 );
   zipper.remove();
   BOOST_CHECK_EQUAL( 2, zipper.current() );
+}
+
+BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_zipper_copy_ctor, T, Fixtures, T )
+{
+  T container  = { 1, 2, 3, 4, 5 };
+  auto zipper1 = AoC::Zipper<T>( container );
+  zipper1.next( 2 );
+  BOOST_CHECK_EQUAL( 3, zipper1.current() );
+
+  auto zipper2 = zipper1;
+  BOOST_CHECK_EQUAL( 3, zipper2.current() );
+
+  zipper1.next();
+  zipper2.prev();
+
+  BOOST_CHECK_EQUAL( 4, zipper1.current() );
+  BOOST_CHECK_EQUAL( 2, zipper2.current() );
 }
