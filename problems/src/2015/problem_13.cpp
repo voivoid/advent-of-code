@@ -7,10 +7,10 @@
 #include "range/v3/action/sort.hpp"
 #include "range/v3/action/unique.hpp"
 #include "range/v3/algorithm/permutation.hpp"
-#include "range/v3/getlines.hpp"
 #include "range/v3/numeric/accumulate.hpp"
-#include "range/v3/to_container.hpp"
+#include "range/v3/range/conversion.hpp"
 #include "range/v3/view/cycle.hpp"
+#include "range/v3/view/getlines.hpp"
 #include "range/v3/view/map.hpp"
 #include "range/v3/view/sliding.hpp"
 #include "range/v3/view/take_exactly.hpp"
@@ -61,14 +61,14 @@ Behavior parse_behavior( const std::string& line )
 {
   namespace x3 = boost::spirit::x3;
 
-  enum Mode
+  enum class Mode
   {
     gain,
     lose
   };
 
   x3::symbols<Mode> mode_parser;
-  mode_parser.add( "gain", gain )( "lose", lose );
+  mode_parser.add( "gain", Mode::gain )( "lose", Mode::lose );
 
   const auto name   = x3::lexeme[ +x3::alpha ];
   const auto parser = name > "would" > mode_parser > x3::int_ > "happiness" > "units" > "by" > "sitting" > "next" > "to" > name > ".";
@@ -81,7 +81,7 @@ Behavior parse_behavior( const std::string& line )
   }
 
   auto [ neighbour_1, mode, diff, neighbour_2 ] = AoC::fusion_to_std_tuple( attrs );
-  return { std::move( neighbour_1 ), std::move( neighbour_2 ), diff * ( mode == lose ? -1 : +1 ) };
+  return { std::move( neighbour_1 ), std::move( neighbour_2 ), diff * ( mode == Mode::lose ? -1 : +1 ) };
 }
 
 void add_neighbours_to_map( Name n1, Name n2, const ModDiff diff, NeighboursMap& map )

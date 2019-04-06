@@ -6,9 +6,9 @@
 
 #include "range/v3/action/split.hpp"
 #include "range/v3/algorithm/all_of.hpp"
-#include "range/v3/getlines.hpp"
 #include "range/v3/numeric/accumulate.hpp"
-#include "range/v3/to_container.hpp"
+#include "range/v3/range/conversion.hpp"
+#include "range/v3/view/getlines.hpp"
 #include "range/v3/view/transform.hpp"
 
 #include "AoC/utils/match.h"
@@ -209,14 +209,14 @@ static void impl_tests()
 {
   {
     const auto i = parse_instruction( "123 -> x" );
-    i.first == "x";
+    assert( i.first == "x" );
     const auto source = boost::get<Source>( i.second );
     const auto signal = boost::get<Signal>( source );
     assert( signal == 123 );
   }
   {
     const auto i = parse_instruction( "NOT x -> h" );
-    i.first == "h";
+    assert( i.first == "h" );
     const auto gate = boost::get<UnaryGate>( i.second );
     assert( gate.op == UnaryGate::Op::Not );
     const auto wire = boost::get<Wire>( gate.arg );
@@ -224,7 +224,7 @@ static void impl_tests()
   }
   {
     const auto i = parse_instruction( "x AND y -> d" );
-    i.first == "d";
+    assert( i.first == "d" );
     const auto gate = boost::get<BinaryGate>( i.second );
     assert( gate.op == BinaryGate::Op::And );
     const auto wire1 = boost::get<Wire>( gate.arg1 );

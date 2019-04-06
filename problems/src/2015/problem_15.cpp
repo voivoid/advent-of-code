@@ -1,17 +1,13 @@
 #include "AoC/2015/problem_15.h"
 
-#ifdef _MSC_VER
-#  define NOMINMAX
-#endif
-
 #include "AoC/problems_map.h"
 #include "AoC/utils/parse.h"
 
 #include "range/v3/algorithm/max.hpp"
-#include "range/v3/getlines.hpp"
 #include "range/v3/numeric/accumulate.hpp"
-#include "range/v3/to_container.hpp"
+#include "range/v3/range/conversion.hpp"
 #include "range/v3/view/filter.hpp"
+#include "range/v3/view/getlines.hpp"
 #include "range/v3/view/indices.hpp"
 #include "range/v3/view/indirect.hpp"
 #include "range/v3/view/transform.hpp"

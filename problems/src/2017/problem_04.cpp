@@ -4,8 +4,8 @@
 
 #include "range/v3/action/sort.hpp"
 #include "range/v3/algorithm/count_if.hpp"
-#include "range/v3/getlines.hpp"
-#include "range/v3/to_container.hpp"
+#include "range/v3/range/conversion.hpp"
+#include "range/v3/view/getlines.hpp"
 #include "range/v3/view/split.hpp"
 
 #include "boost/numeric/conversion/cast.hpp"

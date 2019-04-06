@@ -4,7 +4,7 @@
 #include "AoC/utils/parse.h"
 
 #include "range/v3/algorithm/find_if.hpp"
-#include "range/v3/getlines.hpp"
+#include "range/v3/view/getlines.hpp"
 #include "range/v3/view/transform.hpp"
 
 #include "boost/fusion/adapted/struct.hpp"

@@ -3,8 +3,8 @@
 #include "range/v3/algorithm/adjacent_find.hpp"
 #include "range/v3/algorithm/any_of.hpp"
 #include "range/v3/algorithm/count_if.hpp"
-#include "range/v3/getlines.hpp"
 #include "range/v3/view/drop.hpp"
+#include "range/v3/view/getlines.hpp"
 #include "range/v3/view/sliding.hpp"
 #include "range/v3/view/zip.hpp"
 

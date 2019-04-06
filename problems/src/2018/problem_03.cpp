@@ -8,8 +8,8 @@
 
 #include "range/v3/algorithm/count_if.hpp"
 #include "range/v3/algorithm/find_if.hpp"
-#include "range/v3/getlines.hpp"
 #include "range/v3/view/cartesian_product.hpp"
+#include "range/v3/view/getlines.hpp"
 #include "range/v3/view/indices.hpp"
 #include "range/v3/view/transform.hpp"
 

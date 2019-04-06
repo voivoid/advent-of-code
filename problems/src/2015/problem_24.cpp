@@ -5,11 +5,11 @@
 #include "range/v3/action/sort.hpp"
 #include "range/v3/algorithm/any_of.hpp"
 #include "range/v3/algorithm/min.hpp"
-#include "range/v3/istream_range.hpp"
 #include "range/v3/numeric/accumulate.hpp"
-#include "range/v3/to_container.hpp"
+#include "range/v3/range/conversion.hpp"
 #include "range/v3/view/any_view.hpp"
 #include "range/v3/view/filter.hpp"
+#include "range/v3/view/istream.hpp"
 #include "range/v3/view/set_algorithm.hpp"
 #include "range/v3/view/take_while.hpp"
 

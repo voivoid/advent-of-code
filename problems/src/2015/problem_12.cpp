@@ -13,7 +13,7 @@ using mjson = nlohmann::json;
 
 namespace
 {
-enum mode
+enum class Mode
 {
   basic,
   ignore_red
@@ -25,7 +25,7 @@ bool has_red_value( const mjson& json )
       json.cbegin(), json.cend(), []( const mjson& value ) { return value.is_string() && value.get<std::string>() == "red"; } );
 }
 
-template <mode mode>
+template <Mode mode>
 int calc( const mjson& json )
 {
   if ( json.is_number() )
@@ -38,7 +38,7 @@ int calc( const mjson& json )
   }
   else if ( json.is_array() || json.is_object() )
   {
-    if ( mode == ignore_red && json.is_object() && has_red_value( json ) )
+    if ( mode == Mode::ignore_red && json.is_object() && has_red_value( json ) )
     {
       return 0;
     }
@@ -49,7 +49,7 @@ int calc( const mjson& json )
   throw std::runtime_error( "Unexpected json element" );
 }
 
-template <mode mode>
+template <Mode mode>
 int solve( std::istream& input )
 {
   mjson json;
@@ -68,12 +68,12 @@ namespace problem_12
 
 int solve_1( std::istream& input )
 {
-  return solve<basic>( input );
+  return solve<Mode::basic>( input );
 }
 
 int solve_2( std::istream& input )
 {
-  return solve<ignore_red>( input );
+  return solve<Mode::ignore_red>( input );
 }
 
 AOC_REGISTER_PROBLEM( 2015_12, solve_1, solve_2 );

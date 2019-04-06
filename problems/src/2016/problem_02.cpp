@@ -6,9 +6,9 @@
 #include "AoC/utils/parse.h"
 #include "AoC/utils/ranges.h"
 
-#include "range/v3/getlines.hpp"
 #include "range/v3/numeric/accumulate.hpp"
 #include "range/v3/view/exclusive_scan.hpp"
+#include "range/v3/view/getlines.hpp"
 #include "range/v3/view/tail.hpp"
 #include "range/v3/view/transform.hpp"
 

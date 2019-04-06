@@ -4,11 +4,11 @@
 #include "AoC/utils/ranges.h"
 
 #include "range/v3/action/sort.hpp"
-#include "range/v3/distance.hpp"
-#include "range/v3/getlines.hpp"
-#include "range/v3/istream_range.hpp"
-#include "range/v3/to_container.hpp"
+#include "range/v3/iterator/operations.hpp"
+#include "range/v3/range/conversion.hpp"
+#include "range/v3/view/getlines.hpp"
 #include "range/v3/view/group_by.hpp"
+#include "range/v3/view/istream.hpp"
 #include "range/v3/view/transform.hpp"
 
 #include "boost/numeric/conversion/cast.hpp"

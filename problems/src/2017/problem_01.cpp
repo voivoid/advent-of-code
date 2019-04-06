@@ -13,6 +13,8 @@
 #include <istream>
 #include <string>
 
+#include <cassert>
+
 namespace
 {
 int digit_to_num( const char c )

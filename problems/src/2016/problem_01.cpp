@@ -4,11 +4,11 @@
 #include "AoC/utils/geo.h"
 #include "AoC/utils/parse.h"
 
-#include "range/v3/istream_range.hpp"
 #include "range/v3/numeric/accumulate.hpp"
-#include "range/v3/to_container.hpp"
+#include "range/v3/range/conversion.hpp"
 #include "range/v3/view/exclusive_scan.hpp"
 #include "range/v3/view/indices.hpp"
+#include "range/v3/view/istream.hpp"
 #include "range/v3/view/join.hpp"
 #include "range/v3/view/transform.hpp"
 #include "range/v3/view/zip_with.hpp"

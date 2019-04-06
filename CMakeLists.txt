@@ -14,12 +14,19 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   set(AocExcludedProblems
   )
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-  set(AocExcludedProblems 2015_08     # MSVC raw string issues
-                          2015_14     # looks like MSVC has issues with range-v3
+  set(AocExcludedProblems 2015_14     # looks like MSVC has issues with range-v3
                           2015_23     # looks like MSVC has issues with boost::hof
-                          2018_02
+                          2016_04
+                          2016_05
+                          2016_07
+                          2016_08
+                          2017_02
+                          2017_04
                           2018_04
+                          2018_05
                           2018_06
+                          2018_07
+                          2018_11
   )
 endif()
 
@@ -52,5 +59,3 @@ if(ClangFormat)
     COMMAND clang-format -style=file -i ${AocSources}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 endif()
-
-

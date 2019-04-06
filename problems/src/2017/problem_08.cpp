@@ -5,7 +5,7 @@
 #include "AoC/utils/parse.h"
 
 #include "range/v3/algorithm/max.hpp"
-#include "range/v3/getlines.hpp"
+#include "range/v3/view/getlines.hpp"
 #include "range/v3/view/map.hpp"
 #include "range/v3/view/transform.hpp"
 
@@ -88,7 +88,7 @@ void run_instruction( const Instruction& instruction, Cpu& cpu )
 
 Cpu run_instructions( std::istream& input )
 {
-  Cpu cpu;
+  Cpu cpu{};
 
   auto instructions = ranges::getlines( input ) | ranges::view::transform( &parse_instruction );
   for ( const auto& instruction : instructions )

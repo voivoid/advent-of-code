@@ -4,12 +4,12 @@
 
 #include "range/v3/action/sort.hpp"
 #include "range/v3/algorithm/count.hpp"
-#include "range/v3/istream_range.hpp"
 #include "range/v3/numeric/accumulate.hpp"
-#include "range/v3/to_container.hpp"
+#include "range/v3/range/conversion.hpp"
 #include "range/v3/view/cartesian_product.hpp"
 #include "range/v3/view/filter.hpp"
 #include "range/v3/view/group_by.hpp"
+#include "range/v3/view/istream.hpp"
 #include "range/v3/view/transform.hpp"
 #include "range/v3/view/zip.hpp"
 

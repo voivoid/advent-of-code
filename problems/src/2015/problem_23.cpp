@@ -3,9 +3,9 @@
 #include "AoC/problems_map.h"
 #include "AoC/utils/parse.h"
 
-#include "range/v3/getlines.hpp"
 #include "range/v3/numeric/accumulate.hpp"
-#include "range/v3/to_container.hpp"
+#include "range/v3/range/conversion.hpp"
+#include "range/v3/view/getlines.hpp"
 #include "range/v3/view/transform.hpp"
 
 #include "boost/fusion/adapted/struct.hpp"

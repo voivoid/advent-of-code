@@ -4,7 +4,7 @@
 #include "AoC/utils/zipper.h"
 
 #include "range/v3/algorithm/max_element.hpp"
-#include "range/v3/to_container.hpp"
+#include "range/v3/range/conversion.hpp"
 #include "range/v3/view/istream.hpp"
 
 #include "boost/numeric/conversion/cast.hpp"

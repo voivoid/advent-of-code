@@ -4,8 +4,8 @@
 #include "AoC/utils/parse.h"
 
 
-#include "range/v3/getlines.hpp"
 #include "range/v3/numeric/accumulate.hpp"
+#include "range/v3/view/getlines.hpp"
 #include "range/v3/view/transform.hpp"
 
 #include "boost/numeric/conversion/cast.hpp"

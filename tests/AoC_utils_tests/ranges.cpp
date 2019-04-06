@@ -3,12 +3,12 @@
 #include "AoC/utils/ranges.h"
 
 #include "range/v3/algorithm/equal.hpp"
-#include "range/v3/iterator_range.hpp"
-#include "range/v3/to_container.hpp"
+#include "range/v3/range/conversion.hpp"
 #include "range/v3/view/all.hpp"
 #include "range/v3/view/empty.hpp"
 #include "range/v3/view/iota.hpp"
 #include "range/v3/view/single.hpp"
+#include "range/v3/view/subrange.hpp"
 #include "range/v3/view/take.hpp"
 #include "range/v3/view/transform.hpp"
 

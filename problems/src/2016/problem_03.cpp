@@ -6,9 +6,9 @@
 #include "AoC/utils/ranges.h"
 
 #include "range/v3/algorithm/count_if.hpp"
-#include "range/v3/getlines.hpp"
-#include "range/v3/to_container.hpp"
+#include "range/v3/range/conversion.hpp"
 #include "range/v3/view/chunk.hpp"
+#include "range/v3/view/getlines.hpp"
 #include "range/v3/view/join.hpp"
 #include "range/v3/view/transform.hpp"
 

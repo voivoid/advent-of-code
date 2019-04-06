@@ -6,10 +6,10 @@
 
 #include "range/v3/algorithm/permutation.hpp"
 #include "range/v3/algorithm/sort.hpp"
-#include "range/v3/getlines.hpp"
 #include "range/v3/numeric/accumulate.hpp"
-#include "range/v3/to_container.hpp"
+#include "range/v3/range/conversion.hpp"
 #include "range/v3/view/drop.hpp"
+#include "range/v3/view/getlines.hpp"
 #include "range/v3/view/map.hpp"
 #include "range/v3/view/sliding.hpp"
 #include "range/v3/view/transform.hpp"

@@ -4,8 +4,8 @@
 #include "AoC/utils/2d_array.h"
 
 #include "range/v3/algorithm/count.hpp"
-#include "range/v3/istream_range.hpp"
 #include "range/v3/view/filter.hpp"
+#include "range/v3/view/istream.hpp"
 #include "range/v3/view/transform.hpp"
 
 #include "boost/numeric/conversion/cast.hpp"

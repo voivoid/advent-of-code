@@ -5,9 +5,9 @@
 
 #include "range/v3/action/sort.hpp"
 #include "range/v3/algorithm/max.hpp"
-#include "range/v3/getlines.hpp"
 #include "range/v3/numeric/accumulate.hpp"
-#include "range/v3/to_container.hpp"
+#include "range/v3/range/conversion.hpp"
+#include "range/v3/view/getlines.hpp"
 #include "range/v3/view/group_by.hpp"
 #include "range/v3/view/indices.hpp"
 #include "range/v3/view/join.hpp"

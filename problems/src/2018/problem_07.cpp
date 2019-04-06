@@ -6,10 +6,10 @@
 
 #include "range/v3/algorithm/find_if.hpp"
 #include "range/v3/algorithm/max.hpp"
-#include "range/v3/empty.hpp"
-#include "range/v3/getlines.hpp"
-#include "range/v3/to_container.hpp"
+#include "range/v3/range/conversion.hpp"
+#include "range/v3/range/primitives.hpp"
 #include "range/v3/view/filter.hpp"
+#include "range/v3/view/getlines.hpp"
 #include "range/v3/view/map.hpp"
 #include "range/v3/view/set_algorithm.hpp"
 #include "range/v3/view/transform.hpp"

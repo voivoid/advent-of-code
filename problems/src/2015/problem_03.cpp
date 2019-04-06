@@ -3,10 +3,10 @@
 #include "AoC/problems_map.h"
 #include "AoC/utils/geo.h"
 
-#include "range/v3/istream_range.hpp"
-#include "range/v3/to_container.hpp"
+#include "range/v3/range/conversion.hpp"
 #include "range/v3/view/concat.hpp"
 #include "range/v3/view/drop.hpp"
+#include "range/v3/view/istream.hpp"
 #include "range/v3/view/partial_sum.hpp"
 #include "range/v3/view/single.hpp"
 #include "range/v3/view/stride.hpp"
@@ -46,7 +46,7 @@ VisitedHouses solve( Range&& instructions )
   auto positions         = ranges::view::concat( initial_pos, instructions | ranges::view::transform( parse_instruction ) );
   auto visited           = positions | ranges::view::partial_sum;
 
-  return visited | ranges::to<std::set>;
+  return visited | ranges::to<std::set>();
 }
 }  // namespace
 

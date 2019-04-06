@@ -2,14 +2,14 @@
 
 #include "range/v3/algorithm/for_each.hpp"
 #include "range/v3/algorithm/mismatch.hpp"
-#include "range/v3/distance.hpp"
-#include "range/v3/to_container.hpp"
+#include "range/v3/iterator/operations.hpp"
+#include "range/v3/range/conversion.hpp"
 #include "range/v3/view/all.hpp"
 #include "range/v3/view/chunk.hpp"
 #include "range/v3/view/concat.hpp"
+#include "range/v3/view/facade.hpp"
 #include "range/v3/view/single.hpp"
 #include "range/v3/view/transform.hpp"
-#include "range/v3/view_facade.hpp"
 
 #include <vector>
 

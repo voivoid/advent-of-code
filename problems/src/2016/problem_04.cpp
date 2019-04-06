@@ -6,11 +6,11 @@
 #include "range/v3/action/sort.hpp"
 #include "range/v3/algorithm/equal.hpp"
 #include "range/v3/algorithm/find_if.hpp"
-#include "range/v3/getlines.hpp"
 #include "range/v3/numeric/accumulate.hpp"
-#include "range/v3/to_container.hpp"
+#include "range/v3/range/conversion.hpp"
 #include "range/v3/view/c_str.hpp"
 #include "range/v3/view/filter.hpp"
+#include "range/v3/view/getlines.hpp"
 #include "range/v3/view/group_by.hpp"
 #include "range/v3/view/take.hpp"
 #include "range/v3/view/transform.hpp"
@@ -144,7 +144,7 @@ namespace problem_04
 int solve_1( std::istream& input )
 {
   auto real_rooms     = get_real_rooms( input );
-  const auto checksum = ranges::accumulate( real_rooms, 0, std::plus<SectorId>{}, &Room::sector_id );
+  const auto checksum = ranges::accumulate( real_rooms, SectorId{ 0 }, std::plus<SectorId>{}, &Room::sector_id );
 
   return boost::numeric_cast<int>( checksum );
 }
