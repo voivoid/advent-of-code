@@ -5,7 +5,7 @@
 #include "AoC/utils/parse.h"
 
 #include "boost/fusion/adapted/struct.hpp"
-#include "boost/spirit/home/x3.hpp"
+
 
 namespace
 {
@@ -22,14 +22,14 @@ BOOST_FUSION_ADAPT_STRUCT( CodePos, row, col )
 namespace
 {
 
-CodePos parse_code_pos( const std::string& input )
+CodePos parse_code_pos( std::istream& input )
 {
   namespace x3 = boost::spirit::x3;
 
   auto parser = x3::int_ > x3::int_;
 
   CodePos code_pos;
-  const bool is_parsed = AoC::x3_parse( input.cbegin(), input.cend(), parser, x3::char_ - x3::digit, code_pos );
+  const bool is_parsed = AoC::x3_parse( input, parser, x3::char_ - x3::digit, code_pos );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse input code position data" );
@@ -66,9 +66,7 @@ namespace problem_25
 
 size_t solve_1( std::istream& input )
 {
-  std::string input_str;
-  std::getline( input, input_str );
-  const auto code_pos   = parse_code_pos( input_str );
+  const auto code_pos   = parse_code_pos( input );
   const auto code_index = calc_code_index( code_pos );
   return calc_code( code_index );
 }
@@ -90,13 +88,16 @@ AOC_REGISTER_PROBLEM( 2015_25, solve_1, solve_2 );
 
 #  include "impl_tests.h"
 #  include <cassert>
+#  include <sstream>
 
 static void impl_tests()
 {
-  const auto code_pos =
-      parse_code_pos( "To continue, please consult the code grid in the manual.  Enter the code at row 2981, column 3075." );
-  assert( 3075 == code_pos.col );
-  assert( 2981 == code_pos.row );
+  {
+    std::istringstream ss( "To continue, please consult the code grid in the manual.  Enter the code at row 2981, column 3075." );
+    const auto code_pos = parse_code_pos( ss );
+    assert( 3075 == code_pos.col );
+    assert( 2981 == code_pos.row );
+  }
 
   assert( 12 == calc_code_index( { 4, 2 } ) );
   assert( 14 == calc_code_index( { 2, 4 } ) );

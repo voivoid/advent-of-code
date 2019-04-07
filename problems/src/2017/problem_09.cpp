@@ -1,14 +1,11 @@
 #include "AoC/2017/problem_09.h"
 
 #include "AoC/problems_map.h"
-
 #include "AoC/utils/parse.h"
 
 #include "boost/numeric/conversion/cast.hpp"
-#include "boost/spirit/home/x3.hpp"
 
 #include <istream>
-#include <string>
 
 namespace
 {
@@ -19,7 +16,7 @@ struct ParseResult
   size_t chars_inside_garbage;
 };
 
-ParseResult parse_chars( const std::string& input )
+ParseResult solve( std::istream& input )
 {
   namespace x3 = boost::spirit::x3;
 
@@ -40,21 +37,13 @@ ParseResult parse_chars( const std::string& input )
 
   const auto parser = x3::lexeme[ *( cancel | garbage | group_start | group_end | x3::char_ ) ];
 
-  const bool is_parsed = AoC::x3_parse( input.cbegin(), input.cend(), parser, x3::space );
+  const bool is_parsed = AoC::x3_parse( input, parser, x3::space );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse input groups data" );
   }
 
   return result;
-}
-
-ParseResult solve( std::istream& input )
-{
-  std::string input_str;
-  std::getline( input, input_str );
-
-  return parse_chars( input_str );
 }
 
 }  // namespace

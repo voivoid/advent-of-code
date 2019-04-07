@@ -18,7 +18,7 @@
 #include "boost/fusion/adapted/struct.hpp"
 #include "boost/hof/lift.hpp"
 #include "boost/numeric/conversion/cast.hpp"
-#include "boost/spirit/home/x3.hpp"
+
 #include "boost/variant.hpp"
 
 #include <algorithm>

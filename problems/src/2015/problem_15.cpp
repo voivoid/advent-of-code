@@ -16,7 +16,7 @@
 #include "boost/coroutine2/all.hpp"
 #include "boost/fusion/adapted/struct.hpp"
 #include "boost/numeric/conversion/cast.hpp"
-#include "boost/spirit/home/x3.hpp"
+
 
 #include <algorithm>
 #include <istream>

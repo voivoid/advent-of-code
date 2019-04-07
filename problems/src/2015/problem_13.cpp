@@ -18,7 +18,7 @@
 
 #include "boost/functional/hash.hpp"
 #include "boost/fusion/include/vector.hpp"
-#include "boost/spirit/home/x3.hpp"
+
 
 #include <functional>
 #include <istream>

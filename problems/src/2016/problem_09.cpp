@@ -4,8 +4,6 @@
 #include "AoC/utils/fusion.h"
 #include "AoC/utils/parse.h"
 
-#include "boost/spirit/home/x3.hpp"
-
 #include "boost/numeric/conversion/cast.hpp"
 #include "boost/spirit/include/phoenix_core.hpp"
 #include "boost/spirit/include/phoenix_operator.hpp"

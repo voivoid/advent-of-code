@@ -10,7 +10,7 @@
 
 #include "boost/fusion/container/vector.hpp"
 #include "boost/numeric/conversion/cast.hpp"
-#include "boost/spirit/home/x3.hpp"
+
 
 #include <istream>
 #include <list>
@@ -23,15 +23,12 @@ using Marble = size_t;
 
 auto parse_input( std::istream& input )
 {
-  std::string input_str;
-  std::getline( input, input_str );
-
   namespace x3 = boost::spirit::x3;
 
   const auto parser = AoC::x3_size_t_ > "players;" > "last" > "marble" > "is" > "worth" > AoC::x3_size_t_ > "points";
 
   boost::fusion::vector<size_t, size_t> parsed_data;
-  const bool is_parsed = AoC::x3_parse( input_str.cbegin(), input_str.cend(), parser, x3::space, parsed_data );
+  const bool is_parsed = AoC::x3_parse( input, parser, x3::space, parsed_data );
   if ( !is_parsed )
   {
     throw std::runtime_error( "Failed to parse task input" );

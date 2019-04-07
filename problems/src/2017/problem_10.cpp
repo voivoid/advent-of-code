@@ -15,7 +15,6 @@
 #include "range/v3/view/transform.hpp"
 
 #include "boost/numeric/conversion/cast.hpp"
-#include "boost/spirit/home/x3.hpp"
 
 #include <iomanip>
 #include <istream>
@@ -31,12 +30,12 @@ using Nums    = std::vector<Num>;
 using Length  = Num;
 using Lengths = std::vector<Length>;
 
-Lengths parse_lengths( const std::string& line )
+Lengths parse_lengths( std::istream& input )
 {
   const auto parser = AoC::x3_size_t_ % ',';
 
   Lengths lengths;
-  const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, boost::spirit::x3::space, lengths );
+  const bool is_parsed = AoC::x3_parse( input, parser, boost::spirit::x3::space, lengths );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse input lengths data" );
@@ -103,13 +102,6 @@ std::string to_hex_string( Range&& nums )
   return ss.str();
 }
 
-std::string get_input_str( std::istream& input )
-{
-  std::string str;
-  std::getline( input, str );
-  return str;
-}
-
 Nums make_nums( const Num max_num )
 {
   return ranges::view::indices( max_num ) | ranges::to_vector;
@@ -117,8 +109,7 @@ Nums make_nums( const Num max_num )
 
 size_t solve_1_impl( std::istream& input, const Num max_num )
 {
-  const std::string input_str = get_input_str( input );
-  const Lengths lengths       = parse_lengths( input_str );
+  const Lengths lengths = parse_lengths( input );
 
   Nums nums = make_nums( max_num );
   run_rounds( nums, lengths, 1 );
@@ -141,8 +132,8 @@ size_t solve_1( std::istream& input )
 
 std::string solve_2( std::istream& input )
 {
-  const std::string input_str = get_input_str( input );
-  const auto input_codes      = input_str | ranges::view::transform( []( const char c ) { return static_cast<Num>( c ); } );
+  input >> std::noskipws;
+  auto input_codes = ranges::istream<char>( input ) | ranges::view::transform( []( const char c ) { return static_cast<Num>( c ); } );
 
   const std::initializer_list<Num> codes_suffix = { 17, 31, 73, 47, 23 };
   const auto lengths                            = ranges::view::concat( input_codes, codes_suffix ) | ranges::to_vector;
@@ -165,7 +156,10 @@ AOC_REGISTER_PROBLEM( 2017_10, solve_1, solve_2 );
 
 static void impl_tests()
 {
-  assert( ( Lengths{ 3, 4, 1, 5 } ) == parse_lengths( "3, 4, 1, 5" ) );
+  {
+    std::istringstream ss{ "3, 4, 1, 5" };
+    assert( ( Lengths{ 3, 4, 1, 5 } ) == parse_lengths( ss ) );
+  }
 
   {
     std::istringstream ss{ "3, 4, 1, 5" };
