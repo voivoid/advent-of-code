@@ -6,6 +6,7 @@
 #include "boost/numeric/conversion/cast.hpp"
 
 #include <istream>
+#include <stdexcept>
 
 namespace
 {

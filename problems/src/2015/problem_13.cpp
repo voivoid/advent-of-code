@@ -22,6 +22,7 @@
 
 #include <functional>
 #include <istream>
+#include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include <utility>

@@ -12,6 +12,10 @@
 #include "range/v3/view/tail.hpp"
 #include "range/v3/view/transform.hpp"
 
+#include <istream>
+#include <stdexcept>
+#include <string>
+#include <vector>
 
 
 namespace

@@ -23,6 +23,7 @@
 #include <istream>
 #include <map>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <utility>
 #include <vector>

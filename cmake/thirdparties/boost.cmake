@@ -2,7 +2,7 @@ include(ExternalProject)
 
 set(BoostVersion "1.70.0")
 set(BoostLibs test program_options context)
-set(BoostSHA256 ec8ddbbee2fd61e2f78a1dfe9a07ad83ca8f6a2f4c704d6f297d89c6afdc4f2c)
+set(BoostSHA256 882b48708d211a5f48e60b0124cf5863c1534cd544ecd0664bb534a4b5d506e9)
 
 
 if(WIN32)
@@ -49,8 +49,7 @@ string(REPLACE . _ BoostVersionUnderscored ${BoostVersion})
 ExternalProject_Add(
   get_boost
   PREFIX thirdparties
-  URL "https://dl.bintray.com/boostorg/release/1.70.0/source/boost_1_70_0_rc1.tar.gz"
-# URL "https://dl.bintray.com/boostorg/release/${BoostVersion}/source/boost_${BoostVersionUnderscored}.tar.gz"
+  URL "https://dl.bintray.com/boostorg/release/${BoostVersion}/source/boost_${BoostVersionUnderscored}.tar.gz"
   URL_HASH SHA256=${BoostSHA256}
   CONFIGURE_COMMAND ${BoostBootstrapCmd} ${BoostBootstrapToolset}
   BUILD_COMMAND ${BoostB2} ${BoostB2Toolset} link=static threading=multi runtime-link=shared ${BoostLayout} ${BoostAddressModel} ${BoostBuildVariant} ${BoostLibsCmdLine} ${BoostAsmFlags} -j 4

@@ -13,6 +13,7 @@
 #include "range/v3/view/transform.hpp"
 
 #include <istream>
+#include <stdexcept>
 #include <vector>
 
 namespace

@@ -51,7 +51,7 @@ Day | 2015 | 2016 | 2017 | 2018 |
 09  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_09.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2016/problem_09.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2017/problem_09.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2018/problem_09.cpp)     |
 10  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_10.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2016/problem_10.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2017/problem_10.cpp)     |      |
 11  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_11.cpp)     |      | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2017/problem_11.cpp)     | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2018/problem_11.cpp)     |
-12  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_12.cpp)     |      |      |      |
+12  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_12.cpp)     |      | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2017/problem_12.cpp)     |      |
 13  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_13.cpp)     |      |      |      |
 14  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_14.cpp)     |      |      |      |
 15  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_15.cpp)     |      |      |      |

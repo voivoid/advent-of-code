@@ -6,6 +6,9 @@
 
 #include "boost/fusion/adapted/struct.hpp"
 
+#include <istream>
+#include <stdexcept>
+
 
 namespace
 {
