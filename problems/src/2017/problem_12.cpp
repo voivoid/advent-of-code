@@ -5,8 +5,8 @@
 
 #include "range/v3/algorithm/count.hpp"
 #include "range/v3/algorithm/find_if.hpp"
-#include "range/v3/getlines.hpp"
 #include "range/v3/range/conversion.hpp"
+#include "range/v3/view/getlines.hpp"
 #include "range/v3/view/map.hpp"
 #include "range/v3/view/transform.hpp"
 
@@ -125,7 +125,12 @@ size_t solve_1( std::istream& input )
   const auto connections = make_connections( input );
 
   const auto conn_iter = connections.find( 0 );
-  assert( conn_iter != connections.cend() );
+
+  if ( conn_iter == connections.cend() )
+  {
+    throw std::runtime_error( "This should never be executed" );
+  }
+
   const auto conn_id = conn_iter->second;
 
   return boost::numeric_cast<size_t>( ranges::count( connections | ranges::view::values, conn_id ) );
