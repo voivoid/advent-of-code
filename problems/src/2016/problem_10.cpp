@@ -14,10 +14,10 @@
 
 #include <functional>
 #include <istream>
-#include <map>
 #include <optional>
 #include <stdexcept>
 #include <string>
+#include <unordered_map>
 
 namespace
 {
@@ -43,7 +43,7 @@ struct Output
 };
 
 template <typename T>
-using SlotsMap = std::map<Id, T>;
+using SlotsMap = std::unordered_map<Id, T>;
 using Bots     = SlotsMap<Bot>;
 using Outputs  = SlotsMap<Output>;
 

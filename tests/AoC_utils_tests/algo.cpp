@@ -21,3 +21,9 @@ BOOST_AUTO_TEST_CASE( AoC_utils_algo_iterate )
   BOOST_CHECK_EQUAL( 5, ri );
   BOOST_CHECK_EQUAL( &i, &ri );
 }
+
+BOOST_AUTO_TEST_CASE( AoC_utils_hex_to_num )
+{
+  BOOST_CHECK_EQUAL( 10, AoC::hex_to_<size_t>( 'a' ) );
+  BOOST_CHECK_EQUAL( 11, AoC::hex_to_<int>( 'b' ) );
+}

@@ -27,10 +27,10 @@
 
 #include <cmath>
 #include <istream>
-#include <map>
-#include <set>
 #include <stdexcept>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 BOOST_FUSION_ADAPT_STRUCT( AoC::Coord, x, y )
@@ -176,14 +176,14 @@ int solve_1( std::istream& input )
   const auto locations     = parse_locations( input );
   const auto locations_map = make_locations_map<&find_closest_location_index>( locations );
 
-  const auto border_location_indices = find_border_indices( locations ) | ranges::to<std::set>;
+  const auto border_location_indices = find_border_indices( locations ) | ranges::to<std::unordered_set>;
 
   auto finite_location_indices =
       locations_map | ranges::view::filter( [&border_location_indices]( const LocationIndex index ) {
         return index != overlapped_location_index && border_location_indices.find( index ) == border_location_indices.cend();
       } );
 
-  std::map<LocationIndex, int> index_counter;
+  std::unordered_map<LocationIndex, int> index_counter;
   for ( const LocationIndex index : finite_location_indices )
   {
     ++index_counter[ index ];

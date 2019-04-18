@@ -158,6 +158,17 @@ BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_row_writing, T, NonConstFix
   BOOST_CHECK_EQUAL_COLLECTIONS( arr.cbegin(), arr.cend(), expected.begin(), expected.end() );
 }
 
+BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_rows_cols, T, AllFixtures, T )
+{
+  auto& arr = T::array;
+
+  auto rows = AoC::rows( arr );
+  BOOST_CHECK_EQUAL( 3, rows.size() );
+
+  auto columns = AoC::columns( arr );
+  BOOST_CHECK_EQUAL( 4, columns.size() );
+}
+
 BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_equal_op, T, AllFixtures, T )
 {
   auto& arr = T::array;

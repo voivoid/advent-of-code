@@ -13,16 +13,16 @@
 #include "range/v3/view/transform.hpp"
 
 #include <istream>
-#include <set>
 #include <stdexcept>
 #include <tuple>
+#include <unordered_set>
 
 namespace
 {
 using Pos = AoC::Coord;
 
 using Instruction   = char;
-using VisitedHouses = std::set<Pos>;
+using VisitedHouses = std::unordered_set<Pos, AoC::GeoHasher>;
 
 Pos parse_instruction( const Instruction instruction )
 {
@@ -44,7 +44,7 @@ VisitedHouses solve( Range&& instructions )
   auto positions         = ranges::view::concat( initial_pos, instructions | ranges::view::transform( parse_instruction ) );
   auto visited           = positions | ranges::view::partial_sum;
 
-  return visited | ranges::to<std::set>();
+  return visited | ranges::to<VisitedHouses>();
 }
 }  // namespace
 
@@ -69,7 +69,7 @@ size_t solve_2( std::istream& input )
   const auto santas_houses = solve( santas_instructions );
   const auto robo_houses   = solve( robo_instructions );
 
-  std::set<Pos> visited_houses;
+  VisitedHouses visited_houses;
   visited_houses.insert( santas_houses.cbegin(), santas_houses.cend() );
   visited_houses.insert( robo_houses.cbegin(), robo_houses.cend() );
 

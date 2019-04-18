@@ -1,5 +1,7 @@
 #pragma once
 
+#include "boost/functional/hash.hpp"
+
 #include <tuple>
 
 namespace AoC
@@ -101,5 +103,30 @@ using UCoord = GenericPoint<size_t>;
 
 using Rectangle  = GenericRectangle<int>;
 using URectangle = GenericRectangle<size_t>;
+
+struct GeoHasher
+{
+  template <typename T>
+  size_t operator()( GenericPoint<T> p ) const
+  {
+    std::size_t seed = 0;
+
+    boost::hash_combine( seed, boost::hash_value( p.x ) );
+    boost::hash_combine( seed, boost::hash_value( p.y ) );
+
+    return seed;
+  }
+
+  template <typename T>
+  size_t operator()( const GenericRectangle<T>& p ) const
+  {
+    std::size_t seed = 0;
+
+    boost::hash_combine( seed, ( *this )( p.left_top ) );
+    boost::hash_combine( seed, ( *this )( p.right_bottom ) );
+
+    return seed;
+  }
+};
 
 }  // namespace AoC

@@ -399,6 +399,12 @@ auto column( const Details::dd_array<T, Impl>& arr, const size_t n )
   return Details::column_impl<const T>( arr, n );
 }
 
+template <typename Arr>
+auto columns( Arr& arr )
+{
+  return ranges::view::indices( arr.get_width() ) | ranges::view::transform( [&arr]( const size_t n ) { return column( arr, n ); } );
+}
+
 template <typename T, typename Impl>
 auto row( Details::dd_array<T, Impl>& arr, const size_t n )
 {
@@ -409,6 +415,12 @@ template <typename T, typename Impl>
 auto row( const Details::dd_array<T, Impl>& arr, const size_t n )
 {
   return Details::row_impl<const T>( arr, n );
+}
+
+template <typename Arr>
+auto rows( Arr& arr )
+{
+  return ranges::view::indices( arr.get_height() ) | ranges::view::transform( [&arr]( const size_t n ) { return row( arr, n ); } );
 }
 
 }  // namespace AoC

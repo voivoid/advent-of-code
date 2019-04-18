@@ -12,8 +12,8 @@
 #include "boost/numeric/conversion/cast.hpp"
 
 #include <istream>
-#include <set>
 #include <stack>
+#include <unordered_set>
 
 #include <cctype>
 
@@ -34,7 +34,7 @@ bool should_be_reduced( const char c1, const char c2 )
   return to_lower( c1 ) == to_lower( c2 ) && ( is_uppercase( c1 ) != is_uppercase( c2 ) );
 }
 
-std::set<char> get_unique_polymers( const std::string& input )
+std::unordered_set<char> get_unique_polymers( const std::string& input )
 {
   return input | ranges::view::transform( &to_lower );
 }

@@ -18,9 +18,9 @@
 
 
 #include <istream>
-#include <set>
 #include <stdexcept>
 #include <string>
+#include <unordered_set>
 
 namespace
 {
@@ -158,7 +158,7 @@ size_t calc_distance( const Coord c1, const Coord c2 )
 template <typename Range>
 Coord find_already_visited_coord( Range&& coords )
 {
-  std::set<Coord> visited_coords;
+  std::unordered_set<Coord, AoC::GeoHasher> visited_coords;
   for ( const auto coord : coords )
   {
     auto [ _, is_inserted ] = visited_coords.insert( coord );

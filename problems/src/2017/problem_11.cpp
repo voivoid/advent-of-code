@@ -47,6 +47,7 @@ Pos make_step( const Pos pos, const Dir d )
     case Dir::Dummy: return pos;
   }
 
+  assert( false );
   throw std::runtime_error( "This should never be executed" );
 }
 

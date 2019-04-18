@@ -21,9 +21,9 @@
 
 #include <istream>
 #include <limits>
-#include <map>
 #include <stdexcept>
 #include <string>
+#include <unordered_map>
 
 #include <cctype>
 #include <cstdint>
@@ -69,7 +69,7 @@ namespace
 {
 
 using Instruction = boost::variant<Source, UnaryGate, BinaryGate>;
-using Circuit     = std::map<Wire, Instruction>;
+using Circuit     = std::unordered_map<Wire, Instruction>;
 
 Signal calc_unary_gate( const UnaryGate::Op op, const Signal arg )
 {

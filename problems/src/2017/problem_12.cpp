@@ -14,10 +14,10 @@
 #include "boost/numeric/conversion/cast.hpp"
 
 #include <istream>
-#include <set>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 namespace
@@ -128,6 +128,7 @@ size_t solve_1( std::istream& input )
 
   if ( conn_iter == connections.cend() )
   {
+    assert( false );
     throw std::runtime_error( "This should never be executed" );
   }
 
@@ -139,7 +140,7 @@ size_t solve_1( std::istream& input )
 size_t solve_2( std::istream& input )
 {
   const auto connections = make_connections( input );
-  const auto groups      = connections | ranges::view::values | ranges::to<std::set>;
+  const auto groups      = connections | ranges::view::values | ranges::to<std::unordered_set>;
   return groups.size();
 }
 
