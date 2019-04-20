@@ -1,8 +1,6 @@
 #pragma once
 
+#include "boost/hof/lift.hpp"
 #include "boost/hof/partial.hpp"
 
-namespace AoC
-{
-const auto curry = boost::hof::partial;
-}
+#define AOC_CURRY( F ) boost::hof::partial( BOOST_HOF_LIFT( F ) )

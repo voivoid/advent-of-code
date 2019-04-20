@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE( AoC_utils_ranges_to_2d_vector )
   }
 
   {
-    const auto v = ranges::view::ints( 0, 4 ) | ranges::view::transform( []( const int n ) { return ranges::view::ints( 0, n ); } ) |
+    const auto v = ranges::view::iota( 0, 4 ) | ranges::view::transform( []( const int n ) { return ranges::view::iota( 0, n ); } ) |
                    AoC::to_2d_vector();
     const auto expected = std::vector<std::vector<int>>{ {}, { 0 }, { 0, 1 }, { 0, 1, 2 } };
     BOOST_CHECK( v == expected );

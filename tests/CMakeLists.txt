@@ -122,6 +122,7 @@ if(Bash)
   add_aoc_test(2017_13 1632 3834136)
   add_aoc_test(2017_14 8140 1182)
   add_aoc_test(2017_15 631 279)
+  add_aoc_test(2017_16 iabmedjhclofgknp oildcmfeajhbpngk)
 
   add_aoc_test(2018_01 411 56360)
   add_aoc_test(2018_02 5681 uqyoeizfvmbistpkgnocjtwld)

@@ -59,7 +59,7 @@ size_t solve( std::istream& input )
   input >> presents_num;
 
   auto houses_with_at_least_as_many_presents =
-      ranges::view::ints( size_t{ 1 } ) |
+      ranges::view::iota( size_t{ 1 } ) |
       ranges::view::filter( [presents_num]( const size_t house_index ) { return calc_presents( house_index ) >= presents_num; } );
 
   const size_t first_house = houses_with_at_least_as_many_presents.front();
