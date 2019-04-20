@@ -29,7 +29,7 @@
 namespace
 {
 
-using Coord                = AoC::GenericPoint<long int>;
+using Coord                = AoC::GenericPoint<size_t>;
 constexpr size_t HashesNum = 128;
 
 using Bit                         = int;
@@ -97,7 +97,7 @@ Grid make_grid( std::istream& input )
     {
       if ( bit == b1 )
       {
-        grid.insert( { x, y } );
+        grid.insert( { boost::numeric_cast<size_t>( x ), boost::numeric_cast<size_t>( y ) } );
       }
     }
   }

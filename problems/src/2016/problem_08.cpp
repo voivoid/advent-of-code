@@ -63,7 +63,7 @@ BOOST_FUSION_ADAPT_STRUCT( Commands::RotateRow, y, by )
 
 namespace
 {
-using CharCode    = unsigned long;
+using CharCode    = size_t;
 using CharCodeMap = std::unordered_map<CharCode, char>;
 using Command     = boost::variant<Commands::Rect, Commands::RotateCol, Commands::RotateRow>;
 
@@ -129,7 +129,7 @@ void apply_command( Screen& screen, const Commands::RotateRow cmd )
 
 void run_command( Screen& screen, const Command& command )
 {
-  const auto visitor = AoC::curry( BOOST_HOF_LIFT( apply_command ) )( std::ref( screen ) );
+  const auto visitor = AOC_CURRY( apply_command )( std::ref( screen ) );
   boost::apply_visitor( visitor, command );
 }
 
@@ -154,10 +154,12 @@ Screen run_commands( std::istream& istream )
 auto letter_to_code()
 {
   return ranges::view::transform( ranges::view::join ) | ranges::view::transform( []( auto bits ) {
-           std::string bitstr = bits;
-           assert( bitstr.length() == LetterWidth * ScreenHeight );
+           constexpr auto LetterBitsNum = LetterWidth * ScreenHeight;
 
-           return std::bitset<ScreenWidth>( bitstr ).to_ulong();
+           std::string bitstr = bits;
+           assert( bitstr.length() == LetterBitsNum );
+
+           return std::bitset<LetterBitsNum>( bitstr ).to_ulong();
          } );
 }
 
@@ -168,7 +170,8 @@ auto bits_to_letters( const Range& bits, const size_t letters_num, const B bit1 
   const auto letter_chunks = bits | ranges::view::transform( [bit1]( const auto c ) { return c == bit1 ? '1' : '0'; } ) |
                              ranges::view::chunk( letters_num * LetterWidth ) |
                              ranges::view::transform( ranges::view::chunk( LetterWidth ) );
-  return ranges::view::indices( letters_num ) | ranges::view::transform( [letter_chunks]( const auto n ) {
+
+  return ranges::view::indices( letters_num ) | ranges::view::transform( [letter_chunks]( const size_t n ) {
            return letter_chunks | ranges::view::transform( [n]( const auto line ) {
                     assert( n < line.size() );
                     return line[ boost::numeric_cast<ptrdiff_t>( n ) ];

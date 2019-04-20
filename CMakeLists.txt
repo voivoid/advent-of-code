@@ -11,7 +11,7 @@ include(cmake/thirdparties/json.cmake)
 include(cmake/build_utils.cmake)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  set(AocExcludedProblems
+  set(AocExcludedProblems 2017_14 # https://github.com/ericniebler/range-v3/issues/1141
   )
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
   set(AocExcludedProblems 2015_14     # looks like MSVC has issues with range-v3
@@ -30,7 +30,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
   )
 endif()
 
-set(AocExcludedProblems ${AocExcludedProblems} 2016_08 2017_14) # https://github.com/ericniebler/range-v3/issues/1141
+set(AocExcludedProblems ${AocExcludedProblems} 2016_08) # https://github.com/ericniebler/range-v3/issues/1141
 
 foreach(Problem ${AocExcludedProblems})
   message("Problem ${Problem} would not be built due to ${CMAKE_CXX_COMPILER_ID} compiler issues")
