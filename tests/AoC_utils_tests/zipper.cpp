@@ -69,24 +69,33 @@ BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_zipper_multi_step_navigation, T, Fix
   T container = { 1, 2, 3, 4, 5, 6 };
   auto zipper = AoC::Zipper<T>( container );
   BOOST_CHECK_EQUAL( 1, zipper.current() );
+  BOOST_CHECK_EQUAL( 0, zipper.pos() );
 
   zipper.next( 3 );
   BOOST_CHECK_EQUAL( 4, zipper.current() );
+  BOOST_CHECK_EQUAL( 3, zipper.pos() );
   zipper.next( 4 );
   BOOST_CHECK_EQUAL( 2, zipper.current() );
+  BOOST_CHECK_EQUAL( 1, zipper.pos() );
   zipper.next( 6 );
   BOOST_CHECK_EQUAL( 2, zipper.current() );
-  zipper.next( 36 );
-  BOOST_CHECK_EQUAL( 2, zipper.current() );
+  BOOST_CHECK_EQUAL( 1, zipper.pos() );
+  zipper.next( 38 );
+  BOOST_CHECK_EQUAL( 4, zipper.current() );
+  BOOST_CHECK_EQUAL( 3, zipper.pos() );
 
-  zipper.prev( 36 );
+  zipper.prev( 38 );
   BOOST_CHECK_EQUAL( 2, zipper.current() );
+  BOOST_CHECK_EQUAL( 1, zipper.pos() );
   zipper.prev( 6 );
   BOOST_CHECK_EQUAL( 2, zipper.current() );
+  BOOST_CHECK_EQUAL( 1, zipper.pos() );
   zipper.prev( 4 );
   BOOST_CHECK_EQUAL( 4, zipper.current() );
+  BOOST_CHECK_EQUAL( 3, zipper.pos() );
   zipper.prev( 3 );
   BOOST_CHECK_EQUAL( 1, zipper.current() );
+  BOOST_CHECK_EQUAL( 0, zipper.pos() );
 }
 
 BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_zipper_update, T, Fixtures, T )

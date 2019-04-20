@@ -42,7 +42,7 @@ auto parse_input( std::istream& input )
 size_t solve( const size_t players, const size_t last_marble )
 {
   std::list<Marble> marbles = { 0 };
-  AoC::Zipper<decltype( marbles )> marbles_zipper( marbles );
+  AoC::Zipper marbles_zipper( marbles );
 
   std::vector<size_t> scores;
   scores.resize( players );

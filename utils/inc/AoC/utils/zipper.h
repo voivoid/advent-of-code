@@ -5,23 +5,29 @@
 #include <stdexcept>
 #include <utility>
 
+#include "boost/numeric/conversion/cast.hpp"
+
 namespace AoC
 {
 template <typename Container>
 class Zipper
 {
 public:
-  Zipper( Container& c ) : container( c ), current_elem_iter( container.begin() )
+  Zipper( Container& c ) : container( c ), current_elem_iter( container.begin() ), current_position( 0 )
   {
     ensure_is_not_empty();
   }
 
   Zipper( Container& c, typename Container::iterator i ) : container( c ), current_elem_iter( i )
   {
+    current_position = static_cast<size_t>( std::distance( container.begin(), current_elem_iter ) );
     ensure_is_not_empty();
   }
 
-  Zipper( const Zipper& other ) : container( other.container ), current_elem_iter( other.current_elem_iter )
+  Zipper( const Zipper& other ) :
+      container( other.container ),
+      current_elem_iter( other.current_elem_iter ),
+      current_position( other.current_position )
   {
   }
 
@@ -29,55 +35,25 @@ public:
 
   using Elem = typename Container::value_type;
 
+  void set_next_position( const size_t next_pos )
+  {
+    const auto diff = boost::numeric_cast<ptrdiff_t>( next_pos ) - boost::numeric_cast<std::ptrdiff_t>( pos() );
+
+    current_position = next_pos;
+    std::advance( current_elem_iter, diff );
+  }
+
   void next( size_t n = 1 )
   {
-    if ( n >= size() )
-    {
-      n = n % size();
-    }
-
-    if ( n == 0 )
-    {
-      return;
-    }
-
-    assert( current_elem_iter != container.cend() );
-    ++current_elem_iter;
-
-    if ( current_elem_iter == container.cend() )
-    {
-      current_elem_iter = container.begin();
-    }
-
-    next( n - 1 );
+    set_next_position( ( pos() + n ) % size() );
   }
 
   void prev( size_t n = 1 )
   {
-    if ( n >= size() )
-    {
-      n = n % size();
-    }
-
-    if ( n == 0 )
-    {
-      return;
-    }
-
-    assert( current_elem_iter != container.cend() );
-    if ( current_elem_iter == container.cbegin() )
-    {
-      current_elem_iter = --container.end();
-    }
-    else
-    {
-      --current_elem_iter;
-    }
-
-    prev( n - 1 );
+    set_next_position( ( pos() + size() - ( n % size() ) ) % size() );
   }
 
-  void move( int n )
+  void move( ptrdiff_t n )
   {
     if ( n >= 0 )
     {
@@ -106,7 +82,10 @@ public:
 
   void append( Elem elem )
   {
-    current_elem_iter = --container.insert( ++current_elem_iter, std::move( elem ) );
+    assert( current_elem_iter != container.cend() );
+
+    current_elem_iter = container.insert( ++current_elem_iter, std::move( elem ) );
+    --current_elem_iter;
   }
 
   void remove()
@@ -123,6 +102,11 @@ public:
   size_t size() const
   {
     return container.size();
+  }
+
+  size_t pos() const
+  {
+    return current_position;
   }
 
 private:
@@ -155,5 +139,6 @@ private:
 private:
   Container& container;
   typename Container::iterator current_elem_iter;
+  size_t current_position;
 };
 }  // namespace AoC
