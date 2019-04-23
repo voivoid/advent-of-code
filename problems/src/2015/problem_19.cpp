@@ -40,7 +40,7 @@ std::pair<Molecule, Molecule> parse_replacement( const std::string& line )
   const auto parser          = molecule_parser > "=>" > molecule_parser;
 
   boost::fusion::vector<std::string, std::string> replacements;
-  const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, replacements );
+  const bool is_parsed = AoC::x3_parse( line, parser, x3::space, replacements );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse replacement data" );

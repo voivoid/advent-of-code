@@ -153,7 +153,7 @@ std::pair<Wire, Instruction> parse_instruction( const std::string& line )
   const auto parser = instruction > "->" > wire;
 
   boost::fusion::vector<Instruction, Wire> result;
-  const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, result );
+  const bool is_parsed = AoC::x3_parse( line, parser, x3::space, result );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse input instruction data" );

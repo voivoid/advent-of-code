@@ -70,7 +70,7 @@ Instruction parse_instruction( const std::string& line )
   const auto parser = rotation_parser > AoC::x3_size_t_;
 
   Instruction instruction;
-  const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space | x3::punct, instruction );
+  const bool is_parsed = AoC::x3_parse( line, parser, x3::space | x3::punct, instruction );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse input instruction data" );

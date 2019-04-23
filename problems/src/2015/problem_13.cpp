@@ -75,7 +75,7 @@ Behavior parse_behavior( const std::string& line )
   const auto parser = name > "would" > mode_parser > x3::int_ > "happiness" > "units" > "by" > "sitting" > "next" > "to" > name > ".";
 
   boost::fusion::vector<Name, Mode, ModDiff, Name> attrs;
-  const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, attrs );
+  const bool is_parsed = AoC::x3_parse( line, parser, x3::space, attrs );
   if ( !is_parsed )
   {
     throw std::runtime_error( "Failed to parse behavior input" );

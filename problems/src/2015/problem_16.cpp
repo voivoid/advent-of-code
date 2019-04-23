@@ -64,7 +64,7 @@ Aunt parse_aunt( const std::string& input )
   const auto parser          = "Sue" > x3::uint_ > ':' > ( compound_parser % ',' );
 
   Aunt aunt;
-  const bool is_parsed = AoC::x3_parse( input.cbegin(), input.cend(), parser, x3::space, aunt );
+  const bool is_parsed = AoC::x3_parse( input, parser, x3::space, aunt );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse aunt data" );

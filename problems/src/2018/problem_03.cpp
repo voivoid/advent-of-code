@@ -66,7 +66,7 @@ Claim parse_claim( const std::string& line )
   const auto parser    = '#' > id_parser > '@' > area_parser;
 
   Claim claim;
-  const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, claim );
+  const bool is_parsed = AoC::x3_parse( line, parser, x3::space, claim );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse claim data" );

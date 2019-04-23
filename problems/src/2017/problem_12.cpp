@@ -46,7 +46,7 @@ PipeInfo parse_pipes( const std::string& line )
   const auto parser  = prog_id > "<->" > ( prog_id % ',' );
 
   PipeInfo pipe_info;
-  const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, pipe_info );
+  const bool is_parsed = AoC::x3_parse( line, parser, x3::space, pipe_info );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse input command data" );

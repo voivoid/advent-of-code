@@ -60,7 +60,7 @@ Coord parse_coord( const std::string& line )
   const auto parser = x3::int_ > ',' > x3::int_;
 
   Coord coord;
-  const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, coord );
+  const bool is_parsed = AoC::x3_parse( line, parser, x3::space, coord );
   if ( !is_parsed )
   {
     throw std::runtime_error( "Failed to parse coord input" );

@@ -32,7 +32,7 @@ Triangle parse_triangle( const std::string& line )
   const auto parser = x3::int_ > x3::int_ > x3::int_;
 
   boost::fusion::vector<Side, Side, Side> sides;
-  AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, sides );
+  AoC::x3_parse( line, parser, x3::space, sides );
 
   const auto [ a, b, c ] = AoC::fusion_to_std_tuple( sides );
   return { a, b, c };

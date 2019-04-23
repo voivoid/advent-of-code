@@ -9,7 +9,7 @@ endmacro()
 
 append_tests_srcs(AocTestsSources 2015 01 02 03    05 06 07 08 09    11 12 13    15          19 20       23 24 25)
 append_tests_srcs(AocTestsSources 2016 01 02 03 04 05 06 07 08 09 10)
-append_tests_srcs(AocTestsSources 2017 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15)
+append_tests_srcs(AocTestsSources 2017 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15       18)
 append_tests_srcs(AocTestsSources 2018 01 02 03 04 05 06 07 08 09    11)
 
 # AocLibTests
@@ -124,6 +124,7 @@ if(Bash)
   add_aoc_test(2017_15 631 279)
   add_aoc_test(2017_16 iabmedjhclofgknp oildcmfeajhbpngk)
   add_aoc_test(2017_17 640 47949463)
+  add_aoc_test(2017_18 3423 7493)
 
   add_aoc_test(2018_01 411 56360)
   add_aoc_test(2018_02 5681 uqyoeizfvmbistpkgnocjtwld)

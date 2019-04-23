@@ -206,7 +206,7 @@ Instruction parse_instruction( const std::string& line )
   const auto parser = input_parser | output_parser;
 
   Instruction instruction;
-  const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, instruction );
+  const bool is_parsed = AoC::x3_parse( line, parser, x3::space, instruction );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse input data" );

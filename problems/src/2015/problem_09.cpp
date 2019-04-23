@@ -52,7 +52,7 @@ PathDistance parse_path_distance( const std::string& s )
   const auto parser          = location_parser > "to" > location_parser > "=" > AoC::x3_size_t_;
 
   boost::fusion::vector<std::string, std::string, size_t> parsed_data;
-  const bool is_parsed = AoC::x3_parse( s.cbegin(), s.cend(), parser, x3::space, parsed_data );
+  const bool is_parsed = AoC::x3_parse( s, parser, x3::space, parsed_data );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse input path data" );

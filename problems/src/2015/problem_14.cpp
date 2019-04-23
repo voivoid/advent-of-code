@@ -55,7 +55,7 @@ Deer parse_deer( const std::string& line )
                       "must" > "rest" > "for" > AoC::x3_size_t_ > "seconds";
 
   Deer deer;
-  const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space | x3::punct, deer );
+  const bool is_parsed = AoC::x3_parse( line, parser, x3::space | x3::punct, deer );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse deer data" );

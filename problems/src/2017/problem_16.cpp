@@ -160,8 +160,6 @@ std::string solve_1_impl( std::istream& input, const size_t programs_num )
 
 
 
-#include <iostream>
-
 namespace AoC_2017
 {
 

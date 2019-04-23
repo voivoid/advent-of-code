@@ -79,7 +79,7 @@ Ingredient parse_ingredient( const std::string& line )
       name_parser > "capacity" > x3::int_ > "durability" > x3::int_ > "flavor" > x3::int_ > "texture" > x3::int_ > "calories" > x3::int_;
 
   Ingredient ingredient;
-  const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space | ( x3::punct - '-' ), ingredient );
+  const bool is_parsed = AoC::x3_parse( line, parser, x3::space | ( x3::punct - '-' ), ingredient );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse ingredient data" );

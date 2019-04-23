@@ -9,7 +9,7 @@
 
 #include "boost/numeric/conversion/cast.hpp"
 
-#include <iostream>
+#include <istream>
 #include <set>
 #include <vector>
 

@@ -112,7 +112,7 @@ GuardShifts parse_shifts( const std::string& input )
   const auto parser                                               = *shift_parser;
 
   GuardShifts shifts;
-  const bool is_parsed = AoC::x3_parse( input.cbegin(), input.cend(), parser, x3::space, shifts );
+  const bool is_parsed = AoC::x3_parse( input, parser, x3::space, shifts );
   if ( !is_parsed )
   {
     throw std::runtime_error( "Failed to parse shifts input" );

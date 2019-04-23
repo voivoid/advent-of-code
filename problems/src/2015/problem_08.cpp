@@ -56,7 +56,7 @@ size_t run_parser( const std::string& line, const Parser& parser )
   size_t n = 0;
 
   const auto rule = x3::rule<struct _, size_t>{} = parser;
-  const bool is_parsed                           = AoC::x3_parse( line.cbegin(), line.cend(), rule, x3::space, n );
+  const bool is_parsed                           = AoC::x3_parse( line, rule, x3::space, n );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse input line data" );

@@ -16,7 +16,7 @@
 #include "boost/numeric/conversion/cast.hpp"
 
 #include <cmath>
-#include <iostream>
+#include <istream>
 #include <stdexcept>
 
 namespace

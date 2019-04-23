@@ -13,7 +13,7 @@
 #include "boost/safe_numerics/safe_integer.hpp"
 
 
-#include <iostream>
+#include <istream>
 #include <optional>
 #include <stdexcept>
 #include <string>
@@ -58,7 +58,7 @@ Program parse_program( const std::string& line )
   const auto parser = program_parser > -subprograms_parser;
 
   Program prog;
-  const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, prog );
+  const bool is_parsed = AoC::x3_parse( line, parser, x3::space, prog );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse input program data" );

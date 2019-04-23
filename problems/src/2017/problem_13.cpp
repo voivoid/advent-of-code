@@ -44,7 +44,7 @@ Layer parse_layer( const std::string& line )
   const auto parser = AoC::x3_size_t_ > ':' > AoC::x3_size_t_;
 
   Layer layer;
-  const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, layer );
+  const bool is_parsed = AoC::x3_parse( line, parser, x3::space, layer );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse input layer data" );

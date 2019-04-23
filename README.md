@@ -5,7 +5,7 @@ Advent of Code ( https://adventofcode.com ) 2015-2018 solutions using c++-17 wit
 Prerequisites
 -----
 
-* C++17 compiler ( tested with gcc 8.2.1, clang 7.0.1 )
+* C++17 compiler ( tested with gcc 8.3.0, clang 8.0.0 )
 * cmake 3.13 or later
 * git
 * bash
@@ -57,7 +57,7 @@ Day | 2015 | 2016 | 2017 | 2018 |
 15  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_15.cpp)     |      | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2017/problem_15.cpp)     |      |
 16  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_16.cpp)     |      | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2017/problem_16.cpp)     |      |
 17  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_17.cpp)     |      | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2017/problem_17.cpp)     |      |
-18  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_18.cpp)     |      |      |      |
+18  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_18.cpp)     |      | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2017/problem_18.cpp)     |      |
 19  |      |      |      |      |
 20  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_20.cpp)     |      |      |      |
 21  | [✓](https://github.com/voivoid/advent-of-code/blob/master/problems/src/2015/problem_21.cpp)     |      |      |      |

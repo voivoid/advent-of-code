@@ -38,7 +38,7 @@ Nums parse_row( const std::string& line )
   const auto parser = *x3::int_;
 
   Nums nums;
-  const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space, nums );
+  const bool is_parsed = AoC::x3_parse( line, parser, x3::space, nums );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse input nums data" );

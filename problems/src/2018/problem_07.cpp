@@ -69,7 +69,7 @@ TaskDependency parse_dependency( const std::string& line )
   const auto parser = "Step" > x3::char_ > "must" > "be" > "finished" > "before" > "step" > x3::char_ > "can" > "begin";
 
   TaskDependency task;
-  const bool is_parsed = AoC::x3_parse( line.cbegin(), line.cend(), parser, x3::space | x3::punct, task );
+  const bool is_parsed = AoC::x3_parse( line, parser, x3::space | x3::punct, task );
   if ( !is_parsed )
   {
     throw std::runtime_error( "Failed to parse task input" );

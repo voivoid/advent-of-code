@@ -320,7 +320,7 @@ Boss parse_boss( const std::string& input )
   Boss boss;
   const auto parser = "Hit Points:" > x3::int_ > "Damage:" > x3::int_;
 
-  const bool is_parsed = AoC::x3_parse( input.cbegin(), input.cend(), parser, x3::space, boss );
+  const bool is_parsed = AoC::x3_parse( input, parser, x3::space, boss );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse boss data" );
