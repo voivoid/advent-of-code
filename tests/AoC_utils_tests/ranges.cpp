@@ -5,6 +5,7 @@
 #include "range/v3/algorithm/equal.hpp"
 #include "range/v3/range/conversion.hpp"
 #include "range/v3/view/all.hpp"
+#include "range/v3/view/common.hpp"
 #include "range/v3/view/empty.hpp"
 #include "range/v3/view/iota.hpp"
 #include "range/v3/view/single.hpp"
@@ -95,4 +96,25 @@ BOOST_AUTO_TEST_CASE( AoC_utils_ranges_append )
 
   const auto expected = { 1, 2, 3, 4 };
   BOOST_CHECK_EQUAL_COLLECTIONS( r.begin(), r.end(), expected.begin(), expected.end() );
+}
+
+BOOST_AUTO_TEST_CASE( AoC_utils_ranges_generate )
+{
+  auto range = AoC::generate_range( 0, []( const int n ) { return n + 1; } ) | ranges::view::take_exactly( 5 ) | ranges::view::common;
+  const auto expected = { 1, 2, 3, 4, 5 };
+
+  BOOST_CHECK_EQUAL_COLLECTIONS( expected.begin(), expected.end(), range.begin(), range.end() );
+}
+
+BOOST_AUTO_TEST_CASE( AoC_utils_ranges_generate_while )
+{
+  auto range = AoC::generate_while( 0,
+                                    []( const int n ) {
+                                      using O = std::optional<int>;
+                                      return n < 5 ? O{ n + 1 } : O{};
+                                    } ) |
+               ranges::view::common;
+  const auto expected = { 1, 2, 3, 4, 5 };
+
+  BOOST_CHECK_EQUAL_COLLECTIONS( expected.begin(), expected.end(), range.begin(), range.end() );
 }

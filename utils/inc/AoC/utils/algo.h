@@ -1,5 +1,7 @@
 #pragma once
 
+#include "AoC/utils/assert.h"
+
 #include <stdexcept>
 #include <utility>
 
@@ -10,7 +12,7 @@ namespace AoC
 {
 
 template <typename T, typename F>
-auto&& iterate_n( T&& val, F&& func, size_t n )
+auto&& iterate_n( T&& val, const F& func, size_t n )
 {
   while ( n > 0 )
   {
@@ -53,8 +55,7 @@ T hex_to_( const char hex )
     case 'f': return 15;
   }
 
-  assert( false );
-  throw std::runtime_error( "This should never be executed" );
+  AOC_ASSERT_FALSE();
 }
 
 }  // namespace AoC

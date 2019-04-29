@@ -102,8 +102,8 @@ Instruction parse_instruction( const std::string& line )
 {
   namespace x3 = boost::spirit::x3;
 
-  const auto value   = x3::int64;
-  const auto reg     = x3::char_;
+  const auto value  = x3::int64;
+  const auto reg    = x3::char_;
   const auto source = x3::rule<struct _op, Source>{} = value | reg;
 
   const auto snd = x3::rule<struct _snd, Snd>{} = "snd" > source;
@@ -241,7 +241,7 @@ JumpOffset exec( State& state, const Jgz jgz )
 template <typename State>
 JumpOffset exec_instruction( State& state, const Instruction& instruction )
 {
-  const auto visitor = AOC_CURRY( exec )( std::ref( state ) );
+  const auto visitor = AOC_CURRY( exec, std::ref( state ) );
   return boost::apply_visitor( visitor, instruction );
 }
 

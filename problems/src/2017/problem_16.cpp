@@ -139,7 +139,7 @@ void exec_move( DanceState& state, const Partner partner )
 
 void exec_moves( DanceState& state, const DanceMoves& moves )
 {
-  auto do_move = AOC_CURRY( exec_move )( std::ref( state ) );
+  auto do_move = AOC_CURRY( exec_move, std::ref( state ) );
   for ( const auto& move : moves )
   {
     boost::apply_visitor( do_move, move );

@@ -3,6 +3,7 @@ add_library(AocUtils
   inc/AoC/utils/2d_array.h
   inc/AoC/utils/algo.h
   inc/AoC/utils/anon_ret.h
+  inc/AoC/utils/assert.h
   inc/AoC/utils/constexpr.h
   inc/AoC/utils/curry.h
   inc/AoC/utils/fusion.h

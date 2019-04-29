@@ -1,6 +1,7 @@
 #include "AoC/2018/problem_01.h"
 
 #include "AoC/problems_map.h"
+#include "AoC/utils/assert.h"
 
 #include "range/v3/numeric/accumulate.hpp"
 #include "range/v3/range/conversion.hpp"
@@ -40,8 +41,7 @@ int solve_2( std::istream& input )
     resulting_frequencies.insert( f );
   }
 
-  assert( false );
-  throw std::runtime_error( "This should never be executed" );
+  AOC_ASSERT_FALSE();
 }
 
 AOC_REGISTER_PROBLEM( 2018_01, solve_1, solve_2 );

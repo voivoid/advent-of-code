@@ -1,6 +1,7 @@
 #include "AoC/2015/problem_16.h"
 
 #include "AoC/problems_map.h"
+#include "AoC/utils/assert.h"
 #include "AoC/utils/parse.h"
 
 #include "range/v3/algorithm/find_if.hpp"
@@ -128,8 +129,7 @@ size_t find_aunt( std::istream& input )
 
   if ( result_aunt == aunts.end() )
   {
-    assert( false );
-    throw std::runtime_error( "This should never be executed" );
+    AOC_ASSERT_FALSE();
   }
 
   const Aunt aunt = *result_aunt;

@@ -1,6 +1,7 @@
 #include "AoC/2017/problem_07.h"
 
 #include "AoC/problems_map.h"
+#include "AoC/utils/assert.h"
 #include "AoC/utils/parse.h"
 
 #include "range/v3/algorithm/find_if.hpp"
@@ -156,8 +157,7 @@ boost::optional<Mismatch> find_mismatch( const Range& range )
     return { Mismatch{ 1, a - b } };
   }
 
-  assert( false );
-  throw std::runtime_error( "This should never be executed" );
+  AOC_ASSERT_FALSE();
 }
 
 const Program& get_program( const std::string& name, const ProgamMap& program_map )
@@ -200,8 +200,7 @@ Weight find_weights_mismatch( const std::string& name, const ProgamMap& program_
     return ex.correct_weight;
   }
 
-  assert( false );
-  throw std::runtime_error( "This should never be executed" );
+  AOC_ASSERT_FALSE();
 }
 
 }  // namespace

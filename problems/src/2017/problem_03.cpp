@@ -2,6 +2,7 @@
 
 #include "AoC/problems_map.h"
 #include "AoC/utils/2d_array.h"
+#include "AoC/utils/assert.h"
 #include "AoC/utils/geo.h"
 
 #include "range/v3/numeric/accumulate.hpp"
@@ -94,8 +95,7 @@ auto& get_value( Quads& quads, const Coord x, const Coord y )
     return quads.right_bottom[ ix ][ iy ];
   }
 
-  assert( false );
-  throw std::runtime_error( "This should never be executed" );
+  AOC_ASSERT_FALSE();
 }
 
 auto get_rotations()
@@ -164,8 +164,7 @@ Pos get_next_pos( const Pos current_pos, const Dir dir )
     case Dir::Right: return { x + 1, y };
   }
 
-  assert( false );
-  throw std::runtime_error( "This should never be executed" );
+  AOC_ASSERT_FALSE();
 }
 
 template <typename Move>
@@ -215,8 +214,7 @@ size_t solve_2( std::istream& input )
     }
   }
 
-  assert( false );
-  throw std::runtime_error( "This should never be executed" );
+  AOC_ASSERT_FALSE();
 }
 
 AOC_REGISTER_PROBLEM( 2017_03, solve_1, solve_2 );

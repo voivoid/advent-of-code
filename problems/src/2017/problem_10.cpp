@@ -135,8 +135,8 @@ std::string solve_2( std::istream& input )
   input >> std::noskipws;
   auto input_codes = ranges::istream<char>( input ) | ranges::view::transform( []( const char c ) { return static_cast<Num>( c ); } );
 
-  const std::initializer_list<Num> codes_suffix = { 17, 31, 73, 47, 23 };
-  const auto lengths                            = ranges::view::concat( input_codes, codes_suffix ) | ranges::to_vector;
+  const auto codes_suffix = { 17, 31, 73, 47, 23 };
+  const auto lengths      = ranges::view::concat( input_codes, codes_suffix ) | ranges::to_vector;
 
   auto nums = make_nums( 256 );
   run_rounds( nums, lengths, 64 );

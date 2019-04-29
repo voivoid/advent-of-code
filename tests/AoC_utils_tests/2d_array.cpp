@@ -80,7 +80,7 @@ BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_iterators_reading, T, AllFi
 {
   auto& arr = T::array;
 
-  const std::initializer_list<int> v = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+  const auto v = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
   BOOST_CHECK_EQUAL_COLLECTIONS( arr.begin(), arr.end(), v.begin(), v.end() );
   BOOST_CHECK_EQUAL_COLLECTIONS( arr.cbegin(), arr.cend(), v.begin(), v.end() );
 }
@@ -89,7 +89,7 @@ BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_iterators_writing, T, NonCo
 {
   auto& arr = T::array;
 
-  const std::initializer_list<int> v = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+  const auto v = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
   ranges::copy( v | ranges::view::reverse, arr.begin() );
   BOOST_CHECK_EQUAL_COLLECTIONS( arr.cbegin(), arr.cend(), std::crbegin( v ), std::crend( v ) );
 }
@@ -105,7 +105,7 @@ BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_writing, T, NonConstFixture
   BOOST_CHECK_EQUAL( 12, arr[ 1 ][ 2 ] );
   BOOST_CHECK_EQUAL( 21, arr[ 2 ][ 1 ] );
 
-  const std::initializer_list<int> expected = { 42, 2, 3, 4, 5, 6, 21, 8, 9, 12, 11, 12 };
+  const auto expected = { 42, 2, 3, 4, 5, 6, 21, 8, 9, 12, 11, 12 };
   BOOST_CHECK_EQUAL_COLLECTIONS( arr.cbegin(), arr.cend(), expected.begin(), expected.end() );
 }
 
@@ -115,7 +115,7 @@ BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_column_reading, T, AllFixtu
 
   auto col = AoC::column( arr, 0 );
   BOOST_CHECK_EQUAL( 3, col.size() );
-  const std::initializer_list<int> expected = { 1, 5, 9 };
+  const auto expected = { 1, 5, 9 };
   BOOST_CHECK_EQUAL_COLLECTIONS( col.begin(), col.end(), expected.begin(), expected.end() );
 }
 
@@ -125,7 +125,7 @@ BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_row_reading, T, AllFixtures
 
   auto row = AoC::row( arr, 0 );
   BOOST_CHECK_EQUAL( 4, row.size() );
-  const std::initializer_list<int> expected = { 1, 2, 3, 4 };
+  const auto expected = { 1, 2, 3, 4 };
   BOOST_CHECK_EQUAL_COLLECTIONS( row.begin(), row.end(), expected.begin(), expected.end() );
 }
 
@@ -139,7 +139,7 @@ BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_column_writing, T, NonConst
   col[ 1 ] = 20;
   col[ 2 ] = 30;
 
-  const std::initializer_list<int> expected = { 1, 10, 3, 4, 5, 20, 7, 8, 9, 30, 11, 12 };
+  const auto expected = { 1, 10, 3, 4, 5, 20, 7, 8, 9, 30, 11, 12 };
   BOOST_CHECK_EQUAL_COLLECTIONS( arr.cbegin(), arr.cend(), expected.begin(), expected.end() );
 }
 
@@ -154,7 +154,7 @@ BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_row_writing, T, NonConstFix
   row[ 2 ] = 30;
   row[ 3 ] = 40;
 
-  const std::initializer_list<int> expected = { 1, 2, 3, 4, 10, 20, 30, 40, 9, 10, 11, 12 };
+  const auto expected = { 1, 2, 3, 4, 10, 20, 30, 40, 9, 10, 11, 12 };
   BOOST_CHECK_EQUAL_COLLECTIONS( arr.cbegin(), arr.cend(), expected.begin(), expected.end() );
 }
 

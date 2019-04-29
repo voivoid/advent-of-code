@@ -264,7 +264,7 @@ size_t solve_2( std::istream& input )
     return *value;
   };
 
-  const auto output_ids  = std::initializer_list<Id>{ 0, 1, 2 };
+  const auto output_ids  = { 0, 1, 2 };
   const auto output_vals = output_ids | ranges::view::transform( get_output_val );
 
   return ranges::accumulate( output_vals, Value{ 1 }, std::multiplies<Value>{} );

@@ -1,6 +1,7 @@
 #include "AoC/2017/problem_12.h"
 
 #include "AoC/problems_map.h"
+#include "AoC/utils/assert.h"
 #include "AoC/utils/parse.h"
 
 #include "range/v3/algorithm/count.hpp"
@@ -128,8 +129,7 @@ size_t solve_1( std::istream& input )
 
   if ( conn_iter == connections.cend() )
   {
-    assert( false );
-    throw std::runtime_error( "This should never be executed" );
+    AOC_ASSERT_FALSE();
   }
 
   const auto conn_id = conn_iter->second;

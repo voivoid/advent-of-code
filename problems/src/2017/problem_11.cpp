@@ -1,6 +1,7 @@
 #include "AoC/2017/problem_11.h"
 
 #include "AoC/problems_map.h"
+#include "AoC/utils/assert.h"
 #include "AoC/utils/geo.h"
 #include "AoC/utils/parse.h"
 #include "AoC/utils/ranges.h"
@@ -47,8 +48,7 @@ Pos make_step( const Pos pos, const Dir d )
     case Dir::Dummy: return pos;
   }
 
-  assert( false );
-  throw std::runtime_error( "This should never be executed" );
+  AOC_ASSERT_FALSE();
 }
 
 Distance calc_min_distance( const Pos pos )

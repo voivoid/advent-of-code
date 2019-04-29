@@ -129,7 +129,7 @@ void apply_command( Screen& screen, const Commands::RotateRow cmd )
 
 void run_command( Screen& screen, const Command& command )
 {
-  const auto visitor = AOC_CURRY( apply_command )( std::ref( screen ) );
+  const auto visitor = AOC_CURRY( apply_command, std::ref( screen ) );
   boost::apply_visitor( visitor, command );
 }
 

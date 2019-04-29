@@ -2,10 +2,10 @@
 
 #include "AoC/problems_map.h"
 #include "AoC/utils/fusion.h"
+#include "AoC/utils/ranges.h"
 
 #include "range/v3/algorithm/count.hpp"
 #include "range/v3/view/filter.hpp"
-#include "range/v3/view/generate_n.hpp"
 #include "range/v3/view/take_exactly.hpp"
 #include "range/v3/view/zip_with.hpp"
 
@@ -33,21 +33,9 @@ std::pair<Value, Value> parse_start_generator_values( std::istream& input )
   return { a, b };
 }
 
-struct Generator
-{
-  size_t operator()()
-  {
-    value = ( value * factor ) % 2147483647;
-    return value;
-  }
-
-  size_t value;
-  size_t factor;
-};
-
 auto make_generator( const Value start_value, const Value multiplier )
 {
-  return ranges::view::generate( Generator{ start_value, multiplier } );
+  return AoC::generate_range( start_value, [multiplier]( const Value v ) { return ( v * multiplier ) % 2147483647; } );
 }
 
 template <typename Range1, typename Range2>

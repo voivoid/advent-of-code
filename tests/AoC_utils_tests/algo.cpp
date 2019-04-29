@@ -1,5 +1,7 @@
 #include "boost/test/unit_test.hpp"
 
+#include "range/v3/view/transform.hpp"
+
 #include "AoC/utils/algo.h"
 
 BOOST_AUTO_TEST_CASE( AoC_utils_algo_iterate )
@@ -22,8 +24,12 @@ BOOST_AUTO_TEST_CASE( AoC_utils_algo_iterate )
   BOOST_CHECK_EQUAL( &i, &ri );
 }
 
-BOOST_AUTO_TEST_CASE( AoC_utils_hex_to_num )
+BOOST_AUTO_TEST_CASE( AoC_utils_algo_hex_to_num )
 {
-  BOOST_CHECK_EQUAL( 10, AoC::hex_to_<size_t>( 'a' ) );
-  BOOST_CHECK_EQUAL( 11, AoC::hex_to_<int>( 'b' ) );
+  const std::string digits = "0123456789abcdef";
+  const auto nums          = digits | ranges::view::transform( &AoC::hex_to_<size_t> );
+  const auto expected      = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+
+  BOOST_CHECK_EQUAL_COLLECTIONS( expected.begin(), expected.end(), nums.begin(), nums.end() );
+  BOOST_CHECK_EQUAL( 10, AoC::hex_to_<int>( 'a' ) );
 }

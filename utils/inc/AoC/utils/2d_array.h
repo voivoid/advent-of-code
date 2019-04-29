@@ -22,88 +22,28 @@ namespace AoC
 
 namespace Details
 {
-template <typename T, size_t width, size_t height>
-using Array = std::array<std::array<T, width>, height>;
 
-template <typename T, size_t w, size_t h>
-class dd_array_stack_impl
+template <typename Impl, typename T>
+class dd_array_base
 {
-public:
-  static constexpr size_t width  = w;
-  static constexpr size_t height = h;
-
-  using Array = Details::Array<T, width, height>;
-  using Init  = Array;
-
+protected:
   T& get( const size_t x, const size_t y )
   {
-    assert( x < width );
-    assert( y < height );
-    return data[ y ][ x ];
+    return Impl::impl_get( *static_cast<Impl*>( this ), x, y );
   }
 
   const T& get( const size_t x, const size_t y ) const
   {
-    assert( x < width );
-    assert( y < height );
-    return data[ y ][ x ];
+    return Impl::impl_get( *static_cast<const Impl*>( this ), x, y );
   }
-
-protected:
-  dd_array_stack_impl() : data{}
-  {
-  }
-
-  dd_array_stack_impl( Array init ) : data( std::move( init ) )
-  {
-  }
-
-  size_t get_width() const
-  {
-    return width;
-  }
-
-  size_t get_height() const
-  {
-    return height;
-  }
-
-private:
-  Array data;
 };
 
-template <typename T, size_t w, size_t h>
-class dd_array_heap_impl
+template <typename Impl, typename T, size_t width, size_t height>
+class dd_array_static_base : public dd_array_base<Impl, T>
 {
-public:
-  static constexpr size_t width  = w;
-  static constexpr size_t height = h;
-
-  T& get( const size_t x, const size_t y )
-  {
-    assert( x < width );
-    assert( y < height );
-    return ( *data )[ y ][ x ];
-  }
-
-  const T& get( const size_t x, const size_t y ) const
-  {
-    assert( x < width );
-    assert( y < height );
-    return ( *data )[ y ][ x ];
-  }
-
 protected:
-  using Array = Details::Array<T, width, height>;
-  using Init  = Array;
-
-  dd_array_heap_impl() : data( std::make_unique<Array>() )
-  {
-  }
-
-  dd_array_heap_impl( Array init ) : data( std::make_unique<Array>( std::move( init ) ) )
-  {
-  }
+  using Data = std::array<std::array<T, width>, height>;
+  using Init = Data;
 
   size_t get_width() const
   {
@@ -114,27 +54,74 @@ protected:
   {
     return height;
   }
+};
+
+template <typename T, size_t width, size_t height>
+class dd_array_static_stack_impl : public dd_array_static_base<dd_array_static_stack_impl<T, width, height>, T, width, height>
+{
+  using typename dd_array_static_base<dd_array_static_stack_impl<T, width, height>, T, width, height>::Data;
+
+public:
+  template <typename Impl>
+  static auto& impl_get( Impl& impl, const size_t x, const size_t y )
+  {
+    assert( x < width );
+    assert( y < height );
+    return impl.data[ y ][ x ];
+  }
+
+protected:
+  dd_array_static_stack_impl() : data{}
+  {
+  }
+
+  dd_array_static_stack_impl( Data init ) : data( std::move( init ) )
+  {
+  }
 
 private:
-  std::unique_ptr<Array> data;
+  Data data;
+};
+
+template <typename T, size_t width, size_t height>
+class dd_array_static_heap_impl : public dd_array_static_base<dd_array_static_heap_impl<T, width, height>, T, width, height>
+{
+  using typename dd_array_static_base<dd_array_static_heap_impl<T, width, height>, T, width, height>::Data;
+
+public:
+  template <typename Impl>
+  static auto& impl_get( Impl& impl, const size_t x, const size_t y )
+  {
+    assert( x < width );
+    assert( y < height );
+    return ( *impl.data )[ y ][ x ];
+  }
+
+protected:
+  dd_array_static_heap_impl() : data( std::make_unique<Data>() )
+  {
+  }
+
+  dd_array_static_heap_impl( Data init ) : data( std::make_unique<Data>( std::move( init ) ) )
+  {
+  }
+
+private:
+  std::unique_ptr<Data> data;
 };
 
 template <typename T>
-class dd_array_dynamic_impl
+class dd_array_dynamic_heap_impl : public dd_array_base<dd_array_dynamic_heap_impl<T>, T>
 {
-public:
-  T& get( const size_t x, const size_t y )
-  {
-    assert( x < get_width() );
-    assert( y < get_height() );
-    return data[ get_elem_index( x, y ) ];
-  }
+  using Base = dd_array_base<dd_array_dynamic_heap_impl<T>, T>;
 
-  const T& get( const size_t x, const size_t y ) const
+public:
+  template <typename Impl>
+  static auto& impl_get( Impl& impl, const size_t x, const size_t y )
   {
-    assert( x < get_width() );
-    assert( y < get_height() );
-    return data[ get_elem_index( x, y ) ];
+    assert( x < impl.get_width() );
+    assert( y < impl.get_height() );
+    return impl.data[ impl.get_elem_index( x, y ) ];
   }
 
   void resize( size_t new_width, size_t new_height )
@@ -147,12 +134,12 @@ public:
     new_width  = std::max( get_width(), new_width );
     new_height = std::max( get_height(), new_height );
 
-    Array new_data( new_width * new_height );
+    Data new_data( new_width * new_height );
     for ( size_t y = 0; y < get_height(); ++y )
     {
       for ( size_t x = 0; x < get_width(); ++x )
       {
-        new_data[ get_elem_index( x, y, new_width ) ] = get( x, y );
+        new_data[ get_elem_index( x, y, new_width ) ] = Base::get( x, y );
       }
     }
     data   = std::move( new_data );
@@ -161,21 +148,22 @@ public:
   }
 
 protected:
-  using Array = std::vector<T>;
-  using Init  = std::vector<std::vector<T>>;
+  using Data = std::vector<T>;
+  using Init = std::vector<std::vector<T>>;
 
-  dd_array_dynamic_impl() : height( 0 ), width( 0 )
+  dd_array_dynamic_heap_impl() : height( 0 ), width( 0 )
   {
   }
 
-  dd_array_dynamic_impl( Init arr ) :
+  dd_array_dynamic_heap_impl( Init arr ) :
       height( arr.size() ),
       width( height ? arr.front().size() : size_t{ 0 } ),
       data( arr | ranges::view::join | ranges::view::move )
   {
+    assert( data.size() == height * width );
   }
 
-  dd_array_dynamic_impl( size_t w, size_t h ) : height( h ), width( w ), data( width * height )
+  dd_array_dynamic_heap_impl( size_t w, size_t h ) : height( h ), width( w ), data( width * height )
   {
   }
 
@@ -203,45 +191,14 @@ private:
 private:
   size_t height;
   size_t width;
-  Array data;
+  Data data;
 };
 
-enum class dd_array_alloc_type
-{
-  stack,
-  heap
-};
-
-template <typename T, size_t width, size_t height, dd_array_alloc_type alloc>
-struct static_array;
-
-template <typename T>
-struct dynamic_array;
-
-template <typename T>
-struct select_impl;
-
-template <typename T, size_t width, size_t height, dd_array_alloc_type alloc>
-struct select_impl<static_array<T, width, height, alloc>>
-{
-  using Impl = std::conditional_t<alloc == dd_array_alloc_type::stack,
-                                  Details::dd_array_stack_impl<T, width, height>,
-                                  Details::dd_array_heap_impl<T, width, height>>;
-};
-
-template <typename T>
-struct select_impl<dynamic_array<T>>
-{
-  using Impl = Details::dd_array_dynamic_impl<T>;
-};
-
-template <typename T, typename Array>
-class dd_array : public Details::select_impl<Array>::Impl
+template <typename T, typename Impl>
+class dd_array : public Impl
 {
   template <typename Arr>
   struct Proxy;
-
-  using Impl = typename Details::select_impl<Array>::Impl;
 
 public:
   dd_array()
@@ -257,12 +214,12 @@ public:
   {
   }
 
-  bool operator==( const dd_array<T, Array>& arr ) const
+  bool operator==( const dd_array<T, Impl>& arr ) const
   {
     return ranges::equal( *this, arr );
   }
 
-  bool operator!=( const dd_array<T, Array>& arr ) const
+  bool operator!=( const dd_array<T, Impl>& arr ) const
   {
     return !( *this == arr );
   }
@@ -342,13 +299,13 @@ private:
 
 
 template <typename T, size_t width, size_t height>
-using dd_static_stack_array = Details::dd_array<T, Details::static_array<T, width, height, Details::dd_array_alloc_type::stack>>;
+using dd_static_stack_array = Details::dd_array<T, Details::dd_array_static_stack_impl<T, width, height>>;
 
 template <typename T, size_t width, size_t height>
-using dd_static_heap_array = Details::dd_array<T, Details::static_array<T, width, height, Details::dd_array_alloc_type::heap>>;
+using dd_static_heap_array = Details::dd_array<T, Details::dd_array_static_heap_impl<T, width, height>>;
 
 template <typename T>
-using dd_dynamic_heap_array = Details::dd_array<T, Details::dynamic_array<T>>;
+using dd_dynamic_heap_array = Details::dd_array<T, Details::dd_array_dynamic_heap_impl<T>>;
 
 template <typename T, typename Impl>
 std::optional<UPoint> dd_array_find_elem_indices( const Details::dd_array<T, Impl>& arr, const T& elem )
