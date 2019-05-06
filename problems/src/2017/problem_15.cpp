@@ -2,7 +2,7 @@
 
 #include "AoC/problems_map.h"
 #include "AoC/utils/fusion.h"
-#include "AoC/utils/ranges.h"
+#include "AoC/utils/ranges/generate.h"
 
 #include "range/v3/algorithm/count.hpp"
 #include "range/v3/view/filter.hpp"

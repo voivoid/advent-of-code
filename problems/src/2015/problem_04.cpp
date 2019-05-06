@@ -31,7 +31,7 @@ size_t find_md5_that_starts_with( const std::string& prefix, const std::string& 
   return *ranges::find_if( indices, std::bind( &is_desired_md5_index, std::placeholders::_1, std::ref( prefix ), std::ref( secret ) ) );
 }
 
-size_t solve( std::istream& input, const std::string& prefix )
+size_t find_key_postfix_producing_hash_starting_with( const std::string& prefix, std::istream& input )
 {
   std::string secret;
   input >> secret;
@@ -48,12 +48,12 @@ namespace problem_04
 
 size_t solve_1( std::istream& input )
 {
-  return solve( input, "00000" );
+  return find_key_postfix_producing_hash_starting_with( "00000", input );
 }
 
 size_t solve_2( std::istream& input )
 {
-  return solve( input, "000000" );
+  return find_key_postfix_producing_hash_starting_with( "000000", input );
 }
 
 AOC_REGISTER_PROBLEM( 2015_04, solve_1, solve_2 );

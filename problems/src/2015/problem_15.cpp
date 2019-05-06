@@ -195,14 +195,13 @@ AOC_REGISTER_PROBLEM( 2015_15, solve_1, solve_2 );
 
 #ifndef NDEBUG
 
-#  include "AoC/utils/ranges.h"
 #  include "impl_tests.h"
 #  include <cassert>
 
 bool test_combinations( const size_t ingredients_num, const size_t quantity, const std::vector<Quantities> quantities )
 {
-  auto q = generate_quantity_combinations( ingredients_num, quantity );
-  auto r = q | ranges::view::indirect | ranges::to_vector;
+  auto qs      = generate_quantity_combinations( ingredients_num, quantity );
+  const auto r = qs | ranges::view::indirect | ranges::to_vector;
   return r == quantities;
 }
 

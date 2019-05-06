@@ -5,6 +5,7 @@
 #include "AoC/utils/2d_array.h"
 #include "AoC/utils/algo.h"
 #include "AoC/utils/geo.h"
+#include "AoC/utils/ranges/enumerate.h"
 
 #include "range/v3/algorithm/copy.hpp"
 #include "range/v3/algorithm/count.hpp"
@@ -90,14 +91,14 @@ Grid make_grid( std::istream& input )
   Grid grid;
 
   auto hashes = get_hashes( input );
-  for ( auto&& [ y, hash ] : hashes | ranges::view::enumerate )
+  for ( auto&& [ y, hash ] : hashes | AoC::enumerate_with_<size_t>() )
   {
     auto bits = get_hash_bits( hash );
-    for ( const auto [ x, bit ] : bits | ranges::view::enumerate )
+    for ( const auto [ x, bit ] : bits | AoC::enumerate_with_<size_t>() )
     {
       if ( bit == b1 )
       {
-        grid.insert( { boost::numeric_cast<size_t>( x ), boost::numeric_cast<size_t>( y ) } );
+        grid.insert( { x, y } );
       }
     }
   }

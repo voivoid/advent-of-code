@@ -24,7 +24,7 @@ using Pos = AoC::Coord;
 using Instruction   = char;
 using VisitedHouses = std::unordered_set<Pos, AoC::GeoHasher>;
 
-Pos parse_instruction( const Instruction instruction )
+Pos instruction_to_offset( const Instruction instruction )
 {
   switch ( instruction )
   {
@@ -38,13 +38,14 @@ Pos parse_instruction( const Instruction instruction )
 }
 
 template <typename Range>
-VisitedHouses solve( Range&& instructions )
+VisitedHouses get_visited_houses( Range&& instructions )
 {
   const auto initial_pos = ranges::view::single( Pos{ 0, 0 } );
-  auto positions         = ranges::view::concat( initial_pos, instructions | ranges::view::transform( parse_instruction ) );
-  auto visited           = positions | ranges::view::partial_sum;
 
-  return visited | ranges::to<VisitedHouses>();
+  auto move_offsets      = instructions | ranges::view::transform( &instruction_to_offset );
+  auto positions_visited = ranges::view::concat( initial_pos, move_offsets ) | ranges::view::partial_sum;
+
+  return positions_visited | ranges::to<VisitedHouses>();
 }
 }  // namespace
 
@@ -55,9 +56,8 @@ namespace problem_03
 {
 size_t solve_1( std::istream& input )
 {
-  auto instructions         = ranges::istream<Instruction>( input );
-  const auto visited_houses = solve( instructions );
-  return visited_houses.size();
+  auto instructions = ranges::istream<Instruction>( input );
+  return get_visited_houses( instructions ).size();
 }
 
 size_t solve_2( std::istream& input )
@@ -66,14 +66,14 @@ size_t solve_2( std::istream& input )
   const auto santas_instructions = instructions | ranges::view::stride( 2 );
   const auto robo_instructions   = instructions | ranges::view::drop( 1 ) | ranges::view::stride( 2 );
 
-  const auto santas_houses = solve( santas_instructions );
-  const auto robo_houses   = solve( robo_instructions );
+  const auto santas_houses = get_visited_houses( santas_instructions );
+  const auto robo_houses   = get_visited_houses( robo_instructions );
 
-  VisitedHouses visited_houses;
-  visited_houses.insert( santas_houses.cbegin(), santas_houses.cend() );
-  visited_houses.insert( robo_houses.cbegin(), robo_houses.cend() );
+  VisitedHouses all_visited_houses;
+  all_visited_houses.insert( santas_houses.cbegin(), santas_houses.cend() );
+  all_visited_houses.insert( robo_houses.cbegin(), robo_houses.cend() );
 
-  return visited_houses.size();
+  return all_visited_houses.size();
 }
 
 AOC_REGISTER_PROBLEM( 2015_03, solve_1, solve_2 );

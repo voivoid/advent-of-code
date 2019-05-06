@@ -1,7 +1,7 @@
 #include "AoC/2015/problem_17.h"
 
 #include "AoC/problems_map.h"
-#include "AoC/utils/ranges.h"
+#include "AoC/utils/ranges/2dvector.h"
 
 #include "range/v3/action/sort.hpp"
 #include "range/v3/algorithm/lexicographical_compare.hpp"
@@ -28,7 +28,7 @@ namespace
 using Volume                 = int;
 using ContainersCombinations = ranges::any_view<ranges::any_view<Volume>>;
 using Containers             = std::vector<Volume>;
-using CacheKey               = std::pair<Volume, ranges::any_view<Volume, ranges::category::random_access>>;
+using CacheKey               = std::pair<Volume, ranges::any_view<Volume>>;
 
 struct CacheComparator
 {

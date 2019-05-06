@@ -2,7 +2,8 @@
 
 #include "AoC/problems_map.h"
 #include "AoC/utils/parse.h"
-#include "AoC/utils/ranges.h"
+#include "AoC/utils/ranges/2dvector.h"
+#include "AoC/utils/ranges/transpose.h"
 
 #include "range/v3/algorithm/max.hpp"
 #include "range/v3/numeric/accumulate.hpp"

@@ -4,7 +4,7 @@
 #include "AoC/utils/2d_array.h"
 #include "AoC/utils/geo.h"
 #include "AoC/utils/parse.h"
-#include "AoC/utils/ranges.h"
+#include "AoC/utils/ranges/append.h"
 
 #include "range/v3/numeric/accumulate.hpp"
 #include "range/v3/view/exclusive_scan.hpp"

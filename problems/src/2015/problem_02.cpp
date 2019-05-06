@@ -50,7 +50,7 @@ Dimensions parse_dimensions( const std::string& str )
   return dims;
 }
 
-Dim calc_box_area( const Dimensions dims )
+Dim box_area( const Dimensions dims )
 {
   const auto [ l, w, h ]   = dims;
   const auto sides         = { l * w, w * h, h * l };
@@ -68,7 +68,7 @@ std::pair<Dim, Dim> get_smallest_dims( const Dim d1, const Dim d2, const Dim d3 
   return { min, mid };
 }
 
-Dim calc_ribbon_area( const Dimensions dims )
+Dim ribbon_area( const Dimensions dims )
 {
   const auto [ l, w, h ] = dims;
   const auto [ d1, d2 ]  = get_smallest_dims( l, w, h );
@@ -81,7 +81,7 @@ Dim calc_ribbon_area( const Dimensions dims )
 
 using AreaFunc = Dim ( * )( Dimensions );
 template <AreaFunc calc_area, typename Range>
-size_t solve( Range&& dimensions )
+size_t calc( Range&& dimensions )
 {
   auto areas = dimensions | ranges::view::transform( &parse_dimensions ) | ranges::view::transform( calc_area );
   return ranges::accumulate( areas, Dim{ 0 } );
@@ -97,12 +97,12 @@ namespace problem_02
 
 size_t solve_1( std::istream& input )
 {
-  return solve<&calc_box_area>( ranges::istream<std::string>( input ) );
+  return calc<&box_area>( ranges::istream<std::string>( input ) );
 }
 
 size_t solve_2( std::istream& input )
 {
-  return solve<&calc_ribbon_area>( ranges::istream<std::string>( input ) );
+  return calc<&ribbon_area>( ranges::istream<std::string>( input ) );
 }
 
 AOC_REGISTER_PROBLEM( 2015_02, solve_1, solve_2 );

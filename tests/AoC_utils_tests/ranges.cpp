@@ -1,6 +1,13 @@
 #include "boost/test/unit_test.hpp"
 
-#include "AoC/utils/ranges.h"
+#include "AoC/utils/ranges/2dvector.h"
+#include "AoC/utils/ranges/append.h"
+#include "AoC/utils/ranges/enumerate.h"
+#include "AoC/utils/ranges/generate.h"
+#include "AoC/utils/ranges/interleave.h"
+#include "AoC/utils/ranges/prepend.h"
+#include "AoC/utils/ranges/transpose.h"
+#include "AoC/utils/ranges/unique_pair_combinations.h"
 
 #include "range/v3/algorithm/equal.hpp"
 #include "range/v3/range/conversion.hpp"
@@ -16,6 +23,43 @@
 #include "boost/coroutine2/all.hpp"
 
 #include <vector>
+
+namespace
+{
+template <typename T>
+void print_pair( std::ostream& os, const T& p )
+{
+  os << "<" << p.first << "," << p.second << ">";
+}
+}  // namespace
+
+namespace boost
+{
+namespace test_tools
+{
+namespace tt_detail
+{
+template <typename T, typename U>
+struct print_log_value<std::pair<T, U>>
+{
+  void operator()( std::ostream& os, std::pair<T, U> const& p )
+  {
+    print_pair( os, p );
+  }
+};
+
+template <typename T, typename U>
+struct print_log_value<ranges::common_pair<T, U>>
+{
+  void operator()( std::ostream& os, std::pair<T, U> const& p )
+  {
+    print_pair( os, p );
+  }
+};
+}  // namespace tt_detail
+}  // namespace test_tools
+}  // namespace boost
+
 
 BOOST_AUTO_TEST_CASE( AoC_utils_ranges_interleave )
 {
@@ -117,4 +161,46 @@ BOOST_AUTO_TEST_CASE( AoC_utils_ranges_generate_while )
   const auto expected = { 1, 2, 3, 4, 5 };
 
   BOOST_CHECK_EQUAL_COLLECTIONS( expected.begin(), expected.end(), range.begin(), range.end() );
+}
+
+BOOST_AUTO_TEST_CASE( AoC_utils_ranges_enumerate_with )
+{
+  std::string in = "0123";
+  auto result    = in | AoC::enumerate_with_<size_t>() | ranges::view::common;
+
+  std::initializer_list<ranges::common_pair<size_t, char>> expected = { { 0, '0' }, { 1, '1' }, { 2, '2' }, { 3, '3' } };
+  BOOST_CHECK_EQUAL_COLLECTIONS( expected.begin(), expected.end(), result.begin(), result.end() );
+}
+
+#define DO_PAIRS_TEST( in, ex )                                                                                                            \
+  {                                                                                                                                        \
+    const std::initializer_list<int> input                    = in;                                                                        \
+    auto combinations                                         = AoC::get_unique_pair_combinations<int>( input );                           \
+    auto result                                               = combinations | ranges::view::all | ranges::view::common;                   \
+    const std::initializer_list<std::pair<int, int>> expected = ex;                                                                        \
+    BOOST_CHECK_EQUAL_COLLECTIONS( expected.begin(), expected.end(), result.begin(), result.end() );                                       \
+  }
+
+BOOST_AUTO_TEST_CASE( AoC_utils_ranges_unique_pairs )
+{
+  DO_PAIRS_TEST( {}, {} );
+  DO_PAIRS_TEST( { 1 }, {} );
+
+  {
+    const std::initializer_list<int> in = { 1, 2 };
+    const std::initializer_list<std::pair<int, int>> ex{ { 1, 2 } };
+    DO_PAIRS_TEST( in, ex );
+  }
+
+  {
+    const std::initializer_list<int> in = { 1, 2, 3 };
+    const std::initializer_list<std::pair<int, int>> ex{ { 1, 2 }, { 1, 3 }, { 2, 3 } };
+    DO_PAIRS_TEST( in, ex );
+  }
+
+  {
+    const std::initializer_list<int> in = { 1, 2, 3, 4 };
+    const std::initializer_list<std::pair<int, int>> ex{ { 1, 2 }, { 1, 3 }, { 1, 4 }, { 2, 3 }, { 2, 4 }, { 3, 4 } };
+    DO_PAIRS_TEST( in, ex );
+  }
 }

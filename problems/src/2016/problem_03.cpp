@@ -3,7 +3,7 @@
 #include "AoC/problems_map.h"
 #include "AoC/utils/fusion.h"
 #include "AoC/utils/parse.h"
-#include "AoC/utils/ranges.h"
+#include "AoC/utils/ranges/transpose.h"
 
 #include "range/v3/algorithm/count_if.hpp"
 #include "range/v3/range/conversion.hpp"

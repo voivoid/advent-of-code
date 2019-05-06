@@ -4,7 +4,7 @@
 #include "AoC/utils/assert.h"
 #include "AoC/utils/geo.h"
 #include "AoC/utils/parse.h"
-#include "AoC/utils/ranges.h"
+#include "AoC/utils/ranges/append.h"
 
 #include "boost/numeric/conversion/cast.hpp"
 

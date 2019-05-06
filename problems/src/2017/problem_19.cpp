@@ -5,7 +5,7 @@
 #include "AoC/utils/assert.h"
 #include "AoC/utils/curry.h"
 #include "AoC/utils/geo.h"
-#include "AoC/utils/ranges.h"
+#include "AoC/utils/ranges/generate.h"
 
 #include "range/v3/algorithm/find.hpp"
 #include "range/v3/range/conversion.hpp"

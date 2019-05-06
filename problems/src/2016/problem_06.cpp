@@ -1,7 +1,7 @@
 #include "AoC/2016/problem_06.h"
 
 #include "AoC/problems_map.h"
-#include "AoC/utils/ranges.h"
+#include "AoC/utils/ranges/transpose.h"
 
 #include "range/v3/action/sort.hpp"
 #include "range/v3/iterator/operations.hpp"
