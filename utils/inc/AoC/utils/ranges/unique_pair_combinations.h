@@ -35,15 +35,16 @@ namespace AoC
 //}
 
 template <typename T>
-ranges::any_view<std::pair<T, T>, ranges::category::random_access> get_unique_pair_combinations( ranges::any_view<T, ranges::category::random_access> elems )
+ranges::any_view<std::pair<T, T>, ranges::category::random_access>
+    get_unique_pair_combinations( ranges::any_view<T, ranges::category::random_access> elems )
 {
   if ( elems.empty() )
   {
     return ranges::view::empty<std::pair<T, T>>;
   }
 
-  const auto& head       = elems.front();
-  auto tail              = elems | ranges::view::tail;
+  const auto& head = elems.front();
+  auto tail        = elems | ranges::view::tail;
 
   auto head_combinations = tail | ranges::view::transform( [head]( const auto& e ) { return std::make_pair( head, e ); } );
   auto tail_combinations = get_unique_pair_combinations<T>( tail );

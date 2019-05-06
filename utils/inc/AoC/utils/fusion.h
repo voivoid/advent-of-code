@@ -13,7 +13,7 @@ namespace Details
 template <template <typename... Args> class Container, typename... Args, size_t... Indices>
 std::tuple<Args...> fusion_to_std_tuple( const Container<Args...>& vector, std::index_sequence<Indices...> )
 {
-  return std::make_tuple( boost::fusion::at_c<Indices>( vector )... );
+  return std::make_tuple( std::move( boost::fusion::at_c<Indices>( vector ) )... );
 }
 
 }  // namespace Details

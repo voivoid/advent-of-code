@@ -30,7 +30,7 @@ BOOST_FIXTURE_TEST_CASE( problem2017_20_1, AocFixture )
                                           p=< 1,0,0>, v=<1,0,0>, a=< 1,0,0>)" ) );
 }
 
-//BOOST_FIXTURE_TEST_CASE( problem2017_20_2, AocFixture )
+// BOOST_FIXTURE_TEST_CASE( problem2017_20_2, AocFixture )
 //{
 //  const auto* const input = R"(p=<-6,0,0>, v=< 3,0,0>, a=< 0,0,0>
 //                                 p=<-4,0,0>, v=< 2,0,0>, a=< 0,0,0>    -6 -5 -4 -3 -2 -1  0  1  2  3
