@@ -90,7 +90,7 @@ size_t solve_1( std::istream& )
 
 size_t solve_2( std::istream& input )
 {
-  const auto& [ replacements_map, formula ] = parse_input( input, ReplacementsMapMode::Normal );
+  /*const auto& [ replacements_map, formula ] =*/ parse_input( input, ReplacementsMapMode::Normal );
   return 0;
 }
 
@@ -108,17 +108,17 @@ AOC_REGISTER_PROBLEM( 2015_19, solve_1, solve_2 );
 
 static void impl_tests()
 {
-//  {
-//    const auto replacement = parse_replacement( "H => OH" );
-//    assert( replacement.first == "H" );
-//    assert( replacement.second == "OH" );
-//  }
+  //  {
+  //    const auto replacement = parse_replacement( "H => OH" );
+  //    assert( replacement.first == "H" );
+  //    assert( replacement.second == "OH" );
+  //  }
 
-//  {
-//    const auto replacements = do_replacements( "HOH", "H", "HO" );
-//    assert( replacements[ 0 ] == "HOOH" );
-//    assert( replacements[ 1 ] == "HOHO" );
-//  }
+  //  {
+  //    const auto replacements = do_replacements( "HOH", "H", "HO" );
+  //    assert( replacements[ 0 ] == "HOOH" );
+  //    assert( replacements[ 1 ] == "HOHO" );
+  //  }
 }
 
 REGISTER_IMPL_TEST( impl_tests );
