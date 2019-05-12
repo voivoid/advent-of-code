@@ -28,7 +28,7 @@ namespace
 using Volume                 = int;
 using ContainersCombinations = ranges::any_view<ranges::any_view<Volume>>;
 using Containers             = std::vector<Volume>;
-using CacheKey               = std::pair<Volume, ranges::any_view<Volume>>;
+using CacheKey               = std::pair<Volume, Containers>;
 
 struct CacheComparator
 {
@@ -49,9 +49,9 @@ struct CacheComparator
 using Cache = std::map<CacheKey, ContainersCombinations, CacheComparator>;
 
 ContainersCombinations
-    generate_combinations( ranges::any_view<Volume, ranges::category::random_access> containers, const Volume volume_left, Cache& cache )
+    generate_combinations( ranges::any_view<Volume> containers, const Volume volume_left, Cache& cache )
 {
-  const auto cache_iter = cache.find( std::make_pair( volume_left, containers ) );
+  const auto cache_iter = cache.find( { volume_left, containers } );
   if ( cache_iter != cache.cend() )
   {
     return cache_iter->second;
@@ -61,12 +61,12 @@ ContainersCombinations
   {
     return ranges::view::single( ranges::view::empty<Volume> );
   }
-  else if ( containers.empty() || volume_left < 0 )
+  else if ( ( containers.begin() == containers.end() ) || volume_left < 0 )
   {
     return {};
   }
 
-  auto head = containers.front();
+  auto head = *containers.begin();
   if ( volume_left < head )
   {
     return {};
@@ -150,42 +150,42 @@ static void impl_tests()
   using VV = std::vector<Containers>;
 
   {
-    std::vector<Volume> v{};
+    const std::vector<Volume> v{};
     Cache cache;
     auto r = generate_combinations( v, 1, cache ) | AoC::to_2d_vector();
     assert( r == VV{} );
   }
 
   {
-    std::vector<Volume> v{ 1 };
+    const std::vector<Volume> v{ 1 };
     Cache cache;
     auto r = generate_combinations( v, 0, cache ) | AoC::to_2d_vector();
     assert( r == VV{ {} } );
   }
 
   {
-    std::vector<Volume> v{ 3 };
+    const std::vector<Volume> v{ 3 };
     Cache cache;
     auto r = generate_combinations( v, 1, cache ) | AoC::to_2d_vector();
     assert( r == VV{} );
   }
 
   {
-    std::vector<Volume> v{ 3 };
+    const std::vector<Volume> v{ 3 };
     Cache cache;
     auto r = generate_combinations( v, 3, cache ) | AoC::to_2d_vector();
     assert( r == VV{ { 3 } } );
   }
 
   {
-    std::vector<Volume> v{ 2, 3, 5 };
+    const std::vector<Volume> v{ 2, 3, 5 };
     Cache cache;
     auto r = generate_combinations( v, 10, cache ) | AoC::to_2d_vector();
     assert( r == ( VV{ { 2, 3, 5 } } ) );
   }
 
   {
-    std::vector<Volume> v{ 5, 5, 100, 100 };
+    const std::vector<Volume> v{ 5, 5, 100, 100 };
     Cache cache;
     auto r = generate_combinations( v, 10, cache ) | AoC::to_2d_vector();
     assert( r == ( VV{ { 5, 5 } } ) );
