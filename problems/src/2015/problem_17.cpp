@@ -48,8 +48,7 @@ struct CacheComparator
 
 using Cache = std::map<CacheKey, ContainersCombinations, CacheComparator>;
 
-ContainersCombinations
-    generate_combinations( ranges::any_view<Volume> containers, const Volume volume_left, Cache& cache )
+ContainersCombinations generate_combinations( ranges::any_view<Volume> containers, const Volume volume_left, Cache& cache )
 {
   const auto cache_iter = cache.find( { volume_left, containers } );
   if ( cache_iter != cache.cend() )

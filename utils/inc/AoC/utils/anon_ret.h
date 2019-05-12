@@ -25,4 +25,4 @@
   {                                                                                                                                        \
     AOC_DETAILS_FOREACH_VAARG( AOC_DETAILS_ANON_RET_EXPAND_MEMBERS, __VA_ARGS__ )                                                          \
   } aoc_anonymous_result = { AOC_DETAILS_FOREACH_I_VAARG( AOC_DETAILS_ANON_RET_EXPAND_MOVE, __VA_ARGS__ ) };                               \
-  return aoc_anonymous_result;
+  return aoc_anonymous_result

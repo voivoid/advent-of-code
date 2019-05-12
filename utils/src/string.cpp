@@ -1,5 +1,11 @@
 #include "AoC/utils/string.h"
 
+#include "boost/numeric/conversion/cast.hpp"
+
+#include "range/v3/algorithm/count_if.hpp"
+#include "range/v3/algorithm/equal.hpp"
+#include "range/v3/view/sliding.hpp"
+
 namespace AoC
 {
 
@@ -7,23 +13,12 @@ size_t count_substrings( const std::string_view input, const std::string_view su
 {
   if ( substring.empty() )
   {
-    return 0;
+    return input.size() + 1;
   }
 
-  size_t counter                  = 0;
-  std::string_view::size_type pos = 0;
-
-  while ( true )
-  {
-    pos = input.find( substring, pos );
-    if ( pos == std::string_view::npos )
-    {
-      return counter;
-    }
-
-    pos += substring.length();
-    ++counter;
-  }
+  auto substrings = input | ranges::view::sliding( substring.size() );
+  return boost::numeric_cast<size_t>(
+      ranges::count_if( substrings, [&substring]( const auto& s ) { return ranges::equal( s, substring ); } ) );
 }
 
 }  // namespace AoC
