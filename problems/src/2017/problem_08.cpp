@@ -48,20 +48,33 @@ Instruction parse_instruction( const std::string& line )
 {
   namespace x3 = boost::spirit::x3;
 
-  x3::symbols<std::function<bool( Value, Value )>> conditions;
-  conditions.add( ">", std::greater<Value>{} )( "<", std::less<Value>{} )( ">=", std::greater_equal<Value>{} )(
-      "<=", std::less_equal<Value>{} )( "==", std::equal_to<Value>{} )( "!=", std::not_equal_to<Value>{} );
 
+  x3::symbols<std::function<bool( Value, Value )>> conditions;
+
+  // clang-format off
+  conditions.add( ">", std::greater<Value>{} )
+                ( "<", std::less<Value>{} )
+                ( ">=", std::greater_equal<Value>{} )
+                ( "<=", std::less_equal<Value>{} )
+                ( "==", std::equal_to<Value>{} )
+                ( "!=", std::not_equal_to<Value>{} );
+  // clang-format on
+
+  const auto dec_action           = []( auto& ctx ) { x3::_val( ctx ) = -x3::_attr( ctx ); };
+  const auto value_checker_action = []( auto& ctx ) {
+    auto [ cond, val ] = AoC::fusion_to_std_tuple( x3::_attr( ctx ) );
+    x3::_val( ctx )    = std::bind( cond, std::placeholders::_1, val );
+  };
+
+  // clang-format off
   const auto reg_parser   = x3::lexeme[ +x3::alpha ];
   const auto value_parser = x3::int_;
   const auto inc_parser   = ( "inc" > value_parser );
-  const auto dec_parser   = x3::rule<struct _diff, Value>{} =
-      ( "dec" > value_parser )[ ( []( auto& ctx ) { x3::_val( ctx ) = -x3::_attr( ctx ); } ) ];
-  const auto diff_parser          = inc_parser | dec_parser;
-  const auto value_checker_parser = x3::rule<struct _cond, ValueChecker>{} = ( conditions > value_parser )[ ( []( auto& ctx ) {
-    auto [ cond, val ] = AoC::fusion_to_std_tuple( x3::_attr( ctx ) );
-    x3::_val( ctx )    = std::bind( cond, std::placeholders::_1, val );
-  } ) ];
+  const auto dec_parser   = x3::rule<struct _diff, Value>{} = ( "dec" > value_parser )[ dec_action ];
+  const auto diff_parser  = inc_parser | dec_parser;
+  const auto value_checker_parser = x3::rule<struct _cond, ValueChecker>{} = ( conditions > value_parser )[ value_checker_action ];
+  // clang-format on
+
 
   /* b inc 5 if a > 1 */
   const auto parser = reg_parser > diff_parser > "if" > reg_parser > value_checker_parser;
