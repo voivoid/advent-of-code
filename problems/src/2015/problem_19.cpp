@@ -78,6 +78,37 @@ auto generate_replacements( const Molecule& from, const Molecule& to, const Mole
          ranges::view::transform( std::bind( &make_replacement, medicine, std::cref( from ), std::cref( to ), std::placeholders::_1 ) );
 }
 
+/*
+namespace parser
+{
+    namespace x3 = boost::spirit::x3;
+
+    auto y = x3::lit( 'Y' );
+    auto rn = x3::lit( "Rn" );
+    auto ar = x3::lit( "Ar" );
+
+    auto mol1 = x3::upper - y;
+    auto mol2 = ( x3::upper >> x3::lower ) - ( rn | ar );
+    auto mol = ( mol2 | mol1 );
+
+    x3::rule<struct _reduce> reduce;
+
+    auto rule1 = reduce >> reduce;
+    auto rule2 = reduce >> rn >> reduce >> ar;
+    auto rule3 = reduce >> rn >> reduce >> y >> reduce >> ar;
+
+    auto reduce_def = rule1 | mol;
+
+    BOOST_SPIRIT_DEFINE( reduce )
+}
+
+bool reduce_molecule( const Molecule& molecule )
+{
+    const bool is_reduced = AoC::x3_parse( molecule, parser::reduce, boost::spirit::x3::space );
+    return is_reduced;
+}
+*/
+
 }  // namespace
 
 namespace AoC_2015
@@ -103,6 +134,7 @@ size_t solve_1( std::istream& input )
 
 size_t solve_2( std::istream& )
 {
+  //reduce_molecule( parse_input( input ).medicine_molecule );
   return 0;
 }
 
@@ -125,6 +157,18 @@ static void impl_tests()
     assert( replacement.first == "H" );
     assert( replacement.second == "OH" );
   }
+
+    /*
+  {
+    assert( reduce_molecule( "H" ) );
+    assert( reduce_molecule( "Al" ) );
+    assert( !reduce_molecule( "Y" ) );
+    assert( !reduce_molecule( "Rn" ) );
+    assert( !reduce_molecule( "Ar" ) );
+    assert( reduce_molecule( "HO" ) );
+    assert( reduce_molecule( "ThRnFAr" ) );
+    assert( reduce_molecule( "SiRnFYFAr" ) );
+  } */
 }
 
 REGISTER_IMPL_TEST( impl_tests );
