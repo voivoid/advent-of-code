@@ -1,7 +1,6 @@
 #include "AoC/2017/problem_15.h"
 
 #include "AoC/problems_map.h"
-#include "AoC/utils/fusion.h"
 #include "AoC/utils/ranges/generate.h"
 
 #include "range/v3/algorithm/count.hpp"
@@ -26,10 +25,13 @@ std::pair<Value, Value> parse_start_generator_values( std::istream& input )
 
   const auto parser = make_generator_parser( x3::lit( 'A' ) ) > make_generator_parser( x3::lit( 'B' ) );
 
-  boost::fusion::vector<size_t, size_t> result;
-  AoC::x3_parse( input, parser, x3::space, result );
+  size_t a = 0, b = 0;
+  const bool is_parsed = AoC::x3_parse_m( input, parser, x3::space, a, b );
+  if ( !is_parsed )
+  {
+    throw std::runtime_error( "Failed to parse generators input" );
+  }
 
-  const auto [ a, b ] = AoC::fusion_to_std_tuple( result );
   return { a, b };
 }
 

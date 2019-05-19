@@ -2,7 +2,6 @@
 
 #include "AoC/problems_map.h"
 #include "AoC/utils/anon_ret.h"
-#include "AoC/utils/fusion.h"
 #include "AoC/utils/parse.h"
 #include "AoC/utils/zipper.h"
 
@@ -27,14 +26,12 @@ auto parse_input( std::istream& input )
 
   const auto parser = AoC::x3_size_t_ > "players;" > "last" > "marble" > "is" > "worth" > AoC::x3_size_t_ > "points";
 
-  boost::fusion::vector<size_t, size_t> parsed_data;
-  const bool is_parsed = AoC::x3_parse( input, parser, x3::space, parsed_data );
+  size_t players, points;
+  const bool is_parsed = AoC::x3_parse_m( input, parser, x3::space, players, points );
   if ( !is_parsed )
   {
     throw std::runtime_error( "Failed to parse task input" );
   }
-
-  const auto [ players, points ] = AoC::fusion_to_std_tuple( parsed_data );
 
   AOC_RETURN_ANONYMOUS_STRUCT( players, points );
 }

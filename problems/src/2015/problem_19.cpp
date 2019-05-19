@@ -2,7 +2,6 @@
 
 #include "AoC/problems_map.h"
 #include "AoC/utils/anon_ret.h"
-#include "AoC/utils/fusion.h"
 #include "AoC/utils/parse.h"
 #include "AoC/utils/ranges/generate.h"
 
@@ -35,14 +34,14 @@ std::pair<Molecule, Molecule> parse_replacement( const std::string& line )
   const auto molecule_parser = x3::lexeme[ +x3::alpha ];
   const auto parser          = molecule_parser > "=>" > molecule_parser;
 
-  boost::fusion::vector<std::string, std::string> replacements;
-  const bool is_parsed = AoC::x3_parse( line, parser, x3::space, replacements );
+  Molecule from;
+  Molecule to;
+  const bool is_parsed = AoC::x3_parse_m( line, parser, x3::space, from, to );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse replacement data" );
   }
 
-  auto [ from, to ] = AoC::fusion_to_std_tuple( replacements );
   return { std::move( from ), std::move( to ) };
 }
 

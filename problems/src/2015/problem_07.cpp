@@ -1,7 +1,6 @@
 #include "AoC/2015/problem_07.h"
 
 #include "AoC/problems_map.h"
-#include "AoC/utils/fusion.h"
 #include "AoC/utils/parse.h"
 
 #include "range/v3/action/split.hpp"
@@ -152,14 +151,13 @@ std::pair<Wire, Instruction> parse_instruction( const std::string& line )
 
   const auto parser = instruction > "->" > wire;
 
-  boost::fusion::vector<Instruction, Wire> result;
-  const bool is_parsed = AoC::x3_parse( line, parser, x3::space, result );
+  Wire dest;
+  Instruction instr;
+  const bool is_parsed = AoC::x3_parse_m( line, parser, x3::space, instr, dest );
   if ( !is_parsed )
   {
     throw std::invalid_argument( "Failed to parse input instruction data" );
   }
-
-  auto [ instr, dest ] = AoC::fusion_to_std_tuple( result );
 
   return { std::move( dest ), std::move( instr ) };
 }
