@@ -7,7 +7,6 @@
 
 #include "range/v3/algorithm/max.hpp"
 
-#include "boost/fusion/container/vector.hpp"
 #include "boost/numeric/conversion/cast.hpp"
 
 

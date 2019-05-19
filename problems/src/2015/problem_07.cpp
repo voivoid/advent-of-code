@@ -14,7 +14,6 @@
 
 #include "boost/functional/overloaded_function.hpp"
 #include "boost/fusion/adapted/struct.hpp"
-#include "boost/fusion/container/vector.hpp"
 
 #include "boost/variant.hpp"
 

@@ -6,7 +6,7 @@ elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   set(AocCxxWarnings -Wall -Wextra -Wpedantic -Werror -Wnull-dereference -Wold-style-cast -Wdouble-promotion -Wshadow -Wformat=2 -Wconversion -Wsign-conversion -Wfloat-equal -Wcast-qual -Winit-self -Wpointer-arith)
   set(AocCxxFlags -march=native)
 elseif (MSVC)
-  set(AocCxxWarnings /W2 /WX /wd"5105")
+  set(AocCxxWarnings /W2 /WX /wd5105)
   set(AocCxxFlags /DNOMINMAX /DWIN32_LEAN_AND_MEAN /MP /permissive- /experimental:preprocessor)
 endif()
 

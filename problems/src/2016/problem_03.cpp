@@ -12,7 +12,6 @@
 #include "range/v3/view/join.hpp"
 #include "range/v3/view/transform.hpp"
 
-#include "boost/fusion/container/vector.hpp"
 #include "boost/numeric/conversion/cast.hpp"
 
 

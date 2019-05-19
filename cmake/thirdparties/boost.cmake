@@ -31,7 +31,7 @@ if(UNIX AND NOT "${CMAKE_BUILD_TYPE}" STREQUAL "RELEASE")
 endif()
 
 if(MSVC)
-  if("${CMAKE_GENERATOR}" MATCHES "Win64")
+  if("${CMAKE_VS_PLATFORM_NAME}" MATCHES "x64")
     set(BoostAddressModel "address-model=64")
     set(BoostAddressModelTag "-x64")
   else()
@@ -47,6 +47,21 @@ foreach(BoostLib ${BoostLibs})
   list(APPEND BoostLibsCmdLine "--with-${BoostLib}")
 endforeach()
 
+list(TRANSFORM BoostLibs REPLACE test unit_test_framework)
+
+set(BoostByproducts ${BoostLibs})
+list(TRANSFORM BoostByproducts PREPEND <SOURCE_DIR>/stage/lib/libboost_)
+
+if(MSVC)
+  set(BoostByproductsMt ${BoostByproducts})
+  set(BoostByproductsMtGd ${BoostByproducts})
+  list(TRANSFORM BoostByproductsMt APPEND -mt${BoostAddressModelTag}.lib)
+  list(TRANSFORM BoostByproductsMtGd APPEND -mt-gd${BoostAddressModelTag}.lib)
+  set(BoostByproducts ${BoostByproductsMt} ${BoostByproductsMtGd})
+else()
+  list(TRANSFORM BoostByproducts APPEND .a)
+endif()
+
 string(REPLACE . _ BoostVersionUnderscored ${BoostVersion})
 ExternalProject_Add(
   get_boost
@@ -58,6 +73,7 @@ ExternalProject_Add(
   BUILD_COMMAND ${BoostB2} ${BoostB2Toolset} link=static threading=multi runtime-link=shared ${BoostLayout} ${BoostAddressModel} ${BoostBuildVariant} ${BoostLibsCmdLine} ${BoostAsmFlags} -j 4
   BUILD_IN_SOURCE TRUE
   INSTALL_COMMAND ""
+  BUILD_BYPRODUCTS ${BoostByproducts}
   )
 
 
@@ -73,10 +89,6 @@ set_target_properties(boost_headers PROPERTIES INTERFACE_SYSTEM_INCLUDE_DIRECTOR
 if(MSVC)
   set_property(TARGET boost_headers PROPERTY INTERFACE_COMPILE_DEFINITIONS BOOST_ALL_NO_LIB)
 endif()
-
-add_library(Boost::program_options STATIC IMPORTED)
-add_library(Boost::unit_test_framework STATIC IMPORTED)
-add_library(Boost::context STATIC IMPORTED)
 
 macro(set_boost_libs_location Component)
   if(MSVC)
@@ -97,11 +109,10 @@ macro(set_boost_libs_location Component)
   endif()
 endmacro()
 
-set_boost_libs_location(program_options)
-set_boost_libs_location(unit_test_framework)
-set_boost_libs_location(context)
-
 add_dependencies(boost_headers get_boost)
-add_dependencies(Boost::program_options get_boost)
-add_dependencies(Boost::unit_test_framework get_boost)
-add_dependencies(Boost::context get_boost)
+
+foreach(BoostLib ${BoostLibs})
+  add_library(Boost::${BoostLib} STATIC IMPORTED)
+  set_boost_libs_location(${BoostLib})
+  add_dependencies(Boost::${BoostLib} get_boost)
+endforeach()

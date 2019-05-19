@@ -8,7 +8,6 @@
 #include "range/v3/view/take_exactly.hpp"
 #include "range/v3/view/zip_with.hpp"
 
-#include "boost/fusion/container/vector.hpp"
 #include "boost/numeric/conversion/cast.hpp"
 
 #include "AoC/utils/parse.h"

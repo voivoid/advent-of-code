@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 3.13.0)
+
+set(CMAKE_USER_MAKE_RULES_OVERRIDE_CXX ${CMAKE_CURRENT_SOURCE_DIR}/cmake/cxx_flag_overrides.cmake)
 project(CppAoc LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -10,13 +12,15 @@ include(cmake/thirdparties/rangev3.cmake)
 include(cmake/thirdparties/json.cmake)
 include(cmake/build_utils.cmake)
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  set(AocExcludedProblems
-  )
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND ${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER "9")
+  set(AocExcludedProblems 2015_03     # https://github.com/ericniebler/range-v3/issues/1217
+                          2016_08     # gcc 9.1 segfaults
+                          2017_03     # gcc 9.1 segfaults
+     )
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
   set(AocExcludedProblems 2015_14     # looks like MSVC has issues with range-v3
                           2015_23     # looks like MSVC has issues with boost::hof
-                          2016_04
+                          2016_04     # TODO: investigate...
                           2016_05
                           2016_07
                           2016_08
@@ -27,7 +31,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
                           2018_06
                           2018_07
                           2018_11
-  )
+     )
 endif()
 
 foreach(Problem ${AocExcludedProblems})

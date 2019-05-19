@@ -1,5 +1,6 @@
 #pragma once
 
+#include "boost/fusion/container/vector.hpp"
 #include "boost/spirit/home/x3.hpp"
 #include "boost/spirit/include/support_istream_iterator.hpp"
 

@@ -14,7 +14,6 @@
 #include "range/v3/view/transform.hpp"
 
 #include "boost/fusion/adapted/struct.hpp"
-#include "boost/fusion/container/vector.hpp"
 #include "boost/numeric/conversion/cast.hpp"
 
 
@@ -183,7 +182,7 @@ static void impl_tests()
 {
   const auto claim = parse_claim( "#1 @ 342,645: 25x20" );
   assert( claim.id == 1 );
-  assert( claim.area == ( AoC::URectangle{ 342, 645, 342 + 24, 645 + 19 } ) );
+  assert( claim.area == ( AoC::URectangle{ { 342, 645 }, { 342 + 24, 645 + 19 } } ) );
 }
 
 REGISTER_IMPL_TEST( impl_tests );

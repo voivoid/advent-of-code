@@ -11,7 +11,6 @@
 #include "range/v3/view/take_while.hpp"
 #include "range/v3/view/transform.hpp"
 
-#include "boost/fusion/container/vector.hpp"
 #include "boost/safe_numerics/safe_integer.hpp"
 
 #include <istream>
@@ -134,7 +133,7 @@ size_t solve_1( std::istream& input )
 
 size_t solve_2( std::istream& )
 {
-  //reduce_molecule( parse_input( input ).medicine_molecule );
+  // reduce_molecule( parse_input( input ).medicine_molecule );
   return 0;
 }
 
@@ -158,17 +157,17 @@ static void impl_tests()
     assert( replacement.second == "OH" );
   }
 
-    /*
-  {
-    assert( reduce_molecule( "H" ) );
-    assert( reduce_molecule( "Al" ) );
-    assert( !reduce_molecule( "Y" ) );
-    assert( !reduce_molecule( "Rn" ) );
-    assert( !reduce_molecule( "Ar" ) );
-    assert( reduce_molecule( "HO" ) );
-    assert( reduce_molecule( "ThRnFAr" ) );
-    assert( reduce_molecule( "SiRnFYFAr" ) );
-  } */
+  /*
+{
+  assert( reduce_molecule( "H" ) );
+  assert( reduce_molecule( "Al" ) );
+  assert( !reduce_molecule( "Y" ) );
+  assert( !reduce_molecule( "Rn" ) );
+  assert( !reduce_molecule( "Ar" ) );
+  assert( reduce_molecule( "HO" ) );
+  assert( reduce_molecule( "ThRnFAr" ) );
+  assert( reduce_molecule( "SiRnFYFAr" ) );
+} */
 }
 
 REGISTER_IMPL_TEST( impl_tests );
