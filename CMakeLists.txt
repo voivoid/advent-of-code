@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.13.0)
 
-set(CMAKE_USER_MAKE_RULES_OVERRIDE_CXX ${CMAKE_CURRENT_SOURCE_DIR}/cmake/cxx_flag_overrides.cmake)
 project(CppAoc LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -18,14 +17,23 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND ${CMAKE_CXX_COMPILER_VERSION} 
                           2017_03     # gcc 9.1 segfaults
      )
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-  set(AocExcludedProblems 2015_14     # looks like MSVC has issues with range-v3
-                          2015_23     # looks like MSVC has issues with boost::hof
-                          2016_04     # TODO: investigate...
+  set(AocExcludedProblems 2015_14
+                          2015_19
+                          2015_23 # HOF
+                          2016_01
+                          2016_04
                           2016_05
-                          2016_07
-                          2016_08
-                          2017_02
+                          2016_07 # HOF
+                          2016_08 # HOF
+                          2017_02 # HOF
                           2017_04
+                          2017_12
+                          2017_14
+                          2017_16 # HOF
+                          2017_18 # HOF
+                          2017_19
+                          2017_20
+                          2018_03
                           2018_04
                           2018_05
                           2018_06
