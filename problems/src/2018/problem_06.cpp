@@ -81,7 +81,13 @@ Rect get_bound_rect( const Locations& locations )
 template <typename Range>
 Locations index_coords( Range&& coords )
 {
-  return ranges::view::zip_with( []( const Coord c, const LocationIndex i ) { return Location{ c, i }; }, coords, ranges::view::iota( 1 ) );
+  return ranges::view::zip_with(
+             []( const Coord c, const LocationIndex i ) {
+               return Location{ c, i };
+             },
+             coords,
+             ranges::view::iota( 1 ) ) |
+         ranges::to<Locations>;
 }
 
 Distance calc_distance( const Coord c1, const Coord c2 )

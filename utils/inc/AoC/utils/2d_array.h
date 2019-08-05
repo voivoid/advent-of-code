@@ -158,7 +158,7 @@ protected:
   dd_array_dynamic_heap_impl( Init arr ) :
       height( arr.size() ),
       width( height ? arr.front().size() : size_t{ 0 } ),
-      data( arr | ranges::view::join | ranges::view::move )
+      data( arr | ranges::view::join | ranges::view::move | ranges::to<std::vector<T>> )
   {
     assert( data.size() == height * width );
   }

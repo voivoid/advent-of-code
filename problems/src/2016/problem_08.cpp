@@ -156,7 +156,7 @@ auto letter_to_code()
   return ranges::view::transform( ranges::view::join ) | ranges::view::transform( []( auto bits ) {
            constexpr auto LetterBitsNum = LetterWidth * ScreenHeight;
 
-           std::string bitstr = bits;
+           std::string bitstr = bits | ranges::to<std::string>;
            assert( bitstr.length() == LetterBitsNum );
 
            return std::bitset<LetterBitsNum>( bitstr ).to_ulong();
@@ -192,7 +192,7 @@ CharCodeMap init_charcode_map()
 
   const auto letter_codes = bits_to_letters( graphchars, chars.length(), '#' ) | letter_to_code();
 
-  return ranges::view::zip( letter_codes, chars );
+  return ranges::view::zip( letter_codes, chars ) | ranges::to<CharCodeMap>;
 }
 
 const CharCodeMap& get_charcode_map()
@@ -235,7 +235,7 @@ std::string solve_2( std::istream& istream )
   const auto letters         = bits_to_letters( screen, letters_num, true );
   const auto letter_codes    = letters | letter_to_code();
 
-  const std::string result = letter_codes | ranges::view::transform( &get_char_from_charcode );
+  const std::string result = letter_codes | ranges::view::transform( &get_char_from_charcode ) | ranges::to<std::string>;
   return result;
 }
 

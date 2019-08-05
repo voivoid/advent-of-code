@@ -36,7 +36,7 @@ bool should_be_reduced( const char c1, const char c2 )
 
 std::unordered_set<char> get_unique_polymers( const std::string& input )
 {
-  return input | ranges::view::transform( &to_lower );
+  return input | ranges::view::transform( &to_lower ) | ranges::to<std::unordered_set<char>>;
 }
 
 auto reduce_polymer( std::stack<char>& stack, const char p )

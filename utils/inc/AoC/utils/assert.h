@@ -9,5 +9,9 @@
 #ifdef NDEBUG
 #  define AOC_ASSERT_FALSE() AOC_UNEXPECTED();
 #else
-#  define AOC_ASSERT_FALSE() { assert( false ); AOC_UNEXPECTED(); }
+#  define AOC_ASSERT_FALSE()                                                                                                               \
+    {                                                                                                                                      \
+      assert( false );                                                                                                                     \
+      AOC_UNEXPECTED();                                                                                                                    \
+    }
 #endif

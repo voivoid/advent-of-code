@@ -237,7 +237,7 @@ size_t solve_1_impl( std::istream& input, const Value low_val_to_find, const Val
     return bot.low_val && bot.high_val && bot.low_val == low_val_to_find && bot.high_val == high_val_to_find;
   } );
 
-  if( bot_iter == bots.end() )
+  if ( bot_iter == bots.end() )
   {
     throw std::runtime_error( "Failed to find the solution" );
   }

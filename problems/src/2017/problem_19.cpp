@@ -183,7 +183,7 @@ std::string solve_1( std::istream& input )
 
   auto letters_seen = travelled_states | ranges::view::transform( AOC_CURRY( get_cell, std::cref( diagram ) ) ) |
                       ranges::view::filter( []( const DiagramCell c ) { return std::isalpha( c ); } );
-  return letters_seen;
+  return letters_seen | ranges::to<std::string>;
 }
 
 size_t solve_2( std::istream& input )

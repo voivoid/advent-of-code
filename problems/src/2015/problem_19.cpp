@@ -48,7 +48,7 @@ auto parse_input( std::istream& input )
 {
   auto replacement_lines = ranges::getlines( input ) | ranges::view::take_while( []( const std::string& line ) { return line != ""; } ) |
                            ranges::view::transform( &parse_replacement );
-  const MoleculeMap replacements_map = replacement_lines;
+  const MoleculeMap replacements_map = replacement_lines | ranges::to<MoleculeMap>;
 
   std::string medicine_molecule;
   input >> medicine_molecule;
