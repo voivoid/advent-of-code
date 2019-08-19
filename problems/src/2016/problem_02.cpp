@@ -112,13 +112,13 @@ std::string solve( std::istream& input, const Keypad<side>& keypad )
   const CursorPos start_cursor_pos = *AoC::dd_array_find_elem_indices( keypad, '5' );
 
   // appending dummy instructions since ranges v3 has no inclusive_scan yet :(
-  auto keypad_positions = ranges::getlines( input ) | ranges::view::transform( &parse_instructions ) | AoC::append( Instructions{} ) |
-                          ranges::view::exclusive_scan( start_cursor_pos, [&keypad]( const CursorPos cursor, const auto instructions ) {
+  auto keypad_positions = ranges::getlines( input ) | ranges::views::transform( &parse_instructions ) | AoC::append( Instructions{} ) |
+                          ranges::views::exclusive_scan( start_cursor_pos, [&keypad]( const CursorPos cursor, const auto instructions ) {
                             return run_instructions( cursor, instructions, keypad );
                           } );
 
-  auto codes = keypad_positions | ranges::view::tail |
-               ranges::view::transform( [&keypad]( const CursorPos cursor ) { return code_by_position( cursor, keypad ); } );
+  auto codes = keypad_positions | ranges::views::tail |
+               ranges::views::transform( [&keypad]( const CursorPos cursor ) { return code_by_position( cursor, keypad ); } );
 
   return codes | ranges::to<std::string>;
 }

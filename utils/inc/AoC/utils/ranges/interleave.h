@@ -26,7 +26,7 @@ class interleave_view : public ranges::view_facade<interleave_view<Rngs>>
   struct cursor;
   cursor begin_cursor()
   {
-    return { 0, &rngs_, rngs_ | ranges::view::transform( ranges::begin ) | ranges::to<std::vector> };
+    return { 0, &rngs_, rngs_ | ranges::views::transform( ranges::begin ) | ranges::to<std::vector> };
   }
 
 public:
@@ -63,11 +63,11 @@ struct interleave_view<Rngs>::cursor
       return false;
     }
 
-    auto ends = *rngs_ | ranges::view::transform( ranges::end );
+    auto ends = *rngs_ | ranges::views::transform( ranges::end );
     return its_.end() != std::mismatch( its_.begin(), its_.end(), ends.begin(), std::not_equal_to<>{} ).first;
   }
 
-  CPP_member auto equal( cursor const& that ) const -> CPP_ret( bool )( requires ranges::ForwardRange<RngVal> )
+  CPP_member auto equal( cursor const& that ) const -> CPP_ret( bool )( requires ranges::forward_range<RngVal> )
   {
     return n_ == that.n_ && its_ == that.its_;
   }
@@ -82,7 +82,7 @@ inline auto interleave()
 {
   return ranges::make_pipeable( []( auto&& rngs ) {
     using Rngs = decltype( rngs );
-    return details::interleave_view<ranges::view::all_t<Rngs>>( ranges::view::all( std::forward<Rngs>( rngs ) ) );
+    return details::interleave_view<ranges::views::all_t<Rngs>>( ranges::views::all( std::forward<Rngs>( rngs ) ) );
   } );
 }
 

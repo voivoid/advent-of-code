@@ -45,7 +45,7 @@ bool is_aba_seq( const Range& seq )
 template <typename Range>
 bool has_abba( const Range& part )
 {
-  return ranges::any_of( part | ranges::view::sliding( abba_len ), BOOST_HOF_LIFT( is_abba_seq ) );
+  return ranges::any_of( part | ranges::views::sliding( abba_len ), BOOST_HOF_LIFT( is_abba_seq ) );
 }
 
 template <typename Range>
@@ -65,10 +65,10 @@ bool is_abba( const R1& parts_outside_square_brackets, const R2& parts_inside_sq
 template <typename R1, typename R2>
 bool is_aba( const R1& parts_outside_square_brackets, const R2& parts_inside_square_brackets )
 {
-  static const auto get_3chars_sequences = ranges::view::transform( ranges::view::sliding( aba_len ) ) | ranges::view::join;
+  static const auto get_3chars_sequences = ranges::views::transform( ranges::views::sliding( aba_len ) ) | ranges::views::join;
 
-  auto aba_sequences = parts_outside_square_brackets | get_3chars_sequences | ranges::view::filter( BOOST_HOF_LIFT( is_aba_seq ) );
-  auto bab_sequences = aba_sequences | ranges::view::transform( BOOST_HOF_LIFT( aba_to_bab ) );
+  auto aba_sequences = parts_outside_square_brackets | get_3chars_sequences | ranges::views::filter( BOOST_HOF_LIFT( is_aba_seq ) );
+  auto bab_sequences = aba_sequences | ranges::views::transform( BOOST_HOF_LIFT( aba_to_bab ) );
 
 
   return ranges::any_of( bab_sequences, [&parts_inside_square_brackets]( const auto bab ) {
@@ -83,9 +83,9 @@ bool is_aba( const R1& parts_outside_square_brackets, const R2& parts_inside_squ
 template <typename PartsChecker>
 bool check_ip( const PartsChecker& check_parts, const std::string& ip )
 {
-  const auto parts                         = ip | ranges::view::split_when( []( const char c ) { return c == '[' || c == ']'; } );
-  const auto parts_outside_square_brackets = parts | ranges::view::stride( 2 );
-  const auto parts_inside_square_brackets  = parts | ranges::view::tail | ranges::view::stride( 2 );
+  const auto parts                         = ip | ranges::views::split_when( []( const char c ) { return c == '[' || c == ']'; } );
+  const auto parts_outside_square_brackets = parts | ranges::views::stride( 2 );
+  const auto parts_inside_square_brackets  = parts | ranges::views::tail | ranges::views::stride( 2 );
 
   return check_parts( parts_outside_square_brackets, parts_inside_square_brackets );
 }

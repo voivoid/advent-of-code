@@ -13,7 +13,7 @@ inline auto prepend( T elem )
 {
   return ranges::make_pipeable( [e = std::move( elem )]( auto&& rng ) {
     using Rng = decltype( rng );
-    return ranges::view::concat( ranges::view::single( std::move( e ) ), std::forward<Rng>( rng ) );
+    return ranges::views::concat( ranges::views::single( std::move( e ) ), std::forward<Rng>( rng ) );
   } );
 }
 

@@ -36,7 +36,7 @@ bool should_be_reduced( const char c1, const char c2 )
 
 std::unordered_set<char> get_unique_polymers( const std::string& input )
 {
-  return input | ranges::view::transform( &to_lower ) | ranges::to<std::unordered_set<char>>;
+  return input | ranges::views::transform( &to_lower ) | ranges::to<std::unordered_set<char>>;
 }
 
 auto reduce_polymer( std::stack<char>& stack, const char p )
@@ -83,10 +83,10 @@ size_t solve_2( std::istream& input )
   const std::string data{ std::istream_iterator<char>( input ), std::istream_iterator<char>() };
   const auto unique_polymers = get_unique_polymers( data );
 
-  const auto reduction_sizes = unique_polymers | ranges::view::transform( [&data]( const char polymer ) {
-                                 return data | ranges::view::filter( [polymer]( const char c ) { return to_lower( c ) != polymer; } );
+  const auto reduction_sizes = unique_polymers | ranges::views::transform( [&data]( const char polymer ) {
+                                 return data | ranges::views::filter( [polymer]( const char c ) { return to_lower( c ) != polymer; } );
                                } ) |
-                               ranges::view::transform( BOOST_HOF_LIFT( &do_reductions ) );
+                               ranges::views::transform( BOOST_HOF_LIFT( &do_reductions ) );
 
   return ranges::min( reduction_sizes );
 }

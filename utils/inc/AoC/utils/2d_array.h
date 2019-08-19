@@ -158,7 +158,7 @@ protected:
   dd_array_dynamic_heap_impl( Init arr ) :
       height( arr.size() ),
       width( height ? arr.front().size() : size_t{ 0 } ),
-      data( arr | ranges::view::join | ranges::view::move | ranges::to<std::vector<T>> )
+      data( arr | ranges::views::join | ranges::views::move | ranges::to<std::vector<T>> )
   {
     assert( data.size() == height * width );
   }
@@ -310,10 +310,10 @@ using dd_dynamic_heap_array = Details::dd_array<T, Details::dd_array_dynamic_hea
 template <typename T, typename Impl>
 std::optional<UPoint> dd_array_find_elem_indices( const Details::dd_array<T, Impl>& arr, const T& elem )
 {
-  const auto xs = ranges::view::indices( size_t{ 0 }, arr.get_width() );
-  const auto ys = ranges::view::indices( size_t{ 0 }, arr.get_height() );
+  const auto xs = ranges::views::indices( size_t{ 0 }, arr.get_width() );
+  const auto ys = ranges::views::indices( size_t{ 0 }, arr.get_height() );
 
-  for ( auto [ y, x ] : ranges::view::cartesian_product( ys, xs ) )
+  for ( auto [ y, x ] : ranges::views::cartesian_product( ys, xs ) )
   {
     if ( arr[ x ][ y ] == elem )
     {
@@ -330,16 +330,16 @@ template <typename E, typename T>
 auto column_impl( T& arr, const size_t n )
 {
   assert( n < arr.get_width() );
-  return ranges::view::indices( size_t{ 0 }, arr.get_height() ) |
-         ranges::view::transform( [&arr, n]( const size_t i ) -> E& { return arr[ n ][ i ]; } );
+  return ranges::views::indices( size_t{ 0 }, arr.get_height() ) |
+         ranges::views::transform( [&arr, n]( const size_t i ) -> E& { return arr[ n ][ i ]; } );
 }
 
 template <typename E, typename T>
 auto row_impl( T& arr, const size_t n )
 {
   assert( n < arr.get_height() );
-  return ranges::view::indices( size_t{ 0 }, arr.get_width() ) |
-         ranges::view::transform( [&arr, n]( const size_t i ) -> E& { return arr[ i ][ n ]; } );
+  return ranges::views::indices( size_t{ 0 }, arr.get_width() ) |
+         ranges::views::transform( [&arr, n]( const size_t i ) -> E& { return arr[ i ][ n ]; } );
 }
 
 }  // namespace Details
@@ -359,7 +359,7 @@ auto column( const Details::dd_array<T, Impl>& arr, const size_t n )
 template <typename Arr>
 auto columns( Arr& arr )
 {
-  return ranges::view::indices( arr.get_width() ) | ranges::view::transform( [&arr]( const size_t n ) { return column( arr, n ); } );
+  return ranges::views::indices( arr.get_width() ) | ranges::views::transform( [&arr]( const size_t n ) { return column( arr, n ); } );
 }
 
 template <typename T, typename Impl>
@@ -377,7 +377,7 @@ auto row( const Details::dd_array<T, Impl>& arr, const size_t n )
 template <typename Arr>
 auto rows( Arr& arr )
 {
-  return ranges::view::indices( arr.get_height() ) | ranges::view::transform( [&arr]( const size_t n ) { return row( arr, n ); } );
+  return ranges::views::indices( arr.get_height() ) | ranges::views::transform( [&arr]( const size_t n ) { return row( arr, n ); } );
 }
 
 }  // namespace AoC

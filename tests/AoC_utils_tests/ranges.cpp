@@ -86,13 +86,13 @@ BOOST_AUTO_TEST_CASE( AoC_utils_ranges_transpose )
 BOOST_AUTO_TEST_CASE( AoC_utils_ranges_to_2d_vector )
 {
   {
-    const auto v        = ranges::view::single( ranges::view::empty<int> ) | AoC::to_2d_vector();
+    const auto v        = ranges::views::single( ranges::views::empty<int> ) | AoC::to_2d_vector();
     const auto expected = std::vector<std::vector<int>>{ std::vector<int>{} };
     BOOST_CHECK( v == expected );
   }
 
   {
-    const auto v = ranges::view::iota( 0, 4 ) | ranges::view::transform( []( const int n ) { return ranges::view::iota( 0, n ); } ) |
+    const auto v = ranges::views::iota( 0, 4 ) | ranges::views::transform( []( const int n ) { return ranges::views::iota( 0, n ); } ) |
                    AoC::to_2d_vector();
     const auto expected = std::vector<std::vector<int>>{ {}, { 0 }, { 0, 1 }, { 0, 1, 2 } };
     BOOST_CHECK( v == expected );
@@ -116,7 +116,7 @@ BOOST_AUTO_TEST_CASE( AoC_utils_ranges_coro )
     }
   } );
 
-  const auto vec = fib_seq | ranges::view::take( 10 ) | ranges::to_vector;
+  const auto vec = fib_seq | ranges::views::take( 10 ) | ranges::to_vector;
 
   BOOST_CHECK_EQUAL( 10, vec.size() );
 
@@ -127,7 +127,7 @@ BOOST_AUTO_TEST_CASE( AoC_utils_ranges_coro )
 BOOST_AUTO_TEST_CASE( AoC_utils_ranges_prepend )
 {
   std::vector<int> v{ 1, 2, 3 };
-  auto r = v | ranges::view::all | AoC::prepend( 0 );
+  auto r = v | ranges::views::all | AoC::prepend( 0 );
 
   const auto expected = { 0, 1, 2, 3 };
   BOOST_CHECK_EQUAL_COLLECTIONS( r.begin(), r.end(), expected.begin(), expected.end() );
@@ -136,7 +136,7 @@ BOOST_AUTO_TEST_CASE( AoC_utils_ranges_prepend )
 BOOST_AUTO_TEST_CASE( AoC_utils_ranges_append )
 {
   std::vector<int> v{ 1, 2, 3 };
-  auto r = v | ranges::view::all | AoC::append( 4 );
+  auto r = v | ranges::views::all | AoC::append( 4 );
 
   const auto expected = { 1, 2, 3, 4 };
   BOOST_CHECK_EQUAL_COLLECTIONS( r.begin(), r.end(), expected.begin(), expected.end() );
@@ -144,7 +144,7 @@ BOOST_AUTO_TEST_CASE( AoC_utils_ranges_append )
 
 BOOST_AUTO_TEST_CASE( AoC_utils_ranges_generate )
 {
-  auto range = AoC::generate_range( 0, []( const int n ) { return n + 1; } ) | ranges::view::take_exactly( 5 ) | ranges::view::common;
+  auto range = AoC::generate_range( 0, []( const int n ) { return n + 1; } ) | ranges::views::take_exactly( 5 ) | ranges::views::common;
   const auto expected = { 1, 2, 3, 4, 5 };
 
   BOOST_CHECK_EQUAL_COLLECTIONS( expected.begin(), expected.end(), range.begin(), range.end() );
@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE( AoC_utils_ranges_generate_while )
                                       using O = std::optional<int>;
                                       return n < 5 ? O{ n + 1 } : O{};
                                     } ) |
-               ranges::view::common;
+               ranges::views::common;
   const auto expected = { 1, 2, 3, 4, 5 };
 
   BOOST_CHECK_EQUAL_COLLECTIONS( expected.begin(), expected.end(), range.begin(), range.end() );
@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_CASE( AoC_utils_ranges_generate_while )
 BOOST_AUTO_TEST_CASE( AoC_utils_ranges_enumerate_with )
 {
   std::string in = "0123";
-  auto result    = in | AoC::enumerate_with_<size_t>() | ranges::view::common;
+  auto result    = in | AoC::enumerate_with_<size_t>() | ranges::views::common;
 
   std::initializer_list<ranges::common_pair<size_t, char>> expected = { { 0, '0' }, { 1, '1' }, { 2, '2' }, { 3, '3' } };
   BOOST_CHECK_EQUAL_COLLECTIONS( expected.begin(), expected.end(), result.begin(), result.end() );
@@ -176,7 +176,7 @@ BOOST_AUTO_TEST_CASE( AoC_utils_ranges_enumerate_with )
   {                                                                                                                                        \
     const std::initializer_list<int> input                    = in;                                                                        \
     auto combinations                                         = AoC::get_unique_pair_combinations<int>( input );                           \
-    auto result                                               = combinations | ranges::view::all | ranges::view::common;                   \
+    auto result                                               = combinations | ranges::views::all | ranges::views::common;                   \
     const std::initializer_list<std::pair<int, int>> expected = ex;                                                                        \
     BOOST_CHECK_EQUAL_COLLECTIONS( expected.begin(), expected.end(), result.begin(), result.end() );                                       \
   }

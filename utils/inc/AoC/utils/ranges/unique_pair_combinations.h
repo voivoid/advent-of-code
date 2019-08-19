@@ -39,16 +39,16 @@ ranges::any_view<std::pair<T, T>> get_unique_pair_combinations( ranges::any_view
 {
   if ( elems.begin() == elems.end() )
   {
-    return ranges::view::empty<std::pair<T, T>>;
+    return ranges::views::empty<std::pair<T, T>>;
   }
 
   const auto& head = *elems.begin();
-  auto tail        = elems | ranges::view::tail;
+  auto tail        = elems | ranges::views::tail;
 
-  auto head_combinations = tail | ranges::view::transform( [head]( const auto& e ) { return std::make_pair( head, e ); } );
+  auto head_combinations = tail | ranges::views::transform( [head]( const auto& e ) { return std::make_pair( head, e ); } );
   auto tail_combinations = get_unique_pair_combinations<T>( tail );
 
-  return ranges::view::concat( head_combinations, tail_combinations );
+  return ranges::views::concat( head_combinations, tail_combinations );
 }
 
 }  // namespace AoC

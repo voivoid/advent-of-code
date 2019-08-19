@@ -158,7 +158,7 @@ std::optional<State> do_move( const Diagram& diagram, const State current_state 
 
 Diagram make_diagram( std::istream& input )
 {
-  return ranges::getlines( input ) | ranges::view::transform( ranges::to_vector ) | ranges::to_vector;
+  return ranges::getlines( input ) | ranges::views::transform( ranges::to_vector ) | ranges::to_vector;
 }
 
 auto get_travelled_path_states( const Diagram& diagram )
@@ -181,8 +181,8 @@ std::string solve_1( std::istream& input )
   const auto diagram    = make_diagram( input );
   auto travelled_states = get_travelled_path_states( diagram );
 
-  auto letters_seen = travelled_states | ranges::view::transform( AOC_CURRY( get_cell, std::cref( diagram ) ) ) |
-                      ranges::view::filter( []( const DiagramCell c ) { return std::isalpha( c ); } );
+  auto letters_seen = travelled_states | ranges::views::transform( AOC_CURRY( get_cell, std::cref( diagram ) ) ) |
+                      ranges::views::filter( []( const DiagramCell c ) { return std::isalpha( c ); } );
   return letters_seen | ranges::to<std::string>;
 }
 

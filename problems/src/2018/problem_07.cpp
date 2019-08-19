@@ -123,7 +123,7 @@ void complete_task( const Task done_task, Tasks& reachable_tasks, TaskDependency
 
 auto parse_input( std::istream& input )
 {
-  const auto dependencies = ranges::getlines( input ) | ranges::view::transform( &parse_dependency ) | ranges::to_vector;
+  const auto dependencies = ranges::getlines( input ) | ranges::views::transform( &parse_dependency ) | ranges::to_vector;
 
   TaskDependencyMap dependency_map;
   for ( auto dependency : dependencies )
@@ -133,8 +133,8 @@ auto parse_input( std::istream& input )
   }
 
   Tasks reachable_tasks = dependency_map |
-                          ranges::view::filter( []( const TaskDependencyMap::value_type& kv ) { return kv.second.empty(); } ) |
-                          ranges::view::keys | ranges::to<std::set>;
+                          ranges::views::filter( []( const TaskDependencyMap::value_type& kv ) { return kv.second.empty(); } ) |
+                          ranges::views::keys | ranges::to<std::set>;
 
   AOC_RETURN_ANONYMOUS_STRUCT( dependency_map, reachable_tasks );
 }
@@ -180,7 +180,7 @@ Time calc_total_time( Tasks& reachable_tasks,
   complete_task( task_in_work.task, reachable_tasks, dependency_map );
 
   tasks_in_work.erase( tasks_in_work.begin() );
-  tasks_in_work = tasks_in_work | ranges::view::transform( [task_in_work]( TaskTime tt ) {
+  tasks_in_work = tasks_in_work | ranges::views::transform( [task_in_work]( TaskTime tt ) {
                     tt.time -= task_in_work.time;
                     return tt;
                   } ) |

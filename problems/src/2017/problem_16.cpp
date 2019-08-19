@@ -84,7 +84,7 @@ DanceMoves parse_moves( std::istream& input )
 
 Programs get_initial_programs_order( const size_t programs_num )
 {
-  return ranges::view::iota( 'a' ) | ranges::view::take( programs_num ) | ranges::to<std::string>;
+  return ranges::views::iota( 'a' ) | ranges::views::take( programs_num ) | ranges::to<std::string>;
 }
 
 DanceState make_dance_state( std::string programs )

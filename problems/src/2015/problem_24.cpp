@@ -76,7 +76,7 @@ bool check_range_can_be_split_into_groups( ranges::any_view<Weight> rest_weights
 {
   assert( calc_weights_sum( rest_weights ) == group_weight * groups_num );
 
-  auto diff = ranges::view::set_difference( rest_weights, compartment_weights );
+  auto diff = ranges::views::set_difference( rest_weights, compartment_weights );
 
   if ( groups_num == 2 )
   {
@@ -95,21 +95,21 @@ bool check_range_can_be_split_into_groups( ranges::any_view<Weight> rest_weights
 
 size_t solve( std::istream& input, const size_t number_of_compartments )
 {
-  const auto sorted_weights       = ranges::istream<size_t>( input ) | ranges::to_vector | ranges::action::sort;
+  const auto sorted_weights       = ranges::istream<size_t>( input ) | ranges::to_vector | ranges::actions::sort;
   const Weight total_weight       = ranges::accumulate( sorted_weights, size_t{ 0 } );
   const Weight compartment_weight = total_weight / number_of_compartments;
 
   auto weights_combinations = find_all_weights_combinations( sorted_weights );
   auto passenger_weights    = weights_combinations |
-                           ranges::view::filter( [compartment_weight]( auto ws ) { return calc_weights_sum( ws ) == compartment_weight; } );
+                           ranges::views::filter( [compartment_weight]( auto ws ) { return calc_weights_sum( ws ) == compartment_weight; } );
 
   auto balanced_passenger_weights =
-      passenger_weights | ranges::view::filter( [&sorted_weights, number_of_compartments, compartment_weight]( auto ws ) {
+      passenger_weights | ranges::views::filter( [&sorted_weights, number_of_compartments, compartment_weight]( auto ws ) {
         return check_range_can_be_split_into_groups( sorted_weights, ws, number_of_compartments, compartment_weight );
       } );
 
   std::optional<size_t> min_size;
-  auto min_groups = balanced_passenger_weights | ranges::view::take_while( [&min_size]( const auto& r ) {
+  auto min_groups = balanced_passenger_weights | ranges::views::take_while( [&min_size]( const auto& r ) {
                       if ( !min_size )
                       {
                         min_size = r.size();

@@ -46,8 +46,8 @@ std::pair<Molecule, Molecule> parse_replacement( const std::string& line )
 
 auto parse_input( std::istream& input )
 {
-  auto replacement_lines = ranges::getlines( input ) | ranges::view::take_while( []( const std::string& line ) { return line != ""; } ) |
-                           ranges::view::transform( &parse_replacement );
+  auto replacement_lines = ranges::getlines( input ) | ranges::views::take_while( []( const std::string& line ) { return line != ""; } ) |
+                           ranges::views::transform( &parse_replacement );
   const MoleculeMap replacements_map = replacement_lines | ranges::to<MoleculeMap>;
 
   std::string medicine_molecule;
@@ -74,7 +74,7 @@ auto generate_replacements( const Molecule& from, const Molecule& to, const Mole
 {
   return AoC::generate_while( StrIdx{ -1 },
                               std::bind( &find_next_replacement_pos, std::cref( medicine ), std::cref( from ), std::placeholders::_1 ) ) |
-         ranges::view::transform( std::bind( &make_replacement, medicine, std::cref( from ), std::cref( to ), std::placeholders::_1 ) );
+         ranges::views::transform( std::bind( &make_replacement, medicine, std::cref( from ), std::cref( to ), std::placeholders::_1 ) );
 }
 
 /*
@@ -121,11 +121,11 @@ size_t solve_1( std::istream& input )
   const auto parsed_input       = parse_input( input );
   const auto& medicine_molecule = parsed_input.medicine_molecule;
 
-  auto replacements = parsed_input.replacements_map | ranges::view::transform( [&medicine_molecule]( const auto& kv ) {
+  auto replacements = parsed_input.replacements_map | ranges::views::transform( [&medicine_molecule]( const auto& kv ) {
                         const auto& [ from, to ] = kv;
                         return generate_replacements( from, to, medicine_molecule );
                       } ) |
-                      ranges::view::join;
+                      ranges::views::join;
 
   const std::unordered_set<Molecule> all_distinct_molecules = replacements | ranges::to<std::unordered_set>;
   return all_distinct_molecules.size();

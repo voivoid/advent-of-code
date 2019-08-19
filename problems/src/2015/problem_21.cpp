@@ -88,7 +88,7 @@ int calc_items_cost( const Items& items )
 
 auto generate_items_combination()
 {
-  using namespace ranges::view;
+  using namespace ranges::views;
   return store_weapon | for_each( []( const Item& weapon ) {
            return store_armor | for_each( [&weapon]( const Item& armor ) {
                     return store_rings | for_each( [&weapon, &armor]( const Item& ring1 ) {
@@ -139,8 +139,8 @@ auto get_suitable_items_costs( std::istream& input )
 
   auto items_combinations = generate_items_combination();
 
-  auto suitable_items_costs = items_combinations | ranges::view::filter( std::bind( items_filter, std::placeholders::_1, player, boss ) ) |
-                              ranges::view::transform( &calc_items_cost );
+  auto suitable_items_costs = items_combinations | ranges::views::filter( std::bind( items_filter, std::placeholders::_1, player, boss ) ) |
+                              ranges::views::transform( &calc_items_cost );
 
   return suitable_items_costs;
 }

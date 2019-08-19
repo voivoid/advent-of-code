@@ -145,8 +145,8 @@ State run_instruction( const State state, const Instruction instruction )
 auto run_instruction_steps_by_step( State state, const Instruction instruction )
 {
   state.heading = calc_new_heading( state.heading, instruction.rotation );
-  return ranges::view::closed_indices( size_t{ 1 }, instruction.steps_num ) |
-         ranges::view::exclusive_scan(
+  return ranges::views::closed_indices( size_t{ 1 }, instruction.steps_num ) |
+         ranges::views::exclusive_scan(
              state, std::bind( &run_instruction, std::placeholders::_1, Instruction{ Instruction::Rotation::Forward, 1 } ) );
 }
 
@@ -173,7 +173,7 @@ Coord find_already_visited_coord( Range&& coords )
 
 auto parse_instructions( std::istream& input )
 {
-  return ranges::istream<std::string>( input ) | ranges::view::transform( &parse_instruction );
+  return ranges::istream<std::string>( input ) | ranges::views::transform( &parse_instruction );
 }
 
 constexpr State start_state = { State::Heading::North, { 0, 0 } };
@@ -197,10 +197,10 @@ size_t solve_1( std::istream& input )
 size_t solve_2( std::istream& input )
 {
   const auto instructions  = parse_instructions( input ) | ranges::to_vector;
-  const auto corner_states = instructions | ranges::view::exclusive_scan( start_state, &run_instruction );
+  const auto corner_states = instructions | ranges::views::exclusive_scan( start_state, &run_instruction );
 
-  auto all_visited_coords = ranges::view::zip_with( &run_instruction_steps_by_step, corner_states, instructions ) | ranges::view::join |
-                            ranges::view::transform( []( const State& s ) { return s.coord; } );
+  auto all_visited_coords = ranges::views::zip_with( &run_instruction_steps_by_step, corner_states, instructions ) | ranges::views::join |
+                            ranges::views::transform( []( const State& s ) { return s.coord; } );
 
   const auto already_visited_coord = find_already_visited_coord( all_visited_coords );
   return calc_distance( start_state.coord, already_visited_coord );

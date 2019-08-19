@@ -32,8 +32,8 @@ Power calc_power_level( const size_t x, const size_t y, const size_t sn )
 
 auto get_grid_coords( const size_t from, const size_t to )
 {
-  const auto grid_indices = ranges::view::closed_indices( from, to );
-  return ranges::view::cartesian_product( grid_indices, grid_indices ) | ranges::view::transform( []( const auto c ) {
+  const auto grid_indices = ranges::views::closed_indices( from, to );
+  return ranges::views::cartesian_product( grid_indices, grid_indices ) | ranges::views::transform( []( const auto c ) {
            const auto [ y, x ] = c;
            return Coord{ x, y };
          } );
@@ -158,8 +158,8 @@ std::string solve_2( std::istream& input )
 {
   const auto grid = create_grid( input );
 
-  const auto square_sizes = ranges::view::closed_indices( size_t{ 1 }, grid_size );
-  const auto max_powers   = square_sizes | ranges::view::transform( std::bind( &find_max_power, std::ref( grid ), std::placeholders::_1 ) );
+  const auto square_sizes = ranges::views::closed_indices( size_t{ 1 }, grid_size );
+  const auto max_powers   = square_sizes | ranges::views::transform( std::bind( &find_max_power, std::ref( grid ), std::placeholders::_1 ) );
   const auto max_power    = ranges::max( max_powers, std::less<Power>{}, &MaxPower::power );
 
   return coord_to_string( max_power.top_left ) + "," + std::to_string( max_power.square_side );

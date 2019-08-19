@@ -71,7 +71,7 @@ Program parse_program( const std::string& line )
 ProgamMap get_program_map( std::istream& input )
 {
   ProgamMap program_map;
-  auto programs = ranges::getlines( input ) | ranges::view::transform( &parse_program );
+  auto programs = ranges::getlines( input ) | ranges::views::transform( &parse_program );
   for ( auto&& program : programs )
   {
     auto name = program.name;
@@ -172,7 +172,7 @@ Weight get_weights_sum( const std::string& name, const ProgamMap& program_map )
   const auto& prog        = get_program( name, program_map );
   const auto& subprograms = prog.subprograms;
 
-  const auto subprogram_sums = subprograms | ranges::view::transform( [&program_map]( const Name& subprog_name ) {
+  const auto subprogram_sums = subprograms | ranges::views::transform( [&program_map]( const Name& subprog_name ) {
                                  return get_weights_sum( subprog_name, program_map );
                                } );
 

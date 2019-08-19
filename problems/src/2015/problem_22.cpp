@@ -261,7 +261,7 @@ using Spells        = std::vector<SpellsVariant>;
 
 int calc_spells_mana_cost( const Spells& spells )
 {
-  const auto spell_costs = spells | ranges::view::transform( []( const auto& spell_variant ) {
+  const auto spell_costs = spells | ranges::views::transform( []( const auto& spell_variant ) {
                              return std::visit( []( auto spell ) { return decltype( spell )::mana_cost; }, spell_variant );
                            } );
 
@@ -337,7 +337,7 @@ int solve( std::istream& input, const GameMode mode )
   player.mana = 500;
 
   auto spells     = generate_spells( player, boss, mode );
-  auto mana_costs = spells | ranges::view::transform( &calc_spells_mana_cost );
+  auto mana_costs = spells | ranges::views::transform( &calc_spells_mana_cost );
 
   assert( !mana_costs.empty() );
   return ranges::min( mana_costs );

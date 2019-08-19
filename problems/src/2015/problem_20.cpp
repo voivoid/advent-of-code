@@ -48,7 +48,7 @@ size_t calc_presents2( size_t house_index )
 {
   auto divisors = get_all_divisors( house_index );
   return 11 *
-         ranges::accumulate( divisors | ranges::view::filter( [house_index]( const auto divisor ) { return divisor * 50 >= house_index; } ),
+         ranges::accumulate( divisors | ranges::views::filter( [house_index]( const auto divisor ) { return divisor * 50 >= house_index; } ),
                              size_t{ 0 } );
 }
 
@@ -59,8 +59,8 @@ size_t solve( std::istream& input )
   input >> presents_num;
 
   auto houses_with_at_least_as_many_presents =
-      ranges::view::iota( size_t{ 1 } ) |
-      ranges::view::filter( [presents_num]( const size_t house_index ) { return calc_presents( house_index ) >= presents_num; } );
+      ranges::views::iota( size_t{ 1 } ) |
+      ranges::views::filter( [presents_num]( const size_t house_index ) { return calc_presents( house_index ) >= presents_num; } );
 
   const size_t first_house = houses_with_at_least_as_many_presents.front();
 
@@ -102,10 +102,10 @@ AOC_REGISTER_PROBLEM( 2015_20, solve_1, solve_2 );
 
 static void impl_tests()
 {
-  assert( ( get_all_divisors( 1 ) | ranges::action::sort ) == std::vector<size_t>{ 1 } );
-  assert( ( get_all_divisors( 2 ) | ranges::action::sort ) == ( std::vector<size_t>{ 1, 2 } ) );
-  assert( ( get_all_divisors( 4 ) | ranges::action::sort ) == ( std::vector<size_t>{ 1, 2, 4 } ) );
-  assert( ( get_all_divisors( 12 ) | ranges::action::sort ) == ( std::vector<size_t>{ 1, 2, 3, 4, 6, 12 } ) );
+  assert( ( get_all_divisors( 1 ) | ranges::actions::sort ) == std::vector<size_t>{ 1 } );
+  assert( ( get_all_divisors( 2 ) | ranges::actions::sort ) == ( std::vector<size_t>{ 1, 2 } ) );
+  assert( ( get_all_divisors( 4 ) | ranges::actions::sort ) == ( std::vector<size_t>{ 1, 2, 4 } ) );
+  assert( ( get_all_divisors( 12 ) | ranges::actions::sort ) == ( std::vector<size_t>{ 1, 2, 3, 4, 6, 12 } ) );
 }
 
 REGISTER_IMPL_TEST( impl_tests );

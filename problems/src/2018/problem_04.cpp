@@ -59,7 +59,7 @@ size_t calc_sleep_interval( const SleepInterval& sleep_interval )
 template <typename Range>
 size_t sum_sleep_intervals( Range&& sleep_intervals )
 {
-  return ranges::accumulate( sleep_intervals | ranges::view::transform( &calc_sleep_interval ), size_t{ 0 } );
+  return ranges::accumulate( sleep_intervals | ranges::views::transform( &calc_sleep_interval ), size_t{ 0 } );
 }
 
 bool is_asleep_in_minute( const SleepMinute minute, const SleepInterval interval )
@@ -78,11 +78,11 @@ template <typename Range>
 auto find_most_asleep_minute( Range&& sleep_intervals )
 {
   const auto minutes_by_intervals =
-      ranges::view::indices( SleepMinute{ 0 }, SleepMinute{ 60 } ) |
-      ranges::view::transform( [&sleep_intervals]( const SleepMinute minute ) {
+      ranges::views::indices( SleepMinute{ 0 }, SleepMinute{ 60 } ) |
+      ranges::views::transform( [&sleep_intervals]( const SleepMinute minute ) {
         auto intervals                     = sleep_intervals;
         const auto num_of_intervals_asleep = ranges::accumulate(
-            intervals | ranges::view::transform( std::bind( &is_asleep_in_minute, minute, std::placeholders::_1 ) ), SleepMinute{ 0 } );
+            intervals | ranges::views::transform( std::bind( &is_asleep_in_minute, minute, std::placeholders::_1 ) ), SleepMinute{ 0 } );
         return MostAsleepMinute{ minute, num_of_intervals_asleep };
       } );
 
@@ -122,9 +122,9 @@ GuardShifts parse_shifts( const std::string& input )
 
 GuardShifts parse_shifts_and_sort_by_guard_id( std::istream& input )
 {
-  const auto sorted_input_lines = ranges::getlines( input ) | ranges::to_vector | ranges::action::sort;
-  return parse_shifts( sorted_input_lines | ranges::view::join | ranges::to<std::string> ) |
-         ranges::action::sort( std::less<GuardId>{}, &GuardShift::guard_id ) | ranges::to<GuardShifts>;
+  const auto sorted_input_lines = ranges::getlines( input ) | ranges::to_vector | ranges::actions::sort;
+  return parse_shifts( sorted_input_lines | ranges::views::join | ranges::to<std::string> ) |
+         ranges::actions::sort( std::less<GuardId>{}, &GuardShift::guard_id ) | ranges::to<GuardShifts>;
 }
 
 struct GuardStats
@@ -136,10 +136,10 @@ struct GuardStats
 
 auto get_guards_stats( const GuardShifts& shifts )
 {
-  return shifts | ranges::view::group_by( []( const GuardShift& s1, const GuardShift& s2 ) { return s1.guard_id == s2.guard_id; } ) |
-         ranges::view::transform( []( const auto guard_shifts ) {
+  return shifts | ranges::views::group_by( []( const GuardShift& s1, const GuardShift& s2 ) { return s1.guard_id == s2.guard_id; } ) |
+         ranges::views::transform( []( const auto guard_shifts ) {
            const auto guard_id           = guard_shifts.front().guard_id;
-           auto all_sleep_intervals      = guard_shifts | ranges::view::transform( &GuardShift::sleep_intervals ) | ranges::view::join;
+           auto all_sleep_intervals      = guard_shifts | ranges::views::transform( &GuardShift::sleep_intervals ) | ranges::views::join;
            const auto total_sleep_time   = sum_sleep_intervals( all_sleep_intervals );
            const auto most_asleep_minute = find_most_asleep_minute( all_sleep_intervals );
 

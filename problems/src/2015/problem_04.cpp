@@ -27,7 +27,7 @@ bool is_desired_md5_index( const size_t index, const std::string& prefix, const 
 
 size_t find_md5_that_starts_with( const std::string& prefix, const std::string& secret )
 {
-  const auto indices = ranges::view::iota( size_t{ 0 } );
+  const auto indices = ranges::views::iota( size_t{ 0 } );
   return *ranges::find_if( indices, std::bind( &is_desired_md5_index, std::placeholders::_1, std::ref( prefix ), std::ref( secret ) ) );
 }
 

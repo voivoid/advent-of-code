@@ -62,13 +62,13 @@ constexpr Quads get_quads()
 
 auto get_hash_bits( const std::string& hash )
 {
-  return hash | ranges::view::transform( []( const char h ) {
+  return hash | ranges::views::transform( []( const char h ) {
            static constexpr auto quads = get_quads();
 
            const auto& quad = quads[ AoC::hex_to_<size_t>( h ) ];
-           return quad | ranges::view::all;
+           return quad | ranges::views::all;
          } ) |
-         ranges::view::join;
+         ranges::views::join;
 }
 
 std::string calc_hash( const std::string& key, const int postfix )
@@ -83,7 +83,7 @@ auto get_hashes( std::istream& input )
   std::string key;
   input >> key;
 
-  return ranges::view::indices( HashesNum ) | ranges::view::transform( std::bind( &calc_hash, key, std::placeholders::_1 ) );
+  return ranges::views::indices( HashesNum ) | ranges::views::transform( std::bind( &calc_hash, key, std::placeholders::_1 ) );
 }
 
 Grid make_grid( std::istream& input )

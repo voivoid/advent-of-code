@@ -92,7 +92,7 @@ void add_neighbours_to_map( Name n1, Name n2, const ModDiff diff, NeighboursMap&
 
 NeighboursMap make_neighbours_map( std::istream& input )
 {
-  auto behaviors = ranges::getlines( input ) | ranges::view::transform( &parse_behavior );
+  auto behaviors = ranges::getlines( input ) | ranges::views::transform( &parse_behavior );
 
   NeighboursMap neighbours_map;
   for ( const auto& behavior : behaviors )
@@ -115,7 +115,7 @@ ModDiff calc_mood( const std::vector<Name>& names, const NeighboursMap& neighbou
 {
   assert( names.size() > 2 );
 
-  const auto neighbour_groups = names | ranges::view::cycle | ranges::view::take_exactly( names.size() + 1 ) | ranges::view::sliding( 2 );
+  const auto neighbour_groups = names | ranges::views::cycle | ranges::views::take_exactly( names.size() + 1 ) | ranges::views::sliding( 2 );
   const auto total_mood = ranges::accumulate( neighbour_groups, ModDiff(), [&neighbours_map]( const ModDiff diff, const auto neighbours ) {
     return diff + get_mood( neighbours[ 0 ], neighbours[ 1 ], neighbours_map ) +
            get_mood( neighbours[ 1 ], neighbours[ 0 ], neighbours_map );
@@ -125,8 +125,8 @@ ModDiff calc_mood( const std::vector<Name>& names, const NeighboursMap& neighbou
 
 std::vector<Name> get_names( const NeighboursMap& neighbours_map )
 {
-  return neighbours_map | ranges::view::keys | ranges::view::transform( &Neighbours::first ) | ranges::to_vector | ranges::action::sort |
-         ranges::action::unique;
+  return neighbours_map | ranges::views::keys | ranges::views::transform( &Neighbours::first ) | ranges::to_vector | ranges::actions::sort |
+         ranges::actions::unique;
 }
 
 ModDiff calc_best_mood( const NeighboursMap& neighbours_map )

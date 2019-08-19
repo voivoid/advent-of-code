@@ -86,16 +86,16 @@ bool compare_by_freq_then_by_char( const LetterInfo i1, const LetterInfo i2 )
 bool is_real_room( const Room& room )
 {
   const auto sorted_letters =
-      room.name | ranges::view::filter( []( const auto c ) { return c != '-'; } ) | ranges::to_vector | ranges::action::sort;
+      room.name | ranges::views::filter( []( const auto c ) { return c != '-'; } ) | ranges::to_vector | ranges::actions::sort;
 
-  const auto letters_sorted_by_frequency = sorted_letters | ranges::view::group_by( std::equal_to<char>{} ) |
-                                           ranges::view::transform( []( const auto range ) {
+  const auto letters_sorted_by_frequency = sorted_letters | ranges::views::group_by( std::equal_to<char>{} ) |
+                                           ranges::views::transform( []( const auto range ) {
                                              return LetterInfo{ boost::numeric_cast<size_t>( ranges::distance( range ) ), range.front() };
                                            } ) |
-                                           ranges::to_vector | ranges::action::sort( &compare_by_freq_then_by_char );
+                                           ranges::to_vector | ranges::actions::sort( &compare_by_freq_then_by_char );
 
   const auto most_common_letters =
-      letters_sorted_by_frequency | ranges::view::take( checksum_len ) | ranges::view::transform( &LetterInfo::chr );
+      letters_sorted_by_frequency | ranges::views::take( checksum_len ) | ranges::views::transform( &LetterInfo::chr );
 
   return ranges::equal( most_common_letters, room.common_letters );
 }
@@ -120,17 +120,17 @@ char rotate_char( const char c, const size_t shift )
 
 auto dechiper_room_name( const Room& room )
 {
-  return room.name | ranges::view::transform( std::bind( &rotate_char, std::placeholders::_1, room.sector_id ) );
+  return room.name | ranges::views::transform( std::bind( &rotate_char, std::placeholders::_1, room.sector_id ) );
 }
 
 bool is_storage_room( const Room& room )
 {
-  return ranges::equal( dechiper_room_name( room ), ranges::view::c_str( "northpole object storage" ) );
+  return ranges::equal( dechiper_room_name( room ), ranges::views::c_str( "northpole object storage" ) );
 }
 
 auto get_real_rooms( std::istream& input )
 {
-  return ranges::getlines( input ) | ranges::view::transform( &parse_room ) | ranges::view::filter( &is_real_room );
+  return ranges::getlines( input ) | ranges::views::transform( &parse_room ) | ranges::views::filter( &is_real_room );
 }
 
 }  // namespace

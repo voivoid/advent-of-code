@@ -47,7 +47,7 @@ bool has_double_letter( const std::string& s )
 
 bool has_no_forbidden_sequences( const std::string& s )
 {
-  const auto pairs = ranges::view::zip( s, s | ranges::view::drop( 1 ) );
+  const auto pairs = ranges::views::zip( s, s | ranges::views::drop( 1 ) );
 
   static const auto forbidden_pairs = {
     std::make_pair( 'a', 'b' ), std::make_pair( 'c', 'd' ), std::make_pair( 'p', 'q' ), std::make_pair( 'x', 'y' )
@@ -73,7 +73,7 @@ bool has_repeating_pairs_of_letters( const std::string_view& s )
 
 bool has_a_letter_between_same_letters( const std::string& s )
 {
-  const auto triples                     = s | ranges::view::sliding( 3 );
+  const auto triples                     = s | ranges::views::sliding( 3 );
   const auto are_first_and_last_the_same = []( const auto t ) { return t.front() == t.back(); };
   return ranges::any_of( triples, are_first_and_last_the_same );
 }

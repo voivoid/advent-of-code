@@ -72,7 +72,7 @@ size_t get_distance( const Path& path, const PathMap& path_map )
 
 size_t calc_route_distance( const Route& route, const PathMap& path_map )
 {
-  const auto distances = route | ranges::view::sliding( 2 ) | ranges::view::transform( [&path_map]( const auto paths ) {
+  const auto distances = route | ranges::views::sliding( 2 ) | ranges::views::transform( [&path_map]( const auto paths ) {
                            assert( paths.size() == 2 );
                            return get_distance( { paths[ 0 ], paths[ 1 ] }, path_map );
                          } );
@@ -81,7 +81,7 @@ size_t calc_route_distance( const Route& route, const PathMap& path_map )
 
 PathMap parse_path_map( std::istream& input )
 {
-  auto travel_data = ranges::getlines( input ) | ranges::view::transform( &parse_path_distance );
+  auto travel_data = ranges::getlines( input ) | ranges::views::transform( &parse_path_distance );
 
   PathMap path_map;
   for ( const auto& pd : travel_data )
@@ -99,8 +99,8 @@ size_t solve( std::istream& input )
 {
   const auto path_map = parse_path_map( input );
 
-  Route route = path_map | ranges::view::keys | ranges::view::transform( []( const Path& path ) { return path.first; } ) |
-                ranges::view::unique | ranges::to_vector;
+  Route route = path_map | ranges::views::keys | ranges::views::transform( []( const Path& path ) { return path.first; } ) |
+                ranges::views::unique | ranges::to_vector;
   ranges::sort( route );
 
   auto distance = calc_route_distance( route, path_map );

@@ -40,9 +40,9 @@ using BoxId = std::string;
 
 BoxStats analyze_box_id( BoxId id )
 {
-  const auto sorted_chars   = std::move( id ) | ranges::action::sort;
-  const auto groups_lengths = sorted_chars | ranges::view::group_by( std::equal_to<char>() ) |
-                              ranges::view::transform( []( const auto group ) { return ranges::distance( group ); } );
+  const auto sorted_chars   = std::move( id ) | ranges::actions::sort;
+  const auto groups_lengths = sorted_chars | ranges::views::group_by( std::equal_to<char>() ) |
+                              ranges::views::transform( []( const auto group ) { return ranges::distance( group ); } );
   const bool has_doubles = ranges::count( groups_lengths, 2 ) > 0;
   const bool has_triples = ranges::count( groups_lengths, 3 ) > 0;
   return { has_doubles ? size_t{ 1 } : size_t{ 0 }, has_triples ? size_t{ 1 } : size_t{ 0 } };
@@ -51,18 +51,18 @@ BoxStats analyze_box_id( BoxId id )
 size_t count_mismatches( const BoxId& b1, const BoxId& b2 )
 {
   assert( b1.size() == b2.size() );
-  const auto mismatches = ranges::view::transform( b1, b2, std::equal_to<char>() );
+  const auto mismatches = ranges::views::transform( b1, b2, std::equal_to<char>() );
   return boost::numeric_cast<size_t>( ranges::count( mismatches, false ) );
 }
 
 std::string find_common_letters( const BoxId& b1, const BoxId& b2 )
 {
   assert( b1.size() == b2.size() );
-  return ranges::view::zip( b1, b2 ) | ranges::view::filter( []( const auto chars_pair ) {
+  return ranges::views::zip( b1, b2 ) | ranges::views::filter( []( const auto chars_pair ) {
            auto [ c1, c2 ] = chars_pair;
            return c1 == c2;
          } ) |
-         ranges::view::transform( []( const auto chars_pair ) { return chars_pair.first; } ) | ranges::to<std::string>;
+         ranges::views::transform( []( const auto chars_pair ) { return chars_pair.first; } ) | ranges::to<std::string>;
 }
 
 }  // namespace
@@ -75,7 +75,7 @@ namespace problem_02
 
 size_t solve_1( std::istream& input )
 {
-  auto box_stats          = ranges::istream<std::string>( input ) | ranges::view::transform( &analyze_box_id );
+  auto box_stats          = ranges::istream<std::string>( input ) | ranges::views::transform( &analyze_box_id );
   const auto result_stats = ranges::accumulate( box_stats, BoxStats{} );
 
   return result_stats.doubles * result_stats.triples;
@@ -84,9 +84,9 @@ size_t solve_1( std::istream& input )
 std::string solve_2( std::istream& input )
 {
   const auto boxes              = ranges::istream<std::string>( input ) | ranges::to_vector;
-  const auto boxes_combinations = ranges::view::cartesian_product( boxes, boxes );
+  const auto boxes_combinations = ranges::views::cartesian_product( boxes, boxes );
 
-  auto boxes_with_one_mismatch = boxes_combinations | ranges::view::filter( []( const auto box_pair ) {
+  auto boxes_with_one_mismatch = boxes_combinations | ranges::views::filter( []( const auto box_pair ) {
                                    auto [ b1, b2 ] = box_pair;
                                    return count_mismatches( b1, b2 ) == 1;
                                  } );

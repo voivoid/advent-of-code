@@ -217,7 +217,7 @@ Instruction parse_instruction( const std::string& line )
 
 SlotMaps execute_instructions( std::istream& input )
 {
-  auto instructions = ranges::getlines( input ) | ranges::view::transform( &parse_instruction );
+  auto instructions = ranges::getlines( input ) | ranges::views::transform( &parse_instruction );
 
   SlotMaps slots;
   for ( const auto& run_instruction : instructions )
@@ -232,7 +232,7 @@ size_t solve_1_impl( std::istream& input, const Value low_val_to_find, const Val
 {
   const SlotMaps slots = execute_instructions( input );
 
-  const auto bots     = slots.bots | ranges::view::values;
+  const auto bots     = slots.bots | ranges::views::values;
   const auto bot_iter = ranges::find_if( bots, [low_val_to_find, high_val_to_find]( const Bot& bot ) {
     return bot.low_val && bot.high_val && bot.low_val == low_val_to_find && bot.high_val == high_val_to_find;
   } );
@@ -269,7 +269,7 @@ size_t solve_2( std::istream& input )
   };
 
   const auto output_ids  = { 0, 1, 2 };
-  const auto output_vals = output_ids | ranges::view::transform( get_output_val );
+  const auto output_vals = output_ids | ranges::views::transform( get_output_val );
 
   return ranges::accumulate( output_vals, Value{ 1 }, std::multiplies<Value>{} );
 }

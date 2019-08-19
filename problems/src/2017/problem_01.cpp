@@ -34,11 +34,11 @@ std::string get_input_str( std::istream& input )
 template <typename Range>
 size_t sum_matching_pairs( const Range& pairs )
 {
-  auto matching_pairs = pairs | ranges::view::filter( []( const auto pair ) {
+  auto matching_pairs = pairs | ranges::views::filter( []( const auto pair ) {
                           auto [ a, b ] = pair;
                           return a == b;
                         } ) |
-                        ranges::view::transform( []( const auto pair ) { return pair.first; } );
+                        ranges::views::transform( []( const auto pair ) { return pair.first; } );
 
   return ranges::accumulate( matching_pairs, size_t{ 0 } );
 }
@@ -50,8 +50,8 @@ size_t solve( std::istream& input, const bool drop_half )
 
   const size_t next_digits_shift = drop_half ? s.length() / 2 : 1;
 
-  const auto digits = s | ranges::view::transform( &digit_to_num );
-  const auto pairs  = ranges::view::zip( digits, digits | ranges::view::cycle | ranges::view::drop( next_digits_shift ) );
+  const auto digits = s | ranges::views::transform( &digit_to_num );
+  const auto pairs  = ranges::views::zip( digits, digits | ranges::views::cycle | ranges::views::drop( next_digits_shift ) );
 
   return sum_matching_pairs( pairs );
 }

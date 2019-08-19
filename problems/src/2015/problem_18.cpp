@@ -38,7 +38,7 @@ template <size_t side>
 Field<side> populate_field( std::istream& input )
 {
   auto input_cells =
-      ranges::istream<char>( input ) | ranges::view::transform( []( const auto c ) {
+      ranges::istream<char>( input ) | ranges::views::transform( []( const auto c ) {
         return c == '#' ? Cell::Alive : c == '.' ? Cell::Empty : throw std::invalid_argument( "Failed to parse lights input data" );
       } );
 
@@ -53,7 +53,7 @@ Coords get_neighbours( const size_t x, const size_t y, const size_t max_index )
   const std::initializer_list<Coord> coords = { { x - 1, y - 1 }, { x, y - 1 },     { x + 1, y - 1 }, { x - 1, y },
                                                 { x + 1, y },     { x - 1, y + 1 }, { x, y + 1 },     { x + 1, y + 1 } };
 
-  return coords | ranges::view::filter( [max_index]( const auto coord ) { return coord.x < max_index && coord.y < max_index; } ) |
+  return coords | ranges::views::filter( [max_index]( const auto coord ) { return coord.x < max_index && coord.y < max_index; } ) |
          ranges::to<Coords>;
 }
 
@@ -86,7 +86,7 @@ size_t get_alive_neighbours_num( const Field<side>& field, const size_t x, const
 {
   const auto neighbour_coords = get_neighbours( x, y, side );
   const auto alive_neighbour_cells =
-      neighbour_coords | ranges::view::transform( [&field]( const auto& coord ) { return get_cell( field, coord ); } );
+      neighbour_coords | ranges::views::transform( [&field]( const auto& coord ) { return get_cell( field, coord ); } );
   return count_alive_cells( alive_neighbour_cells );
 }
 

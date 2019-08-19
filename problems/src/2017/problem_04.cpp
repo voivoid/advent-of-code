@@ -23,14 +23,14 @@ std::string id( std::string s )
 
 std::string sort_by_letters( std::string s )
 {
-  return std::move( s ) | ranges::action::sort;
+  return std::move( s ) | ranges::actions::sort;
 }
 
 template <std::string ( *rearrange_word )( std::string )>
 bool is_secure_passphrase( const std::string& line )
 {
   std::unordered_set<std::string> words;
-  for ( const auto word_range : line | ranges::view::split( ' ' ) )
+  for ( const auto word_range : line | ranges::views::split( ' ' ) )
   {
     const auto word            = rearrange_word( word_range | ranges::to<std::string> );
     const auto [ _, inserted ] = words.insert( word );

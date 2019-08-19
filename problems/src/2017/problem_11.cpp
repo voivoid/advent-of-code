@@ -100,8 +100,8 @@ size_t solve_2( std::istream& input )
   const auto dirs = parse_dirs( input );
 
   // appending dummy dir since ranges v3 has no inclusive_scan yet :(
-  const auto all_steps         = dirs | AoC::append( Dir::Dummy ) | ranges::view::exclusive_scan( Pos{ 0, 0 }, &make_step );
-  const auto furthest_distance = ranges::max( all_steps | ranges::view::transform( &calc_min_distance ) );
+  const auto all_steps         = dirs | AoC::append( Dir::Dummy ) | ranges::views::exclusive_scan( Pos{ 0, 0 }, &make_step );
+  const auto furthest_distance = ranges::max( all_steps | ranges::views::transform( &calc_min_distance ) );
 
   return furthest_distance;
 }

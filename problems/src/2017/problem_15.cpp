@@ -47,14 +47,14 @@ auto judge_sequences( Range1&& r1, Range2&& r2 )
     return crop( v1 ) == crop( v2 );
   };
 
-  return ranges::view::zip_with( judge_values, r1, r2 );
+  return ranges::views::zip_with( judge_values, r1, r2 );
 }
 
 template <Value mul, Value rem>
 auto gen_sequence( const Value start_value, const size_t values_to_take )
 {
-  return make_generator( start_value, mul ) | ranges::view::filter( []( const Value v ) { return v % rem == 0; } ) |
-         ranges::view::take_exactly( values_to_take );
+  return make_generator( start_value, mul ) | ranges::views::filter( []( const Value v ) { return v % rem == 0; } ) |
+         ranges::views::take_exactly( values_to_take );
 }
 
 template <Value a_rem, Value b_rem>

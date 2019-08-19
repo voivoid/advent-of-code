@@ -48,7 +48,7 @@ template <typename Range>
 void run_round( Nums& nums, const Range& lengths, size_t& skip_size, size_t& current )
 {
   const Num max_num = nums.size();
-  auto cycled_nums  = nums | ranges::view::cycle;
+  auto cycled_nums  = nums | ranges::views::cycle;
 
   for ( const auto len : lengths )
   {
@@ -85,7 +85,7 @@ Num xor_nums( Range&& nums )
 
 auto make_dense_hash( const Nums& nums )
 {
-  return nums | ranges::view::chunk( 16 ) | ranges::view::transform( []( auto&& chunk ) { return xor_nums( chunk ); } );
+  return nums | ranges::views::chunk( 16 ) | ranges::views::transform( []( auto&& chunk ) { return xor_nums( chunk ); } );
 }
 
 template <typename Range>
@@ -104,7 +104,7 @@ std::string to_hex_string( Range&& nums )
 
 Nums make_nums( const Num max_num )
 {
-  return ranges::view::indices( max_num ) | ranges::to_vector;
+  return ranges::views::indices( max_num ) | ranges::to_vector;
 }
 
 size_t solve_1_impl( std::istream& input, const Num max_num )
@@ -133,10 +133,10 @@ size_t solve_1( std::istream& input )
 std::string solve_2( std::istream& input )
 {
   input >> std::noskipws;
-  auto input_codes = ranges::istream<char>( input ) | ranges::view::transform( []( const char c ) { return static_cast<Num>( c ); } );
+  auto input_codes = ranges::istream<char>( input ) | ranges::views::transform( []( const char c ) { return static_cast<Num>( c ); } );
 
   const auto codes_suffix = { 17, 31, 73, 47, 23 };
-  const auto lengths      = ranges::view::concat( input_codes, codes_suffix ) | ranges::to_vector;
+  const auto lengths      = ranges::views::concat( input_codes, codes_suffix ) | ranges::to_vector;
 
   auto nums = make_nums( 256 );
   run_rounds( nums, lengths, 64 );

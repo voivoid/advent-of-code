@@ -79,9 +79,9 @@ Claim parse_claim( const std::string& line )
 
 auto get_all_claim_coords( const Claim& claim )
 {
-  auto xs = ranges::view::closed_indices( claim.area.left_top.x, claim.area.right_bottom.x );
-  auto ys = ranges::view::closed_indices( claim.area.left_top.y, claim.area.right_bottom.y );
-  return ranges::view::cartesian_product( ys, xs );
+  auto xs = ranges::views::closed_indices( claim.area.left_top.x, claim.area.right_bottom.x );
+  auto ys = ranges::views::closed_indices( claim.area.left_top.y, claim.area.right_bottom.y );
+  return ranges::views::cartesian_product( ys, xs );
 }
 
 bool check_is_not_overlapped( const Overlaps& overlaps, const Claim& claim )
@@ -120,7 +120,7 @@ auto apply_claim( Overlaps& overlaps, const Claim& claim )
 
 auto get_claims( std::istream& input )
 {
-  return ranges::getlines( input ) | ranges::view::transform( &parse_claim );
+  return ranges::getlines( input ) | ranges::views::transform( &parse_claim );
 }
 
 template <typename Claims>

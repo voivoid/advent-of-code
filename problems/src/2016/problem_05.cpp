@@ -48,8 +48,8 @@ std::string get_door_id( std::istream& input )
 
 auto get_valid_md5s( const std::string& door_id )
 {
-  const auto md5s = ranges::view::iota( 0 ) | ranges::view::transform( std::bind( &make_md5, std::placeholders::_1, std::ref( door_id ) ) );
-  const auto valid_md5s = md5s | ranges::view::filter( &is_valid_md5s );
+  const auto md5s = ranges::views::iota( 0 ) | ranges::views::transform( std::bind( &make_md5, std::placeholders::_1, std::ref( door_id ) ) );
+  const auto valid_md5s = md5s | ranges::views::filter( &is_valid_md5s );
 
   return valid_md5s;
 }
@@ -67,9 +67,9 @@ std::string solve_1( std::istream& input )
   const std::string door_id = get_door_id( input );
   auto valid_md5s           = get_valid_md5s( door_id );
 
-  auto valid_md5s_sixths_chars = valid_md5s | ranges::view::transform( []( const auto& md5 ) { return md5[ 5 ]; } );
+  auto valid_md5s_sixths_chars = valid_md5s | ranges::views::transform( []( const auto& md5 ) { return md5[ 5 ]; } );
 
-  return valid_md5s_sixths_chars | ranges::view::take( 8 ) | ranges::to<std::string>;
+  return valid_md5s_sixths_chars | ranges::views::take( 8 ) | ranges::to<std::string>;
 }
 
 std::string solve_2( std::istream& input )

@@ -16,7 +16,7 @@ size_t count_substrings( const std::string_view input, const std::string_view su
     return input.size() + 1;
   }
 
-  auto substrings = input | ranges::view::sliding( substring.size() );
+  auto substrings = input | ranges::views::sliding( substring.size() );
   return boost::numeric_cast<size_t>(
       ranges::count_if( substrings, [&substring]( const auto& s ) { return ranges::equal( s, substring ); } ) );
 }

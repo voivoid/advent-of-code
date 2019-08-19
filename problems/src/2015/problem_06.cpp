@@ -128,7 +128,7 @@ size_t calc_lamps_brightness( const Lamps<side>& lamps )
 template <ManipulatorFactory manipulator_factory>
 size_t solve( std::istream& input )
 {
-  auto cmds                  = ranges::getlines( input ) | ranges::view::transform( &parse_cmd_line );
+  auto cmds                  = ranges::getlines( input ) | ranges::views::transform( &parse_cmd_line );
   constexpr size_t grid_side = 1000;
   Lamps<grid_side> lamps;
 

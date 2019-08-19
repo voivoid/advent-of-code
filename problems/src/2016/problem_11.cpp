@@ -95,7 +95,7 @@ struct Facility
 auto partition_devices( const Devices& devices )
 {
   const auto filter_by = []( const DeviceType type ) {
-    return ranges::view::filter( [type]( const Device& device ) { return device.type == type; } );
+    return ranges::views::filter( [type]( const Device& device ) { return device.type == type; } );
   };
 
   const auto chips      = devices | filter_by( DeviceType::Chip );
@@ -181,7 +181,7 @@ Floor parse_floor( const std::string& line )
 template <typename Range>
 bool check_chip_has_generator( const Device& chip, Range&& generators )
 {
-  auto generator_materials = ranges::view::transform( generators, &Device::material );
+  auto generator_materials = ranges::views::transform( generators, &Device::material );
 
   return ranges::find( generator_materials, chip.material ) != generator_materials.end();
 }
@@ -217,23 +217,23 @@ ranges::any_view<ranges::any_view<Device>> generate_device_pairs( ranges::any_vi
 {
   if ( devices.begin() == devices.end() )
   {
-    return ranges::view::empty<ranges::any_view<Device>>;
+    return ranges::views::empty<ranges::any_view<Device>>;
   }
 
-  const auto head = ranges::view::single( *devices.begin() );
-  auto tail       = devices | ranges::view::tail;
+  const auto head = ranges::views::single( *devices.begin() );
+  auto tail       = devices | ranges::views::tail;
 
-  auto pairs = tail | ranges::view::transform( [head]( auto e ) { return head | AoC::append( e ); } );
+  auto pairs = tail | ranges::views::transform( [head]( auto e ) { return head | AoC::append( e ); } );
 
-  return ranges::view::concat( pairs, generate_device_pairs( tail ) );
+  return ranges::views::concat( pairs, generate_device_pairs( tail ) );
 }
 
 template <typename Range>
 auto generate_device_combinations( Range&& all_floor_devices )
 {
-  const auto single_devices = all_floor_devices | ranges::view::transform( ranges::view::single );
+  const auto single_devices = all_floor_devices | ranges::views::transform( ranges::views::single );
   auto pair_devices         = generate_device_pairs( all_floor_devices );
-  return ranges::view::concat( single_devices, pair_devices );
+  return ranges::views::concat( single_devices, pair_devices );
 }
 
 using DevicesCombinations = std::vector<std::vector<Device>>;
@@ -258,7 +258,7 @@ Facility get_initial_state( std::istream& input )
   initial_state.steps              = 0;
   initial_state.elevator_floor_num = 0;
 
-  for ( const auto& floor : ranges::getlines( input ) | ranges::view::transform( &parse_floor ) )
+  for ( const auto& floor : ranges::getlines( input ) | ranges::views::transform( &parse_floor ) )
   {
     initial_state.floors.at( floor.number ) = floor;
   }
@@ -313,9 +313,9 @@ std::optional<Facility>
 
 size_t count_devices( const Facility& facility )
 {
-  auto floor_nums = ranges::view::closed_iota( MinFloor, MaxFloor );
+  auto floor_nums = ranges::views::closed_iota( MinFloor, MaxFloor );
   auto devices_by_floor =
-      ranges::view::transform( floor_nums, [&facility]( const FloorNumber n ) { return get_floor( facility, n ).devices.size(); } );
+      ranges::views::transform( floor_nums, [&facility]( const FloorNumber n ) { return get_floor( facility, n ).devices.size(); } );
   return ranges::accumulate( devices_by_floor, size_t{ 0 } );
 }
 
@@ -409,7 +409,7 @@ namespace
 auto generate_dummy_devices( const int devices_num )
 {
   static const Device dummy{ 0, DeviceType::Chip };
-  return ranges::view::repeat_n( dummy, devices_num );
+  return ranges::views::repeat_n( dummy, devices_num );
 }
 
 bool test_device_pairs( const int devices_num, const int expected_pairs_num )

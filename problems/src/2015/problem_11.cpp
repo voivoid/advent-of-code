@@ -36,7 +36,7 @@ char next_char( char c )
 
 bool has_incrementing_letters( const Password& password )
 {
-  const auto triples = password | ranges::view::sliding( 3 );
+  const auto triples = password | ranges::views::sliding( 3 );
 
   for ( const auto triple : triples )
   {
@@ -59,14 +59,14 @@ bool has_no_forbidden_letters( const Password& password )
 
 bool has_two_letter_pairs( const Password& password )
 {
-  auto same_letters = password | ranges::view::group_by( std::equal_to<char>{} ) |
-                      ranges::view::filter( []( const auto same_letters_group ) { return ranges::distance( same_letters_group ) >= 2; } ) |
-                      ranges::view::transform( []( const auto same_letters_group ) { return same_letters_group[ 0 ]; } ) |
+  auto same_letters = password | ranges::views::group_by( std::equal_to<char>{} ) |
+                      ranges::views::filter( []( const auto same_letters_group ) { return ranges::distance( same_letters_group ) >= 2; } ) |
+                      ranges::views::transform( []( const auto same_letters_group ) { return same_letters_group[ 0 ]; } ) |
                       ranges::to_vector;
 
   ranges::sort( same_letters );
 
-  return ranges::distance( same_letters | ranges::view::unique ) >= 2;
+  return ranges::distance( same_letters | ranges::views::unique ) >= 2;
 }
 
 bool is_good_password( const Password& password )
@@ -76,7 +76,7 @@ bool is_good_password( const Password& password )
 
 Password& update_to_next_password( Password& password )
 {
-  for ( auto& c : ranges::view::reverse( password ) )
+  for ( auto& c : ranges::views::reverse( password ) )
   {
     c = next_char( c );
     if ( c != 'a' )

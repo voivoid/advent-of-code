@@ -101,23 +101,23 @@ auto& get_value( Quads& quads, const Coord x, const Coord y )
 auto get_rotations()
 {
   static const std::initializer_list<Dir> rotations = { Dir::Right, Dir::Up, Dir::Left, Dir::Down };
-  return rotations | ranges::view::cycle;
+  return rotations | ranges::views::cycle;
 }
 
 auto get_steps()
 {
-  return ranges::view::iota( 1 ) | ranges::view::transform( []( const Coord n ) { return ranges::view::repeat_n( n, 2 ); } ) |
-         ranges::view::join;
+  return ranges::views::iota( 1 ) | ranges::views::transform( []( const Coord n ) { return ranges::views::repeat_n( n, 2 ); } ) |
+         ranges::views::join;
 }
 
 auto get_spiral_steps()
 {
-  auto spiral_moves = ranges::view::zip( get_rotations(), get_steps() );
-  return spiral_moves | ranges::view::transform( []( const auto move ) {
+  auto spiral_moves = ranges::views::zip( get_rotations(), get_steps() );
+  return spiral_moves | ranges::views::transform( []( const auto move ) {
            const auto [ dir, steps_num ] = move;
-           return ranges::view::repeat_n( dir, steps_num );
+           return ranges::views::repeat_n( dir, steps_num );
          } ) |
-         ranges::view::join;
+         ranges::views::join;
 }
 
 void set_value( Quadrants& quads, const Coord x, const Coord y, const Value value )
@@ -135,7 +135,7 @@ Value calc_new_value( Quadrants& quads, const Coord x, const Coord y )
   const std::initializer_list<Pos> neighbour_positions = { { x - 1, y + 1 }, { x, y + 1 },     { x + 1, y + 1 }, { x - 1, y },
                                                            { x + 1, y },     { x - 1, y - 1 }, { x, y - 1 },     { x + 1, y - 1 } };
 
-  const auto neighbour_values = neighbour_positions | ranges::view::transform( [&quads]( const Pos p ) {
+  const auto neighbour_values = neighbour_positions | ranges::views::transform( [&quads]( const Pos p ) {
                                   const auto [ px, py ] = p;
                                   return get_value( quads, px, py );
                                 } );
@@ -201,7 +201,7 @@ size_t solve_2( std::istream& input )
   const Pos initial_pos = { 0, 0 };
 
   auto spiral_steps        = get_spiral_steps();
-  auto positions_to_update = spiral_steps | ranges::view::exclusive_scan( initial_pos, &get_next_pos );
+  auto positions_to_update = spiral_steps | ranges::views::exclusive_scan( initial_pos, &get_next_pos );
 
   for ( const auto pos : positions_to_update )
   {

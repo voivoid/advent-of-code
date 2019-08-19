@@ -31,7 +31,7 @@ int solve_2( std::istream& input )
   const auto frequencies = ranges::istream<int>( input ) | ranges::to_vector;
 
   std::unordered_set<int> resulting_frequencies = { 0 };
-  for ( const auto f : frequencies | ranges::view::cycle | ranges::view::partial_sum )
+  for ( const auto f : frequencies | ranges::views::cycle | ranges::views::partial_sum )
   {
     if ( resulting_frequencies.find( f ) != resulting_frequencies.cend() )
     {

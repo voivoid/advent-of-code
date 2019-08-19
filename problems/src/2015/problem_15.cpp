@@ -100,7 +100,7 @@ void generate_quantity_combinations( const size_t ingredients_left,
   }
 
   const Quantity start_quantity = ingredients_left == 1 ? quantity_left : 0;
-  for ( const auto quantity : ranges::view::closed_indices( start_quantity, quantity_left ) )
+  for ( const auto quantity : ranges::views::closed_indices( start_quantity, quantity_left ) )
   {
     quantities_stack.push_back( quantity );
     generate_quantity_combinations( ingredients_left - 1, quantity_left - quantity, quantities_stack, yield );
@@ -111,7 +111,7 @@ void generate_quantity_combinations( const size_t ingredients_left,
 template <typename Recipes>
 auto calc_scores( Recipes recipes )
 {
-  return recipes | ranges::view::transform( []( auto recipe ) {
+  return recipes | ranges::views::transform( []( auto recipe ) {
            auto score = ranges::accumulate( recipe, Ingredient{} );
 
            score.capacity   = std::max( score.capacity, 0 );
@@ -127,7 +127,7 @@ template <typename Scores>
 size_t calc_max_score( Scores scores )
 {
   auto total_scores =
-      scores | ranges::view::transform( []( const Ingredient& i ) { return i.capacity * i.durability * i.flavor * i.texture; } );
+      scores | ranges::views::transform( []( const Ingredient& i ) { return i.capacity * i.durability * i.flavor * i.texture; } );
 
   return boost::numeric_cast<size_t>( ranges::max( total_scores ) );
 }
@@ -144,15 +144,15 @@ QuantityCombinations generate_quantity_combinations( const size_t ingredients_nu
 
 auto generate_ingredient_combinations( QuantityCombinations& quantity_combinations, const std::vector<Ingredient>& ingredients )
 {
-  return quantity_combinations | ranges::view::indirect | ranges::view::transform( [&ingredients]( const auto& quantities ) {
+  return quantity_combinations | ranges::views::indirect | ranges::views::transform( [&ingredients]( const auto& quantities ) {
            auto multiply = []( const Ingredient& ingredient, const Quantity quantity ) { return ingredient * quantity; };
-           return ranges::view::zip_with( multiply, ingredients, quantities );
+           return ranges::views::zip_with( multiply, ingredients, quantities );
          } );
 }
 
 size_t solve( std::istream& input, const Quantity max_quantity, const std::optional<int> calories = {} )
 {
-  const auto ingredients = ranges::getlines( input ) | ranges::view::transform( &parse_ingredient ) | ranges::to_vector;
+  const auto ingredients = ranges::getlines( input ) | ranges::views::transform( &parse_ingredient ) | ranges::to_vector;
 
   auto quantity_combinations         = generate_quantity_combinations( ingredients.size(), max_quantity );
   const auto ingredient_combinations = generate_ingredient_combinations( quantity_combinations, ingredients );
@@ -161,7 +161,7 @@ size_t solve( std::istream& input, const Quantity max_quantity, const std::optio
   if ( calories )
   {
     const auto filtered_by_calories =
-        scores | ranges::view::filter( [&calories]( const Ingredient& ingredient ) { return ingredient.calories == *calories; } );
+        scores | ranges::views::filter( [&calories]( const Ingredient& ingredient ) { return ingredient.calories == *calories; } );
     return calc_max_score( filtered_by_calories );
   }
   return calc_max_score( scores );
@@ -201,7 +201,7 @@ AOC_REGISTER_PROBLEM( 2015_15, solve_1, solve_2 );
 bool test_combinations( const size_t ingredients_num, const size_t quantity, const std::vector<Quantities> quantities )
 {
   auto qs      = generate_quantity_combinations( ingredients_num, quantity );
-  const auto r = qs | ranges::view::indirect | ranges::to_vector;
+  const auto r = qs | ranges::views::indirect | ranges::to_vector;
   return r == quantities;
 }
 

@@ -90,7 +90,7 @@ BOOST_FIXTURE_TEST_CASE_TEMPLATE( AoC_utils_dd_array_iterators_writing, T, NonCo
   auto& arr = T::array;
 
   const auto v = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-  ranges::copy( v | ranges::view::reverse, arr.begin() );
+  ranges::copy( v | ranges::views::reverse, arr.begin() );
   BOOST_CHECK_EQUAL_COLLECTIONS( arr.cbegin(), arr.cend(), std::crbegin( v ), std::crend( v ) );
 }
 

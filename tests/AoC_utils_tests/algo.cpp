@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE( AoC_utils_algo_iterate )
 BOOST_AUTO_TEST_CASE( AoC_utils_algo_hex_to_num )
 {
   const std::string digits = "0123456789abcdef";
-  const auto nums          = digits | ranges::view::transform( &AoC::hex_to_<size_t> );
+  const auto nums          = digits | ranges::views::transform( &AoC::hex_to_<size_t> );
   const auto expected      = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
 
   BOOST_CHECK_EQUAL_COLLECTIONS( expected.begin(), expected.end(), nums.begin(), nums.end() );

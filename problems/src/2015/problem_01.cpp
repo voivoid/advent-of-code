@@ -40,7 +40,7 @@ bool is_not_space( const char c )
 
 auto get_instructions( std::istream& input )
 {
-  return ranges::istream<Instruction>( input ) | ranges::view::filter( &is_not_space ) | ranges::view::transform( &parse_instruction );
+  return ranges::istream<Instruction>( input ) | ranges::views::filter( &is_not_space ) | ranges::views::transform( &parse_instruction );
 }
 
 int calc_last_visited_floor( std::istream& input )
@@ -51,7 +51,7 @@ int calc_last_visited_floor( std::istream& input )
 size_t calc_number_of_steps_to_reach_basement( std::istream& input )
 {
   auto instructions_to_reach_basement =
-      get_instructions( input ) | ranges::view::partial_sum | ranges::view::take_while( []( int floor ) { return floor >= 0; } );
+      get_instructions( input ) | ranges::views::partial_sum | ranges::views::take_while( []( int floor ) { return floor >= 0; } );
 
   return 1 + boost::numeric_cast<size_t>( ranges::distance( instructions_to_reach_basement ) );
 }

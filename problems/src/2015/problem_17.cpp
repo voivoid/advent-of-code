@@ -58,7 +58,7 @@ ContainersCombinations generate_combinations( ranges::any_view<Volume> container
 
   if ( volume_left == 0 )
   {
-    return ranges::view::single( ranges::view::empty<Volume> );
+    return ranges::views::single( ranges::views::empty<Volume> );
   }
   else if ( ( containers.begin() == containers.end() ) || volume_left < 0 )
   {
@@ -71,15 +71,15 @@ ContainersCombinations generate_combinations( ranges::any_view<Volume> container
     return {};
   }
 
-  auto tail = containers | ranges::view::tail;
+  auto tail = containers | ranges::views::tail;
 
-  ContainersCombinations result1 = generate_combinations( tail, volume_left - head, cache ) | ranges::view::transform( [head]( auto rng ) {
-                                     return ranges::view::concat( ranges::view::single( head ), rng );
+  ContainersCombinations result1 = generate_combinations( tail, volume_left - head, cache ) | ranges::views::transform( [head]( auto rng ) {
+                                     return ranges::views::concat( ranges::views::single( head ), rng );
                                    } );
 
   ContainersCombinations result2 = generate_combinations( tail, volume_left, cache );
 
-  auto result = ranges::view::concat( result1, result2 );
+  auto result = ranges::views::concat( result1, result2 );
 
   cache.emplace( std::make_pair( volume_left, containers ), result );
 
@@ -88,7 +88,7 @@ ContainersCombinations generate_combinations( ranges::any_view<Volume> container
 
 ContainersCombinations generate_combinations( std::istream& input, const Volume volume_to_store )
 {
-  auto containers = ranges::istream<Volume>( input ) | ranges::to_vector | ranges::action::sort;
+  auto containers = ranges::istream<Volume>( input ) | ranges::to_vector | ranges::actions::sort;
   Cache cache;
   return generate_combinations( containers, volume_to_store, cache );
 }
@@ -108,7 +108,7 @@ size_t get_min_containers_combinations_num( std::istream& input, const Volume vo
   const auto min_num_of_containers = combination_with_min_containers.size();
 
   auto combitions_with_min_containers =
-      combinations | ranges::view::filter( [min_num_of_containers]( const auto c ) { return c.size() == min_num_of_containers; } );
+      combinations | ranges::views::filter( [min_num_of_containers]( const auto c ) { return c.size() == min_num_of_containers; } );
 
   return boost::numeric_cast<size_t>( ranges::distance( combitions_with_min_containers ) );
 }

@@ -14,7 +14,7 @@ inline auto append( T elem )
 {
   return ranges::make_pipeable( [e = std::move( elem )]( auto&& rng ) {
     using Rng = decltype( rng );
-    return ranges::view::concat( std::forward<Rng>( rng ), ranges::view::single( std::move( e ) ) );
+    return ranges::views::concat( std::forward<Rng>( rng ), ranges::views::single( std::move( e ) ) );
   } );
 }
 

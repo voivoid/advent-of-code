@@ -124,7 +124,7 @@ Aunt real_aunt()
 template <bool ( *Comparator )( const Aunt&, const Aunt& )>
 size_t find_aunt( std::istream& input )
 {
-  auto aunts       = ranges::getlines( input ) | ranges::view::transform( &parse_aunt );
+  auto aunts       = ranges::getlines( input ) | ranges::views::transform( &parse_aunt );
   auto result_aunt = ranges::find_if( aunts, std::bind( Comparator, real_aunt(), std::placeholders::_1 ) );
 
   if ( result_aunt == aunts.end() )

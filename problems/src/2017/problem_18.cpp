@@ -288,7 +288,7 @@ std::pair<boost::optional<InstructionIndex>, boost::optional<InstructionIndex>>
 
 Instructions read_instructions( std::istream& input )
 {
-  return ranges::getlines( input ) | ranges::view::transform( &parse_instruction ) | ranges::to_vector;
+  return ranges::getlines( input ) | ranges::views::transform( &parse_instruction ) | ranges::to_vector;
 }
 
 }  // namespace

@@ -71,7 +71,7 @@ Coord parse_coord( const std::string& line )
 
 Rect get_bound_rect( const Locations& locations )
 {
-  const auto coords = locations | ranges::view::transform( &Location::coord );
+  const auto coords = locations | ranges::views::transform( &Location::coord );
   const auto xs     = ranges::minmax( coords, std::less<CoordType>{}, &Coord::x );
   const auto ys     = ranges::minmax( coords, std::less<CoordType>{}, &Coord::y );
 
@@ -81,12 +81,12 @@ Rect get_bound_rect( const Locations& locations )
 template <typename Range>
 Locations index_coords( Range&& coords )
 {
-  return ranges::view::zip_with(
+  return ranges::views::zip_with(
              []( const Coord c, const LocationIndex i ) {
                return Location{ c, i };
              },
              coords,
-             ranges::view::iota( 1 ) ) |
+             ranges::views::iota( 1 ) ) |
          ranges::to<Locations>;
 }
 
@@ -103,7 +103,7 @@ LocationIndex find_closest_location_index( const Coord current_coord, const Loca
     LocationIndex index;
   };
 
-  const auto indices_and_distances = locations | ranges::view::transform( [current_coord]( const auto location ) {
+  const auto indices_and_distances = locations | ranges::views::transform( [current_coord]( const auto location ) {
                                        const Distance distance = calc_distance( current_coord, location.coord );
                                        return DistanceIndex{ distance, location.index };
                                      } );
@@ -120,15 +120,15 @@ auto find_border_indices( const Locations& locations )
 {
   const auto brect = get_bound_rect( locations );
 
-  const auto xs = ranges::view::closed_indices( brect.left_top.x, brect.right_bottom.x );
-  const auto ys = ranges::view::closed_indices( brect.left_top.y, brect.right_bottom.y );
+  const auto xs = ranges::views::closed_indices( brect.left_top.x, brect.right_bottom.x );
+  const auto ys = ranges::views::closed_indices( brect.left_top.y, brect.right_bottom.y );
 
-  const auto border_coords = ranges::view::concat( ranges::view::zip( xs, ranges::view::repeat( brect.left_top.y ) ),
-                                                   ranges::view::zip( ranges::view::repeat( brect.left_top.x ), ys ),
-                                                   ranges::view::zip( xs, ranges::view::repeat( brect.right_bottom.y ) ),
-                                                   ranges::view::zip( ranges::view::repeat( brect.right_bottom.x ), ys ) );
+  const auto border_coords = ranges::views::concat( ranges::views::zip( xs, ranges::views::repeat( brect.left_top.y ) ),
+                                                   ranges::views::zip( ranges::views::repeat( brect.left_top.x ), ys ),
+                                                   ranges::views::zip( xs, ranges::views::repeat( brect.right_bottom.y ) ),
+                                                   ranges::views::zip( ranges::views::repeat( brect.right_bottom.x ), ys ) );
 
-  return border_coords | ranges::view::transform( [&locations]( const auto coord_pair ) {
+  return border_coords | ranges::views::transform( [&locations]( const auto coord_pair ) {
            auto [ x, y ] = coord_pair;
            return find_closest_location_index( { x, y }, locations );
          } );
@@ -136,7 +136,7 @@ auto find_border_indices( const Locations& locations )
 
 Distance sum_all_distances( const Coord current_coord, const Locations& locations )
 {
-  return ranges::accumulate( locations | ranges::view::transform( [current_coord]( const auto location ) {
+  return ranges::accumulate( locations | ranges::views::transform( [current_coord]( const auto location ) {
                                return calc_distance( current_coord, location.coord );
                              } ),
                              0 );
@@ -144,7 +144,7 @@ Distance sum_all_distances( const Coord current_coord, const Locations& location
 
 Locations parse_locations( std::istream& input )
 {
-  auto coords = ranges::getlines( input ) | ranges::view::transform( &parse_coord );
+  auto coords = ranges::getlines( input ) | ranges::views::transform( &parse_coord );
   return index_coords( coords );
 }
 
@@ -153,9 +153,9 @@ auto make_locations_map( const Locations& locations )
 {
   const auto brect = get_bound_rect( locations );
 
-  return ranges::view::cartesian_product( ranges::view::closed_indices( brect.left_top.x, brect.right_bottom.x ),
-                                          ranges::view::closed_indices( brect.left_top.y, brect.right_bottom.y ) ) |
-         ranges::view::transform( [&locations]( const auto xy ) {
+  return ranges::views::cartesian_product( ranges::views::closed_indices( brect.left_top.x, brect.right_bottom.x ),
+                                          ranges::views::closed_indices( brect.left_top.y, brect.right_bottom.y ) ) |
+         ranges::views::transform( [&locations]( const auto xy ) {
            auto [ x, y ] = xy;
            return calc_map_element( Coord{ x, y }, locations );
          } );
@@ -166,7 +166,7 @@ int solve_2_impl( std::istream& input, const int total_distance_limit )
   const auto locations     = parse_locations( input );
   const auto locations_map = make_locations_map<&sum_all_distances>( locations );
   return boost::numeric_cast<int>( ranges::distance(
-      locations_map | ranges::view::filter( [total_distance_limit]( const auto sum ) { return sum < total_distance_limit; } ) ) );
+      locations_map | ranges::views::filter( [total_distance_limit]( const auto sum ) { return sum < total_distance_limit; } ) ) );
 }
 
 }  // namespace
@@ -185,7 +185,7 @@ int solve_1( std::istream& input )
   const auto border_location_indices = find_border_indices( locations ) | ranges::to<std::unordered_set>;
 
   auto finite_location_indices =
-      locations_map | ranges::view::filter( [&border_location_indices]( const LocationIndex index ) {
+      locations_map | ranges::views::filter( [&border_location_indices]( const LocationIndex index ) {
         return index != overlapped_location_index && border_location_indices.find( index ) == border_location_indices.cend();
       } );
 
@@ -195,7 +195,7 @@ int solve_1( std::istream& input )
     ++index_counter[ index ];
   }
 
-  return ranges::max( index_counter | ranges::view::values );
+  return ranges::max( index_counter | ranges::views::values );
 }
 
 int solve_2( std::istream& input )

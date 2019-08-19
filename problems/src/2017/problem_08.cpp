@@ -103,7 +103,7 @@ Cpu run_instructions( std::istream& input )
 {
   Cpu cpu{};
 
-  auto instructions = ranges::getlines( input ) | ranges::view::transform( &parse_instruction );
+  auto instructions = ranges::getlines( input ) | ranges::views::transform( &parse_instruction );
   for ( const auto& instruction : instructions )
   {
     run_instruction( instruction, cpu );
@@ -123,7 +123,7 @@ namespace problem_08
 int solve_1( std::istream& input )
 {
   Cpu cpu = run_instructions( input );
-  return ranges::max( cpu.registers | ranges::view::values );
+  return ranges::max( cpu.registers | ranges::views::values );
 }
 
 int solve_2( std::istream& input )

@@ -18,7 +18,7 @@ void generate_01( std::ostream& /*output*/, const std::size_t /*output_size*/, c
   //  std::uniform_int_distribution dis( 0, 1 );
 
   //  auto generator = [&gen, &dis]() { return dis( gen ) == 0 ? '(' : ')'; };
-  //  auto data      = ranges::view::generate_n( generator, output_size );
+  //  auto data      = ranges::views::generate_n( generator, output_size );
 
   //  ranges::copy( data, std::ostream_iterator<char>( output ) );
 }

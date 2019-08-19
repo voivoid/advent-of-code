@@ -140,7 +140,7 @@ size_t calc_lit_pixels( const Screen& screen )
 
 Screen run_commands( std::istream& istream )
 {
-  auto commands = ranges::getlines( istream ) | ranges::view::transform( &parse_command );
+  auto commands = ranges::getlines( istream ) | ranges::views::transform( &parse_command );
 
   Screen screen;
   for ( const auto& cmd : commands )
@@ -153,7 +153,7 @@ Screen run_commands( std::istream& istream )
 
 auto letter_to_code()
 {
-  return ranges::view::transform( ranges::view::join ) | ranges::view::transform( []( auto bits ) {
+  return ranges::views::transform( ranges::views::join ) | ranges::views::transform( []( auto bits ) {
            constexpr auto LetterBitsNum = LetterWidth * ScreenHeight;
 
            std::string bitstr = bits | ranges::to<std::string>;
@@ -167,12 +167,12 @@ template <typename Range, typename B>
 auto bits_to_letters( const Range& bits, const size_t letters_num, const B bit1 )
 {
   assert( bits.size() == letters_num * LetterWidth * ScreenHeight );
-  const auto letter_chunks = bits | ranges::view::transform( [bit1]( const auto c ) { return c == bit1 ? '1' : '0'; } ) |
-                             ranges::view::chunk( letters_num * LetterWidth ) |
-                             ranges::view::transform( ranges::view::chunk( LetterWidth ) );
+  const auto letter_chunks = bits | ranges::views::transform( [bit1]( const auto c ) { return c == bit1 ? '1' : '0'; } ) |
+                             ranges::views::chunk( letters_num * LetterWidth ) |
+                             ranges::views::transform( ranges::views::chunk( LetterWidth ) );
 
-  return ranges::view::indices( letters_num ) | ranges::view::transform( [letter_chunks]( const size_t n ) {
-           return letter_chunks | ranges::view::transform( [n]( const auto line ) {
+  return ranges::views::indices( letters_num ) | ranges::views::transform( [letter_chunks]( const size_t n ) {
+           return letter_chunks | ranges::views::transform( [n]( const auto line ) {
                     assert( n < line.size() );
                     return line[ boost::numeric_cast<ptrdiff_t>( n ) ];
                   } );
@@ -192,7 +192,7 @@ CharCodeMap init_charcode_map()
 
   const auto letter_codes = bits_to_letters( graphchars, chars.length(), '#' ) | letter_to_code();
 
-  return ranges::view::zip( letter_codes, chars ) | ranges::to<CharCodeMap>;
+  return ranges::views::zip( letter_codes, chars ) | ranges::to<CharCodeMap>;
 }
 
 const CharCodeMap& get_charcode_map()
@@ -235,7 +235,7 @@ std::string solve_2( std::istream& istream )
   const auto letters         = bits_to_letters( screen, letters_num, true );
   const auto letter_codes    = letters | letter_to_code();
 
-  const std::string result = letter_codes | ranges::view::transform( &get_char_from_charcode ) | ranges::to<std::string>;
+  const std::string result = letter_codes | ranges::views::transform( &get_char_from_charcode ) | ranges::to<std::string>;
   return result;
 }
 

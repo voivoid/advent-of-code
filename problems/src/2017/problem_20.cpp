@@ -90,7 +90,7 @@ Projection calc_distance_projection( const Particle& p )
 
 auto get_particles( std::istream& input )
 {
-  return ranges::getlines( input ) | ranges::view::transform( &parse_particle );
+  return ranges::getlines( input ) | ranges::views::transform( &parse_particle );
 }
 
 }  // namespace
@@ -105,7 +105,7 @@ namespace problem_20
 size_t solve_1( std::istream& input )
 {
   auto particles        = get_particles( input );
-  auto projs            = particles | ranges::view::transform( &calc_distance_projection );
+  auto projs            = particles | ranges::views::transform( &calc_distance_projection );
   auto enumerated_projs = projs | AoC::enumerate_with_<size_t>();
 
   const auto less_distant_particle =

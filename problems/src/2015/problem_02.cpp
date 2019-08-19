@@ -54,7 +54,7 @@ Dim box_area( const Dimensions dims )
 {
   const auto [ l, w, h ]   = dims;
   const auto sides         = { l * w, w * h, h * l };
-  const auto doubled_sides = sides | ranges::view::transform( []( const Dim s ) { return s * 2; } );
+  const auto doubled_sides = sides | ranges::views::transform( []( const Dim s ) { return s * 2; } );
   const auto area          = ranges::accumulate( doubled_sides, Dim{ 0 } );
   const auto smallest_side = ranges::min( sides );
   return area + smallest_side;
@@ -83,7 +83,7 @@ using AreaFunc = Dim ( * )( Dimensions );
 template <AreaFunc calc_area, typename Range>
 size_t calc( Range&& dimensions )
 {
-  auto areas = dimensions | ranges::view::transform( &parse_dimensions ) | ranges::view::transform( calc_area );
+  auto areas = dimensions | ranges::views::transform( &parse_dimensions ) | ranges::views::transform( calc_area );
   return ranges::accumulate( areas, Dim{ 0 } );
 }
 

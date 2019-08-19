@@ -168,7 +168,7 @@ void run_instructions( const std::vector<Instruction>& instructions, State& stat
 
 size_t solve( std::istream& input, State& state )
 {
-  const auto instructions = ranges::getlines( input ) | ranges::view::transform( &parse_instruction ) | ranges::to_vector;
+  const auto instructions = ranges::getlines( input ) | ranges::views::transform( &parse_instruction ) | ranges::to_vector;
   run_instructions( instructions, state, 0 );
   return state.registers[ Register::B ];
 }

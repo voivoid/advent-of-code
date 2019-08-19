@@ -55,7 +55,7 @@ Num get_minmax_diff( const Nums& nums )
 
 Num get_evenly_div( const Nums& nums )
 {
-  const auto pairs      = ranges::view::cartesian_product( nums, nums );
+  const auto pairs      = ranges::views::cartesian_product( nums, nums );
   const auto pairs_iter = ranges::find_if( pairs, BOOST_HOF_LIFT( is_divisible ) );
   assert( pairs_iter != pairs.end() );
 
@@ -66,7 +66,7 @@ Num get_evenly_div( const Nums& nums )
 template <Num ( *calc_row )( const Nums& )>
 int solve( std::istream& input )
 {
-  auto row_diffs = ranges::getlines( input ) | ranges::view::transform( &parse_row ) | ranges::view::transform( calc_row );
+  auto row_diffs = ranges::getlines( input ) | ranges::views::transform( &parse_row ) | ranges::views::transform( calc_row );
   return ranges::accumulate( row_diffs, 0 );
 }
 

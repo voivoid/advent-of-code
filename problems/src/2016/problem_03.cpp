@@ -61,15 +61,15 @@ namespace problem_03
 
 size_t solve_1( std::istream& input )
 {
-  auto triangles = ranges::getlines( input ) | ranges::view::transform( &parse_triangle );
+  auto triangles = ranges::getlines( input ) | ranges::views::transform( &parse_triangle );
   return boost::numeric_cast<size_t>( ranges::count_if( triangles, &is_valid_triangle ) );
 }
 
 size_t solve_2( std::istream& input )
 {
-  auto triangles = ranges::getlines( input ) | ranges::view::transform( &parse_triangle ) | ranges::view::chunk( 3 ) |
-                   ranges::view::transform( ranges::to_vector ) |
-                   ranges::view::transform( []( const auto chunk ) { return chunk | AoC::transpose(); } ) | ranges::view::join;
+  auto triangles = ranges::getlines( input ) | ranges::views::transform( &parse_triangle ) | ranges::views::chunk( 3 ) |
+                   ranges::views::transform( ranges::to_vector ) |
+                   ranges::views::transform( []( const auto chunk ) { return chunk | AoC::transpose(); } ) | ranges::views::join;
 
   const auto valid_triangles_num = ranges::count_if( triangles, []( const auto t ) {
     auto iter    = t.begin();

@@ -89,7 +89,7 @@ void connect( const ProgId p1, const ProgId p2, Connections& conns )
 
 void normalize( Connections& conns )
 {
-  for ( const auto prog_id : conns | ranges::view::keys )
+  for ( const auto prog_id : conns | ranges::views::keys )
   {
     get_base_id( prog_id, conns, true );
   }
@@ -99,7 +99,7 @@ Connections make_connections( std::istream& input )
 {
   Connections connections;
 
-  auto pipes = ranges::getlines( input ) | ranges::view::transform( &parse_pipes );
+  auto pipes = ranges::getlines( input ) | ranges::views::transform( &parse_pipes );
   for ( const auto& pipe : pipes )
   {
     const auto from = pipe.from;
@@ -134,13 +134,13 @@ size_t solve_1( std::istream& input )
 
   const auto conn_id = conn_iter->second;
 
-  return boost::numeric_cast<size_t>( ranges::count( connections | ranges::view::values, conn_id ) );
+  return boost::numeric_cast<size_t>( ranges::count( connections | ranges::views::values, conn_id ) );
 }
 
 size_t solve_2( std::istream& input )
 {
   const auto connections = make_connections( input );
-  const auto groups      = connections | ranges::view::values | ranges::to<std::unordered_set>;
+  const auto groups      = connections | ranges::views::values | ranges::to<std::unordered_set>;
   return groups.size();
 }
 

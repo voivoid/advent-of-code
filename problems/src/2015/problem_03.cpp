@@ -40,10 +40,10 @@ Pos instruction_to_offset( const Instruction instruction )
 template <typename Range>
 VisitedHouses get_visited_houses( Range&& instructions )
 {
-  const auto initial_pos = ranges::view::single( Pos{ 0, 0 } );
+  const auto initial_pos = ranges::views::single( Pos{ 0, 0 } );
 
-  auto move_offsets      = instructions | ranges::view::transform( &instruction_to_offset );
-  auto positions_visited = ranges::view::concat( initial_pos, move_offsets ) | ranges::view::partial_sum;
+  auto move_offsets      = instructions | ranges::views::transform( &instruction_to_offset );
+  auto positions_visited = ranges::views::concat( initial_pos, move_offsets ) | ranges::views::partial_sum;
 
   return positions_visited | ranges::to<VisitedHouses>();
 }
@@ -63,8 +63,8 @@ size_t solve_1( std::istream& input )
 size_t solve_2( std::istream& input )
 {
   const auto instructions        = ranges::istream<Instruction>( input ) | ranges::to_vector;
-  const auto santas_instructions = instructions | ranges::view::stride( 2 );
-  const auto robo_instructions   = instructions | ranges::view::drop( 1 ) | ranges::view::stride( 2 );
+  const auto santas_instructions = instructions | ranges::views::stride( 2 );
+  const auto robo_instructions   = instructions | ranges::views::drop( 1 ) | ranges::views::stride( 2 );
 
   const auto santas_houses = get_visited_houses( santas_instructions );
   const auto robo_houses   = get_visited_houses( robo_instructions );

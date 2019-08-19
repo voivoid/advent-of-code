@@ -66,8 +66,8 @@ bool is_caught( const Picosecond time_offset, const Layer& layer )
 template <typename Range>
 auto get_violations( const Picosecond time_offset, Range&& layers )
 {
-  auto layers_with_caught_packet = layers | ranges::view::filter( std::bind( &is_caught, time_offset, std::placeholders::_1 ) );
-  return layers_with_caught_packet | ranges::view::transform( []( const Layer layer ) { return layer.depth * layer.range; } );
+  auto layers_with_caught_packet = layers | ranges::views::filter( std::bind( &is_caught, time_offset, std::placeholders::_1 ) );
+  return layers_with_caught_packet | ranges::views::transform( []( const Layer layer ) { return layer.depth * layer.range; } );
 }
 
 template <typename Range>
@@ -86,7 +86,7 @@ size_t calc_severity( const Picosecond time_offset, Range&& layers )
 
 auto get_layers( std::istream& input )
 {
-  return ranges::getlines( input ) | ranges::view::transform( &parse_layer );
+  return ranges::getlines( input ) | ranges::views::transform( &parse_layer );
 }
 
 }  // namespace
@@ -106,7 +106,7 @@ size_t solve_1( std::istream& input )
 size_t solve_2( std::istream& input )
 {
   const auto layers       = get_layers( input ) | ranges::to_vector;
-  const auto time_offsets = ranges::view::iota( Picosecond{ 0 } );
+  const auto time_offsets = ranges::views::iota( Picosecond{ 0 } );
 
   const auto smallest_delay =
       *ranges::find_if( time_offsets, [&layers]( const Picosecond time_offset ) { return !has_violations( time_offset, layers ); } );
