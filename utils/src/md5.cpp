@@ -1,3 +1,5 @@
+#define BOOST_UUID_COMPAT_PRE_1_71_MD5
+
 #include "AoC/utils/md5.h"
 
 #include "boost/uuid/detail/md5.hpp"
