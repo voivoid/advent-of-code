@@ -5,7 +5,7 @@ Advent of Code ( https://adventofcode.com ) 2015-2018 solutions using c++-17 wit
 Prerequisites
 -----
 
-* C++17 compiler ( tested with gcc 8.3.0, clang 8.0.0 )
+* C++17 compiler ( tested with gcc 9.1, clang 8.0 )
 * cmake 3.13 or later
 * git
 * bash
