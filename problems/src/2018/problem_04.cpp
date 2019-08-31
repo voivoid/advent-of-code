@@ -123,8 +123,8 @@ GuardShifts parse_shifts( const std::string& input )
 GuardShifts parse_shifts_and_sort_by_guard_id( std::istream& input )
 {
   const auto sorted_input_lines = ranges::getlines( input ) | ranges::to_vector | ranges::actions::sort;
-  return parse_shifts( sorted_input_lines | ranges::views::join | ranges::to<std::string> ) |
-         ranges::actions::sort( std::less<GuardId>{}, &GuardShift::guard_id ) | ranges::to<GuardShifts>;
+  return parse_shifts( sorted_input_lines | ranges::views::join | ranges::to<std::string>() ) |
+         ranges::actions::sort( std::less<GuardId>{}, &GuardShift::guard_id ) | ranges::to<GuardShifts>();
 }
 
 struct GuardStats

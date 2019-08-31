@@ -54,7 +54,7 @@ Coords get_neighbours( const size_t x, const size_t y, const size_t max_index )
                                                 { x + 1, y },     { x - 1, y + 1 }, { x, y + 1 },     { x + 1, y + 1 } };
 
   return coords | ranges::views::filter( [max_index]( const auto coord ) { return coord.x < max_index && coord.y < max_index; } ) |
-         ranges::to<Coords>;
+         ranges::to<Coords>();
 }
 
 template <size_t side>

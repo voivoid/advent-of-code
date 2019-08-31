@@ -134,7 +134,7 @@ auto parse_input( std::istream& input )
 
   Tasks reachable_tasks = dependency_map |
                           ranges::views::filter( []( const TaskDependencyMap::value_type& kv ) { return kv.second.empty(); } ) |
-                          ranges::views::keys | ranges::to<std::set>;
+                          ranges::views::keys | ranges::to<std::set>();
 
   AOC_RETURN_ANONYMOUS_STRUCT( dependency_map, reachable_tasks );
 }
@@ -184,7 +184,7 @@ Time calc_total_time( Tasks& reachable_tasks,
                     tt.time -= task_in_work.time;
                     return tt;
                   } ) |
-                  ranges::to<std::set>;
+                  ranges::to<std::set>();
 
   return calc_total_time(
       reachable_tasks, dependency_map, tasks_in_work, free_workers + 1, task_base_time, total_time + task_in_work.time );

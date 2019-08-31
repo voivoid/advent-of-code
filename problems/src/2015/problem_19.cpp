@@ -48,7 +48,7 @@ auto parse_input( std::istream& input )
 {
   auto replacement_lines = ranges::getlines( input ) | ranges::views::take_while( []( const std::string& line ) { return line != ""; } ) |
                            ranges::views::transform( &parse_replacement );
-  const MoleculeMap replacements_map = replacement_lines | ranges::to<MoleculeMap>;
+  const MoleculeMap replacements_map = replacement_lines | ranges::to<MoleculeMap>();
 
   std::string medicine_molecule;
   input >> medicine_molecule;
@@ -127,7 +127,7 @@ size_t solve_1( std::istream& input )
                       } ) |
                       ranges::views::join;
 
-  const std::unordered_set<Molecule> all_distinct_molecules = replacements | ranges::to<std::unordered_set>;
+  const std::unordered_set<Molecule> all_distinct_molecules = replacements | ranges::to<std::unordered_set>();
   return all_distinct_molecules.size();
 }
 

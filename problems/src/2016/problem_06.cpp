@@ -43,7 +43,7 @@ std::string solve( std::istream& input )
 {
   const auto lines = ranges::istream<std::string>( input ) | ranges::to_vector;
   const std::string result =
-      lines | AoC::transpose() | ranges::views::transform( &get_most_common_char<CharsFrequencySortPred> ) | ranges::to<std::string>;
+      lines | AoC::transpose() | ranges::views::transform( &get_most_common_char<CharsFrequencySortPred> ) | ranges::to<std::string>();
   return result;
 }
 }  // namespace

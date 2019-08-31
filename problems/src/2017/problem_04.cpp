@@ -32,7 +32,7 @@ bool is_secure_passphrase( const std::string& line )
   std::unordered_set<std::string> words;
   for ( const auto word_range : line | ranges::views::split( ' ' ) )
   {
-    const auto word            = rearrange_word( word_range | ranges::to<std::string> );
+    const auto word            = rearrange_word( word_range | ranges::to<std::string>() );
     const auto [ _, inserted ] = words.insert( word );
     if ( !inserted )
     {

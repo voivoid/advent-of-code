@@ -140,7 +140,7 @@ size_t solve_1( std::istream& input )
 size_t solve_2( std::istream& input )
 {
   const auto connections = make_connections( input );
-  const auto groups      = connections | ranges::views::values | ranges::to<std::unordered_set>;
+  const auto groups      = connections | ranges::views::values | ranges::to<std::unordered_set>();
   return groups.size();
 }
 

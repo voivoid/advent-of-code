@@ -62,7 +62,7 @@ std::string find_common_letters( const BoxId& b1, const BoxId& b2 )
            auto [ c1, c2 ] = chars_pair;
            return c1 == c2;
          } ) |
-         ranges::views::transform( []( const auto chars_pair ) { return chars_pair.first; } ) | ranges::to<std::string>;
+         ranges::views::transform( []( const auto chars_pair ) { return chars_pair.first; } ) | ranges::to<std::string>();
 }
 
 }  // namespace

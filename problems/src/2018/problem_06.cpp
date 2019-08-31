@@ -87,7 +87,7 @@ Locations index_coords( Range&& coords )
              },
              coords,
              ranges::views::iota( 1 ) ) |
-         ranges::to<Locations>;
+         ranges::to<Locations>();
 }
 
 Distance calc_distance( const Coord c1, const Coord c2 )
@@ -182,7 +182,7 @@ int solve_1( std::istream& input )
   const auto locations     = parse_locations( input );
   const auto locations_map = make_locations_map<&find_closest_location_index>( locations );
 
-  const auto border_location_indices = find_border_indices( locations ) | ranges::to<std::unordered_set>;
+  const auto border_location_indices = find_border_indices( locations ) | ranges::to<std::unordered_set>();
 
   auto finite_location_indices =
       locations_map | ranges::views::filter( [&border_location_indices]( const LocationIndex index ) {

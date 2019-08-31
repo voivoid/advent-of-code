@@ -120,7 +120,7 @@ std::string solve( std::istream& input, const Keypad<side>& keypad )
   auto codes = keypad_positions | ranges::views::tail |
                ranges::views::transform( [&keypad]( const CursorPos cursor ) { return code_by_position( cursor, keypad ); } );
 
-  return codes | ranges::to<std::string>;
+  return codes | ranges::to<std::string>();
 }
 
 }  // namespace

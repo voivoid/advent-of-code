@@ -163,7 +163,7 @@ std::pair<Wire, Instruction> parse_instruction( const std::string& line )
 
 Circuit parse_circuit( std::istream& input )
 {
-  return ranges::getlines( input ) | ranges::views::transform( &parse_instruction ) | ranges::to<Circuit>;
+  return ranges::getlines( input ) | ranges::views::transform( &parse_instruction ) | ranges::to<Circuit>();
 }
 
 }  // namespace

@@ -69,7 +69,7 @@ std::string solve_1( std::istream& input )
 
   auto valid_md5s_sixths_chars = valid_md5s | ranges::views::transform( []( const auto& md5 ) { return md5[ 5 ]; } );
 
-  return valid_md5s_sixths_chars | ranges::views::take( 8 ) | ranges::to<std::string>;
+  return valid_md5s_sixths_chars | ranges::views::take( 8 ) | ranges::to<std::string>();
 }
 
 std::string solve_2( std::istream& input )

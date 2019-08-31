@@ -16,27 +16,15 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND ${CMAKE_CXX_COMPILER_VERSION} 
                           2017_03     # gcc 9.1 segfaults
    )
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-  set(AocExcludedProblems 2015_07
-                          2015_14
+  set(AocExcludedProblems 2015_14
                           2015_17
-                          2015_18
                           2015_19
-                          2015_24
                           2016_01
-                          2016_02
-                          2016_03
                           2016_04
                           2016_05
-                          2016_06
-                          2016_11
-                          2017_04
-                          2017_12
                           2017_14
-                          2018_02
                           2018_03
                           2018_04
-                          2018_06
-                          2018_07
                           2018_11
 
                           2015_23 # HOF

@@ -88,7 +88,7 @@ bool check_range_can_be_split_into_groups( ranges::any_view<Weight> rest_weights
     return false;
   }
 
-  return ranges::any_of( find_all_weights_combinations( diff | ranges::to<Weights> ), [&diff, group_weight, groups_num]( auto ws ) {
+  return ranges::any_of( find_all_weights_combinations( diff | ranges::to<Weights>() ), [&diff, group_weight, groups_num]( auto ws ) {
     return calc_weights_sum( ws ) == group_weight && check_range_can_be_split_into_groups( diff, ws, groups_num - 1, group_weight );
   } );
 }

@@ -12,9 +12,7 @@ append_tests_srcs(AocTestsSources 2016 01 02 03 04 05 06 07 08 09 10 11)
 append_tests_srcs(AocTestsSources 2017 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15       18 19 20)
 append_tests_srcs(AocTestsSources 2018 01 02 03 04 05 06 07 08 09    11)
 
-# AocLibTests
-add_executable(AocLibTests
-  ${AocTestsSources}
+set(AocTestsUtilsSources 
   AoC_utils_tests/2d_array.cpp
   AoC_utils_tests/algo.cpp
   AoC_utils_tests/anon_ret.cpp
@@ -26,7 +24,16 @@ add_executable(AocLibTests
   AoC_utils_tests/md5.cpp
   AoC_utils_tests/ranges.cpp
   AoC_utils_tests/string.cpp
-  AoC_utils_tests/zipper.cpp
+  AoC_utils_tests/zipper.cpp)
+
+if(MSVC)
+  list(REMOVE_ITEM AocTestsUtilsSources AoC_utils_tests/curry.cpp) # MSVC has some issues with boost::hof
+endif()
+
+# AocLibTests
+add_executable(AocLibTests
+  ${AocTestsSources}
+  ${AocTestsUtilsSources}
   impl_test.cpp
   aoc_fixture.cpp
   aoc_fixture.h
