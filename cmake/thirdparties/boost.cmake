@@ -29,7 +29,7 @@ if(UNIX AND NOT "${CMAKE_BUILD_TYPE}" STREQUAL "RELEASE")
 endif()
 
 if(MSVC)
-  if("${CMAKE_VS_PLATFORM_NAME}" MATCHES "x64")
+  if("${CMAKE_SIZEOF_VOID_P}" STREQUAL "8")
     set(BoostAddressModel "address-model=64")
     set(BoostAddressModelTag "-x64")
   else()
