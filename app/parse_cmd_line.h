@@ -29,6 +29,6 @@ struct cmd_generate_data
 };
 
 using parse_result = std::variant<cmd_help, cmd_solve_problem, cmd_list_problems, cmd_generate_data>;
-parse_result parse_cmd_args( const int argc, char** argv );
+parse_result parse_cmd_args( int argc, char** const argv );
 
 }  // namespace AocApp

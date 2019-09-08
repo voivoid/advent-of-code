@@ -7,7 +7,7 @@
 namespace AocApp
 {
 
-parse_result parse_cmd_args( const int argc, char** argv )
+parse_result parse_cmd_args( const int argc, char** const argv )
 {
   boost::program_options::options_description description( "Options" );
   description.add_options()( "help", "show help message" )( "problem", boost::program_options::value<std::string>(), "solve problem" )(
