@@ -1,7 +1,6 @@
 #pragma once
 
 #include "range/v3/view/generate.hpp"
-#include "range/v3/view/indirect.hpp"
 #include "range/v3/view/take_while.hpp"
 #include "range/v3/view/transform.hpp"
 
@@ -27,6 +26,7 @@ inline auto generate_while( T start_val, F func )
            v = f( *v );
            return v;
          } ) |
-         ranges::views::take_while( []( const auto& opt ) { return opt.has_value(); } ) | ranges::views::indirect;
+         ranges::views::take_while( []( const auto& opt ) { return opt.has_value(); } ) |
+         ranges::views::transform( []( const auto& opt ) { return *opt; } );
 }
 }  // namespace AoC
