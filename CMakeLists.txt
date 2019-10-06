@@ -12,9 +12,10 @@ include(cmake/thirdparties/json.cmake)
 include(cmake/build_utils.cmake)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND ${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER "9")
-  set(AocExcludedProblems 2015_13     # gcc 9.1 segfaults
-                          2016_08     # gcc 9.1 segfaults
-                          2017_03     # gcc 9.1 segfaults
+  set(AocExcludedProblems 2015_13     # gcc 9.* segfaults
+                          2016_07     # gcc 9.* segfaults ( debug build only )
+                          2016_08     # gcc 9.* segfaults
+                          2017_03     # gcc 9.* segfaults
    )
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
   set(AocExcludedProblems 2015_14
