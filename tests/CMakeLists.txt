@@ -11,8 +11,9 @@ append_tests_srcs(AocTestsSources 2015 01 02 03    05 06 07 08 09    11 12 13   
 append_tests_srcs(AocTestsSources 2016 01 02 03 04 05 06 07 08 09 10 11)
 append_tests_srcs(AocTestsSources 2017 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15       18 19 20)
 append_tests_srcs(AocTestsSources 2018 01 02 03 04 05 06 07 08 09    11)
+append_tests_srcs(AocTestsSources 2019 01)
 
-set(AocTestsUtilsSources 
+set(AocTestsUtilsSources
   AoC_utils_tests/2d_array.cpp
   AoC_utils_tests/algo.cpp
   AoC_utils_tests/anon_ret.cpp
@@ -74,6 +75,9 @@ if(Bash)
 
   add_test(NAME AocLibTests_2018
       COMMAND $<TARGET_FILE:AocLibTests> --run_test=*2018*)
+
+  add_test(NAME AocLibTests_2019
+      COMMAND $<TARGET_FILE:AocLibTests> --run_test=*2019*)
 
   add_test(NAME AocLibTestsImpl
       COMMAND $<TARGET_FILE:AocLibTests> --run_test=impl_test)
@@ -147,5 +151,7 @@ if(Bash)
   add_aoc_test(2018_08 47464 23054)
   add_aoc_test(2018_09 398730 3349635509)
   add_aoc_test(2018_11 34,72 233,187,13)
+
+  add_aoc_test(2019_01 3231195 4843929)
 
 endif()
