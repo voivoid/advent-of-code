@@ -17,7 +17,7 @@ namespace
 {
   int calcFuel( const int mass )
   {
-    return static_cast<int>( floor( mass / 3 ) - 2 );
+    return mass / 3 - 2;
   }
 
   int calcFuelRecursive( const int mass )
