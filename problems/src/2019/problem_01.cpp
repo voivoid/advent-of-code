@@ -1,7 +1,6 @@
 #include "AoC/2019/problem_01.h"
 
 #include "AoC/problems_map.h"
-#include "AoC/utils/assert.h"
 #include "AoC/utils/ranges/generate.h"
 
 #include "range/v3/numeric/accumulate.hpp"
@@ -11,28 +10,26 @@
 
 #include <istream>
 
-#include <cmath>
-
 namespace
 {
-  int calcFuel( const int mass )
-  {
-    return mass / 3 - 2;
-  }
-
-  int calcFuelRecursive( const int mass )
-  {
-    auto fuelSeries = AoC::generate_range( mass, &calcFuel ) | ranges::views::take_while( []( const auto& m ) { return m > 0; });
-    return ranges::accumulate( fuelSeries, 0 );
-  }
-
-  template <int (*calc)(int)>
-  int solve( std::istream& input )
-  {
-    auto fuelPerModule = ranges::istream<int>( input ) | ranges::views::transform( calc );
-    return ranges::accumulate( fuelPerModule, 0 );
-  }
+int calcFuel( const int mass )
+{
+  return mass / 3 - 2;
 }
+
+int calcFuelRecursive( const int mass )
+{
+  auto fuelSeries = AoC::generate_range( mass, &calcFuel ) | ranges::views::take_while( []( const auto& m ) { return m > 0; } );
+  return ranges::accumulate( fuelSeries, 0 );
+}
+
+template <int ( *calc )( int )>
+int solve( std::istream& input )
+{
+  auto fuelPerModule = ranges::istream<int>( input ) | ranges::views::transform( calc );
+  return ranges::accumulate( fuelPerModule, 0 );
+}
+}  // namespace
 
 namespace AoC_2019
 {

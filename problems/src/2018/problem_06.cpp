@@ -124,9 +124,9 @@ auto find_border_indices( const Locations& locations )
   const auto ys = ranges::views::closed_indices( brect.left_top.y, brect.right_bottom.y );
 
   const auto border_coords = ranges::views::concat( ranges::views::zip( xs, ranges::views::repeat( brect.left_top.y ) ),
-                                                   ranges::views::zip( ranges::views::repeat( brect.left_top.x ), ys ),
-                                                   ranges::views::zip( xs, ranges::views::repeat( brect.right_bottom.y ) ),
-                                                   ranges::views::zip( ranges::views::repeat( brect.right_bottom.x ), ys ) );
+                                                    ranges::views::zip( ranges::views::repeat( brect.left_top.x ), ys ),
+                                                    ranges::views::zip( xs, ranges::views::repeat( brect.right_bottom.y ) ),
+                                                    ranges::views::zip( ranges::views::repeat( brect.right_bottom.x ), ys ) );
 
   return border_coords | ranges::views::transform( [&locations]( const auto coord_pair ) {
            auto [ x, y ] = coord_pair;
@@ -154,7 +154,7 @@ auto make_locations_map( const Locations& locations )
   const auto brect = get_bound_rect( locations );
 
   return ranges::views::cartesian_product( ranges::views::closed_indices( brect.left_top.x, brect.right_bottom.x ),
-                                          ranges::views::closed_indices( brect.left_top.y, brect.right_bottom.y ) ) |
+                                           ranges::views::closed_indices( brect.left_top.y, brect.right_bottom.y ) ) |
          ranges::views::transform( [&locations]( const auto xy ) {
            auto [ x, y ] = xy;
            return calc_map_element( Coord{ x, y }, locations );

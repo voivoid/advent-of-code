@@ -159,8 +159,8 @@ std::string solve_2( std::istream& input )
   const auto grid = create_grid( input );
 
   const auto square_sizes = ranges::views::closed_indices( size_t{ 1 }, grid_size );
-  const auto max_powers   = square_sizes | ranges::views::transform( std::bind( &find_max_power, std::ref( grid ), std::placeholders::_1 ) );
-  const auto max_power    = ranges::max( max_powers, std::less<Power>{}, &MaxPower::power );
+  const auto max_powers = square_sizes | ranges::views::transform( std::bind( &find_max_power, std::ref( grid ), std::placeholders::_1 ) );
+  const auto max_power  = ranges::max( max_powers, std::less<Power>{}, &MaxPower::power );
 
   return coord_to_string( max_power.top_left ) + "," + std::to_string( max_power.square_side );
 }

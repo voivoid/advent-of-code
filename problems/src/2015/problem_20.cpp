@@ -47,9 +47,9 @@ size_t calc_presents1( size_t house_index )
 size_t calc_presents2( size_t house_index )
 {
   auto divisors = get_all_divisors( house_index );
-  return 11 *
-         ranges::accumulate( divisors | ranges::views::filter( [house_index]( const auto divisor ) { return divisor * 50 >= house_index; } ),
-                             size_t{ 0 } );
+  return 11 * ranges::accumulate( divisors |
+                                      ranges::views::filter( [house_index]( const auto divisor ) { return divisor * 50 >= house_index; } ),
+                                  size_t{ 0 } );
 }
 
 template <size_t ( *calc_presents )( size_t )>

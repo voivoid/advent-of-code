@@ -176,7 +176,7 @@ BOOST_AUTO_TEST_CASE( AoC_utils_ranges_enumerate_with )
   {                                                                                                                                        \
     const std::initializer_list<int> input                    = in;                                                                        \
     auto combinations                                         = AoC::get_unique_pair_combinations<int>( input );                           \
-    auto result                                               = combinations | ranges::views::all | ranges::views::common;                   \
+    auto result                                               = combinations | ranges::views::all | ranges::views::common;                 \
     const std::initializer_list<std::pair<int, int>> expected = ex;                                                                        \
     BOOST_CHECK_EQUAL_COLLECTIONS( expected.begin(), expected.end(), result.begin(), result.end() );                                       \
   }

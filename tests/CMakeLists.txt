@@ -11,7 +11,7 @@ append_tests_srcs(AocTestsSources 2015 01 02 03    05 06 07 08 09    11 12 13   
 append_tests_srcs(AocTestsSources 2016 01 02 03 04 05 06 07 08 09 10 11)
 append_tests_srcs(AocTestsSources 2017 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15       18 19 20)
 append_tests_srcs(AocTestsSources 2018 01 02 03 04 05 06 07 08 09    11)
-append_tests_srcs(AocTestsSources 2019 01)
+append_tests_srcs(AocTestsSources 2019 01   )
 
 set(AocTestsUtilsSources
   AoC_utils_tests/2d_array.cpp
@@ -153,5 +153,6 @@ if(Bash)
   add_aoc_test(2018_11 34,72 233,187,13)
 
   add_aoc_test(2019_01 3231195 4843929)
+  add_aoc_test(2019_02 5866663 4259)
 
 endif()

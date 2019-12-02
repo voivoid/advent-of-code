@@ -100,8 +100,9 @@ size_t solve( std::istream& input, const size_t number_of_compartments )
   const Weight compartment_weight = total_weight / number_of_compartments;
 
   auto weights_combinations = find_all_weights_combinations( sorted_weights );
-  auto passenger_weights    = weights_combinations |
-                           ranges::views::filter( [compartment_weight]( auto ws ) { return calc_weights_sum( ws ) == compartment_weight; } );
+  auto passenger_weights    = weights_combinations | ranges::views::filter( [compartment_weight]( auto ws ) {
+                             return calc_weights_sum( ws ) == compartment_weight;
+                           } );
 
   auto balanced_passenger_weights =
       passenger_weights | ranges::views::filter( [&sorted_weights, number_of_compartments, compartment_weight]( auto ws ) {

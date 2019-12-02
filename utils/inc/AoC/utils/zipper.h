@@ -25,9 +25,7 @@ public:
   }
 
   Zipper( const Zipper& other ) :
-      container( other.container ),
-      current_elem_iter( other.current_elem_iter ),
-      current_position( other.current_position )
+      container( other.container ), current_elem_iter( other.current_elem_iter ), current_position( other.current_position )
   {
   }
 

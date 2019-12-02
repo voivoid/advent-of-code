@@ -48,7 +48,8 @@ std::string get_door_id( std::istream& input )
 
 auto get_valid_md5s( const std::string& door_id )
 {
-  const auto md5s = ranges::views::iota( 0 ) | ranges::views::transform( std::bind( &make_md5, std::placeholders::_1, std::ref( door_id ) ) );
+  const auto md5s =
+      ranges::views::iota( 0 ) | ranges::views::transform( std::bind( &make_md5, std::placeholders::_1, std::ref( door_id ) ) );
   const auto valid_md5s = md5s | ranges::views::filter( &is_valid_md5s );
 
   return valid_md5s;
