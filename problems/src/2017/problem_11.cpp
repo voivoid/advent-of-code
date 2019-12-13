@@ -5,12 +5,12 @@
 #include "AoC/utils/geo.h"
 #include "AoC/utils/parse.h"
 #include "AoC/utils/ranges/append.h"
+#include "AoC/utils/ranges/inclusive_scan.h"
 
 #include "boost/numeric/conversion/cast.hpp"
 
 #include "range/v3/algorithm/max.hpp"
 #include "range/v3/numeric/accumulate.hpp"
-#include "range/v3/view/exclusive_scan.hpp"
 #include "range/v3/view/transform.hpp"
 
 #include <istream>
@@ -99,8 +99,7 @@ size_t solve_2( std::istream& input )
 {
   const auto dirs = parse_dirs( input );
 
-  // appending dummy dir since ranges v3 has no inclusive_scan yet :(
-  const auto all_steps         = dirs | AoC::append( Dir::Dummy ) | ranges::views::exclusive_scan( Pos{ 0, 0 }, &make_step );
+  const auto all_steps         = dirs | AoC::append( Dir::Dummy ) | AoC::inclusive_scan( Pos{ 0, 0 }, &make_step );
   const auto furthest_distance = ranges::max( all_steps | ranges::views::transform( &calc_min_distance ) );
 
   return furthest_distance;

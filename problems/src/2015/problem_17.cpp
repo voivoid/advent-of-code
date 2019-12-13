@@ -192,12 +192,12 @@ static void impl_tests()
 
 
   {
-    std::stringstream ss( "20 15 10 5 5" );
+    std::istringstream ss( "20 15 10 5 5" );
     assert( 4 == get_possible_combinations_num( ss, 25 ) );
   }
 
   {
-    std::stringstream ss( "20 15 10 5 5" );
+    std::istringstream ss( "20 15 10 5 5" );
     assert( 3 == get_min_containers_combinations_num( ss, 25 ) );
   }
 }

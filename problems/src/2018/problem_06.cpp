@@ -232,12 +232,12 @@ static void impl_tests()
   assert( ( overlapped_location_index ==
             find_closest_location_index( { 1, 1 }, std::initializer_list<Location>{ { { 0, 0 }, 1 }, { { 2, 2 }, 2 } } ) ) );
 
-  std::stringstream input( R"(1, 1
-                              1, 6
-                              8, 3
-                              3, 4
-                              5, 5
-                              8, 9)" );
+  std::istringstream input( R"(1, 1
+                               1, 6
+                               8, 3
+                               3, 4
+                               5, 5
+                               8, 9)" );
   assert( 16 == solve_2_impl( input, 32 ) );
 }
 

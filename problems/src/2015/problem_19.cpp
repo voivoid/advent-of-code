@@ -103,7 +103,7 @@ namespace parser
 
 bool reduce_molecule( const Molecule& molecule )
 {
-    const bool is_reduced = AoC::x3_parse( molecule, parser::reduce, boost::spirit::x3::space );
+    const bool is_reduced = AoC::x3_parse( molecule, parser::reduce, x3::space );
     return is_reduced;
 }
 */

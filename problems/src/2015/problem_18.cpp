@@ -189,9 +189,9 @@ AOC_REGISTER_PROBLEM( 2015_18, solve_1, solve_2 );
 #  include <cassert>
 #  include <sstream>
 
-std::stringstream get_test_sample()
+std::istringstream get_test_sample()
 {
-  return std::stringstream(
+  return std::istringstream(
       ".#.#.#\n"
       "...##.\n"
       "#....#\n"

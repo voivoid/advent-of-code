@@ -1,8 +1,8 @@
 include(ExternalProject)
 
-set(BoostVersion "1.71.0")
+set(BoostVersion "1.72.0")
 set(BoostLibs test program_options context)
-set(BoostSHA256 96b34f7468f26a141f6020efb813f1a2f3dfb9797ecf76a7d7cbd843cc95f5bd)
+set(BoostSHA256 c66e88d5786f2ca4dbebb14e06b566fb642a1a6947ad8cc9091f9f445134143f)
 
 
 if(WIN32)

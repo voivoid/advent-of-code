@@ -31,10 +31,9 @@ Ints parse_ints( std::istream& input )
 
   Ints ints;
   const bool is_parsed = AoC::x3_parse( input, parser, x3::space, ints );
-
   if ( !is_parsed )
   {
-    throw std::invalid_argument( "Failed to parse input instruction data" );
+    throw std::invalid_argument( "Failed to parse input int codes data" );
   }
 
   return ints;
@@ -130,7 +129,7 @@ AOC_REGISTER_PROBLEM( 2019_02, solve_1, solve_2 );
 
 IntCode run_program( const char* input )
 {
-  std::stringstream ss( input );
+  std::istringstream ss( input );
   auto int_codes = parse_ints( ss );
   return run_program( int_codes );
 }

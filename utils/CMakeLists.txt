@@ -15,6 +15,7 @@ add_library(AocUtils
   inc/AoC/utils/ranges/append.h
   inc/AoC/utils/ranges/enumerate.h
   inc/AoC/utils/ranges/generate.h
+  inc/AoC/utils/ranges/inclusive_scan.h
   inc/AoC/utils/ranges/interleave.h
   inc/AoC/utils/ranges/prepend.h
   inc/AoC/utils/ranges/transpose.h

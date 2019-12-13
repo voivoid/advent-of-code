@@ -3,13 +3,13 @@
 #include "AoC/problems_map.h"
 #include "AoC/utils/geo.h"
 #include "AoC/utils/parse.h"
+#include "AoC/utils/ranges/inclusive_scan.h"
 
 #include "range/v3/numeric/accumulate.hpp"
 #include "range/v3/range/conversion.hpp"
-#include "range/v3/view/exclusive_scan.hpp"
-#include "range/v3/view/indices.hpp"
 #include "range/v3/view/istream.hpp"
 #include "range/v3/view/join.hpp"
+#include "range/v3/view/repeat_n.hpp"
 #include "range/v3/view/transform.hpp"
 #include "range/v3/view/zip_with.hpp"
 
@@ -145,9 +145,9 @@ State run_instruction( const State state, const Instruction instruction )
 auto run_instruction_steps_by_step( State state, const Instruction instruction )
 {
   state.heading = calc_new_heading( state.heading, instruction.rotation );
-  return ranges::views::closed_indices( size_t{ 1 }, instruction.steps_num ) |
-         ranges::views::exclusive_scan(
-             state, std::bind( &run_instruction, std::placeholders::_1, Instruction{ Instruction::Rotation::Forward, 1 } ) );
+
+  return ranges::views::repeat_n( Instruction{ Instruction::Rotation::Forward, 1 }, static_cast<int>( instruction.steps_num - 1 ) ) |
+         AoC::inclusive_scan( state, &run_instruction );
 }
 
 size_t calc_distance( const Coord c1, const Coord c2 )
@@ -197,7 +197,7 @@ size_t solve_1( std::istream& input )
 size_t solve_2( std::istream& input )
 {
   const auto instructions  = parse_instructions( input ) | ranges::to_vector;
-  const auto corner_states = instructions | ranges::views::exclusive_scan( start_state, &run_instruction );
+  const auto corner_states = instructions | AoC::inclusive_scan( start_state, &run_instruction );
 
   auto all_visited_coords = ranges::views::zip_with( &run_instruction_steps_by_step, corner_states, instructions ) | ranges::views::join |
                             ranges::views::transform( []( const State& s ) { return s.coord; } );

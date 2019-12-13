@@ -5,9 +5,9 @@
 #include "AoC/utils/geo.h"
 #include "AoC/utils/parse.h"
 #include "AoC/utils/ranges/append.h"
+#include "AoC/utils/ranges/inclusive_scan.h"
 
 #include "range/v3/numeric/accumulate.hpp"
-#include "range/v3/view/exclusive_scan.hpp"
 #include "range/v3/view/getlines.hpp"
 #include "range/v3/view/tail.hpp"
 #include "range/v3/view/transform.hpp"
@@ -111,9 +111,8 @@ std::string solve( std::istream& input, const Keypad<side>& keypad )
 {
   const CursorPos start_cursor_pos = *AoC::dd_array_find_elem_indices( keypad, '5' );
 
-  // appending dummy instructions since ranges v3 has no inclusive_scan yet :(
-  auto keypad_positions = ranges::getlines( input ) | ranges::views::transform( &parse_instructions ) | AoC::append( Instructions{} ) |
-                          ranges::views::exclusive_scan( start_cursor_pos, [&keypad]( const CursorPos cursor, const auto instructions ) {
+  auto keypad_positions = ranges::getlines( input ) | ranges::views::transform( &parse_instructions ) |
+                          AoC::inclusive_scan( start_cursor_pos, [&keypad]( const CursorPos cursor, const Instructions& instructions ) {
                             return run_instructions( cursor, instructions, keypad );
                           } );
 
