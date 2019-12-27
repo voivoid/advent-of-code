@@ -250,19 +250,19 @@ size_t solve_2( std::istream& input )
   const auto path1 = get_path( start_location, wires.first );
   const auto path2 = get_path( start_location, wires.second );
 
-  const auto calc_total_steps = [&]( const size_t min_steps, const Location intersection ) {
+  const auto calc_min_steps = [&]( const size_t current_min_steps, const Location intersection ) {
     const auto calc_path_steps = [&]( auto path ) {
-      auto path_to_intersection = path | ranges::views::take( min_steps ) |
+      auto path_to_intersection = path | ranges::views::take( current_min_steps ) |
                                   ranges::views::take_while( [intersection]( const auto loc ) { return loc != intersection; } );
       return 1 + ranges::distance( path_to_intersection );
     };
 
     const auto steps = boost::numeric_cast<size_t>( calc_path_steps( path1 ) + calc_path_steps( path2 ) );
-    return std::min( steps, min_steps );
+    return std::min( steps, current_min_steps );
   };
 
   auto intersections = get_intersections( segments2, segments1 ) | ranges::views::tail;
-  return ranges::accumulate( intersections, size_t{ std::numeric_limits<int>::max() }, calc_total_steps );
+  return ranges::accumulate( intersections, size_t{ std::numeric_limits<int>::max() }, calc_min_steps );
 }
 
 AOC_REGISTER_PROBLEM( 2019_03, solve_1, solve_2 );
