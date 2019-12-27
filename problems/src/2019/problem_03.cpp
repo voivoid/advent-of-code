@@ -170,7 +170,7 @@ ranges::any_view<Location> get_parallel_intersections( const Segment& s1, const 
     return ranges::views::empty<Location>;
   }
 
-  return ranges::views::closed_iota( intersections->first, intersections->second ) | ranges::view::transform( [&]( const int c ) {
+  return ranges::views::closed_iota( intersections->first, intersections->second ) | ranges::views::transform( [&]( const int c ) {
            Location loc{};
            loc.*const_coord     = s1.p1.*const_coord;
            loc.*non_const_coord = c;
@@ -199,7 +199,7 @@ ranges::any_view<Location> get_intersections( const Segment& s1, const Segment& 
 
 auto get_intersections( const Segments& wireSegments1, const Segments& wireSegments2 )
 {
-  return ranges::views::cartesian_product( wireSegments1, wireSegments2 ) | ranges::view::transform( []( const auto segments_pair ) {
+  return ranges::views::cartesian_product( wireSegments1, wireSegments2 ) | ranges::views::transform( []( const auto segments_pair ) {
            const auto [ s1, s2 ] = segments_pair;
            return get_intersections( s1, s2 );
          } ) |
