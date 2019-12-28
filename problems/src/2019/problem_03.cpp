@@ -13,6 +13,7 @@
 #include "range/v3/view/any_view.hpp"
 #include "range/v3/view/cartesian_product.hpp"
 #include "range/v3/view/empty.hpp"
+#include "range/v3/view/filter.hpp"
 #include "range/v3/view/indices.hpp"
 #include "range/v3/view/iota.hpp"
 #include "range/v3/view/join.hpp"
@@ -22,6 +23,7 @@
 #include "range/v3/view/take.hpp"
 #include "range/v3/view/take_while.hpp"
 #include "range/v3/view/transform.hpp"
+#include "range/v3/view/zip.hpp"
 #include "range/v3/view/zip_with.hpp"
 
 #include "boost/fusion/adapted/struct.hpp"
@@ -32,6 +34,8 @@
 #include <istream>
 #include <limits>
 #include <tuple>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 namespace
@@ -216,6 +220,24 @@ auto get_path( const Location start_location, const Wires& wires )
   return ranges::views::zip_with( &get_wire_steps, wires, get_path_locations( start_location, wires ) ) | ranges::views::join;
 }
 
+using LocationToStepsNumMap = std::unordered_map<Location, size_t, AoC::GeoHasher>;
+
+size_t get_path1_steps_to_intersection( const LocationToStepsNumMap& path1_intersections_to_steps, const Location intersection )
+{
+  const auto path1_location_iter = path1_intersections_to_steps.find( intersection );
+  assert( path1_location_iter != path1_intersections_to_steps.cend() );
+  return path1_location_iter->second;
+};
+
+auto parse_segments( std::istream& input, const Location start_location )
+{
+  auto wires     = parse_wires( input );
+  auto segments1 = make_segments( start_location, wires.first );
+  auto segments2 = make_segments( start_location, wires.second );
+
+  return std::make_tuple( std::move( wires ), std::move( segments1 ), std::move( segments2 ) );
+}
+
 }  // namespace
 
 namespace AoC_2019
@@ -226,43 +248,42 @@ namespace problem_03
 
 size_t solve_1( std::istream& input )
 {
-  const auto start_location         = Location{ 0, 0 };
-  const auto calc_distance_to_start = std::bind( &calc_distance, start_location, std::placeholders::_1 );
-
-  const auto wires  = parse_wires( input );
-  const auto segments1 = make_segments( start_location, wires.first );
-  const auto segments2 = make_segments( start_location, wires.second );
+  const auto start_location                  = Location{ 0, 0 };
+  const auto [ wires, segments1, segments2 ] = parse_segments( input, start_location );
 
   auto intersections = get_intersections( segments1, segments2 ) | ranges::views::tail;  // get tail to ignore start position intersection
 
-  auto distances = intersections | ranges::views::transform( calc_distance_to_start );
+  const auto calc_distance_to_start = std::bind( &calc_distance, start_location, std::placeholders::_1 );
+  auto distances                    = intersections | ranges::views::transform( calc_distance_to_start );
   return ranges::min( distances );
 }
 
 size_t solve_2( std::istream& input )
 {
-  const auto start_location = Location{ 0, 0 };
+  const auto start_location                  = Location{ 0, 0 };
+  const auto [ wires, segments1, segments2 ] = parse_segments( input, start_location );
 
-  const auto wires  = parse_wires( input );
-  const auto segments1 = make_segments( start_location, wires.first );
-  const auto segments2 = make_segments( start_location, wires.second );
+  auto path1_indexed = ranges::views::zip( get_path( start_location, wires.first ), ranges::views::iota( size_t{ 1 } ) );
+  auto path2_indexed = ranges::views::zip( get_path( start_location, wires.second ), ranges::views::iota( size_t{ 1 } ) );
 
-  const auto path1 = get_path( start_location, wires.first );
-  const auto path2 = get_path( start_location, wires.second );
+  const auto intersections =
+      get_intersections( segments1, segments2 ) | ranges::views::tail | ranges::to<std::unordered_set<Location, AoC::GeoHasher>>;
 
-  const auto calc_min_steps = [&]( const size_t current_min_steps, const Location intersection ) {
-    const auto calc_path_steps = [&]( auto path ) {
-      auto path_to_intersection = path | ranges::views::take( current_min_steps ) |
-                                  ranges::views::take_while( [intersection]( const auto loc ) { return loc != intersection; } );
-      return 1 + ranges::distance( path_to_intersection );
-    };
+  const auto filter_intersection_locations = ranges::views::filter( [&intersections]( const auto step ) {
+    const auto [ location, _ ] = step;
+    return intersections.find( location ) != intersections.cend();
+  } );
 
-    const auto steps = boost::numeric_cast<size_t>( calc_path_steps( path1 ) + calc_path_steps( path2 ) );
-    return std::min( steps, current_min_steps );
-  };
+  const auto path1_intersections_to_steps = path1_indexed | filter_intersection_locations | ranges::to<LocationToStepsNumMap>;
 
-  auto intersections = get_intersections( segments2, segments1 ) | ranges::views::tail;
-  return ranges::accumulate( intersections, size_t{ std::numeric_limits<int>::max() }, calc_min_steps );
+  const auto get_of_steps_to_intersection_for_both_paths = ranges::views::transform( [&path1_intersections_to_steps]( const auto step ) {
+    const auto [ location, step_num ] = step;
+    return step_num + get_path1_steps_to_intersection( path1_intersections_to_steps, location );
+  } );
+
+  auto steps_to_intersections = path2_indexed | filter_intersection_locations | get_of_steps_to_intersection_for_both_paths;
+
+  return ranges::min( steps_to_intersections );
 }
 
 AOC_REGISTER_PROBLEM( 2019_03, solve_1, solve_2 );
