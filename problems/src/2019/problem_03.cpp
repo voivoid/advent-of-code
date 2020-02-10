@@ -227,7 +227,7 @@ size_t get_path1_steps_to_intersection( const LocationToStepsNumMap& path1_inter
   const auto path1_location_iter = path1_intersections_to_steps.find( intersection );
   assert( path1_location_iter != path1_intersections_to_steps.cend() );
   return path1_location_iter->second;
-};
+}
 
 auto parse_segments( std::istream& input, const Location start_location )
 {

@@ -16,6 +16,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND ${CMAKE_CXX_COMPILER_VERSION} 
                           2016_07     # gcc 9.* segfaults ( debug build only )
                           2016_08     # gcc 9.* segfaults
                           2017_03     # gcc 9.* segfaults
+                          2019_03     # gcc 9.* segfaults
    )
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
   set(AocExcludedProblems 2015_14
