@@ -16,7 +16,7 @@ namespace
 {
 std::string transform( const std::string& digits )
 {
-  const auto digit_groups = digits | ranges::views::group_by( std::equal_to<char>{} );
+  auto digit_groups = digits | ranges::views::group_by( std::equal_to<char>{} );
 
   std::ostringstream acc;
   for ( const auto group : digit_groups )

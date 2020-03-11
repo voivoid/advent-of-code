@@ -41,7 +41,7 @@ using BoxId = std::string;
 BoxStats analyze_box_id( BoxId id )
 {
   const auto sorted_chars   = std::move( id ) | ranges::actions::sort;
-  const auto groups_lengths = sorted_chars | ranges::views::group_by( std::equal_to<char>() ) |
+  auto groups_lengths = sorted_chars | ranges::views::group_by( std::equal_to<char>() ) |
                               ranges::views::transform( []( const auto group ) { return ranges::distance( group ); } );
   const bool has_doubles = ranges::count( groups_lengths, 2 ) > 0;
   const bool has_triples = ranges::count( groups_lengths, 3 ) > 0;

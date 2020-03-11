@@ -161,7 +161,7 @@ template <bool ( *cmp )( const GuardStats&, const GuardStats& )>
 size_t solve( std::istream& input )
 {
   const GuardShifts shifts = parse_shifts_and_sort_by_guard_id( input );
-  const auto guards        = get_guards_stats( shifts );
+  auto guards        = get_guards_stats( shifts );
 
   const auto guard_with_max_sleep_time = ranges::max( guards, cmp );
 
