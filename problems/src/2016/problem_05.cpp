@@ -3,6 +3,7 @@
 #include "AoC/problems_map.h"
 #include "AoC/utils/md5.h"
 
+#include "range/v3/range/conversion.hpp"
 #include "range/v3/view/filter.hpp"
 #include "range/v3/view/iota.hpp"
 #include "range/v3/view/take.hpp"

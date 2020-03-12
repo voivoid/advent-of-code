@@ -42,6 +42,8 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
    )
 endif()
 
+set(AocExcludedProblems ${AocExcludedProblems} 2016_06) # 2016_06 fails to compile due to recent range-v3 changes
+
 foreach(Problem ${AocExcludedProblems})
   message("Problem ${Problem} would not be built due to ${CMAKE_CXX_COMPILER_ID} compiler issues")
 endforeach()

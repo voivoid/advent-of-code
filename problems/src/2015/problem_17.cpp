@@ -50,7 +50,7 @@ using Cache = std::map<CacheKey, ContainersCombinations, CacheComparator>;
 
 ContainersCombinations generate_combinations( ranges::any_view<Volume> containers, const Volume volume_left, Cache& cache )
 {
-  const auto cache_iter = cache.find( { volume_left, containers } );
+  const auto cache_iter = cache.find( { volume_left, ranges::to<Containers>( containers ) } );
   if ( cache_iter != cache.cend() )
   {
     return cache_iter->second;
@@ -81,7 +81,7 @@ ContainersCombinations generate_combinations( ranges::any_view<Volume> container
 
   auto result = ranges::views::concat( result1, result2 );
 
-  cache.emplace( std::make_pair( volume_left, containers ), result );
+  cache.emplace( std::make_pair( volume_left, ranges::to<Containers>( containers ) ), result );
 
   return result;
 }

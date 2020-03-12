@@ -3,6 +3,7 @@
 #include "AoC/utils/geo.h"
 
 #include "range/v3/algorithm/equal.hpp"
+#include "range/v3/range/conversion.hpp"
 #include "range/v3/view/cartesian_product.hpp"
 #include "range/v3/view/indices.hpp"
 #include "range/v3/view/join.hpp"

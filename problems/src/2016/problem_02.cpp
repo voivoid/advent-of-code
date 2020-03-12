@@ -8,6 +8,7 @@
 #include "AoC/utils/ranges/inclusive_scan.h"
 
 #include "range/v3/numeric/accumulate.hpp"
+#include "range/v3/range/conversion.hpp"
 #include "range/v3/view/getlines.hpp"
 #include "range/v3/view/tail.hpp"
 #include "range/v3/view/transform.hpp"

@@ -5,6 +5,7 @@
 #include "AoC/utils/geo.h"
 #include "AoC/utils/parse.h"
 
+#include "range/v3/range/conversion.hpp"
 #include "range/v3/numeric/accumulate.hpp"
 #include "range/v3/view/c_str.hpp"
 #include "range/v3/view/getlines.hpp"

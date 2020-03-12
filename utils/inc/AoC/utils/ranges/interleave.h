@@ -2,6 +2,7 @@
 
 #include "range/v3/algorithm/for_each.hpp"
 #include "range/v3/range/access.hpp"
+#include "range/v3/range/conversion.hpp"
 #include "range/v3/range/traits.hpp"
 #include "range/v3/view/facade.hpp"
 #include "range/v3/view/subrange.hpp"
@@ -80,7 +81,7 @@ struct interleave_view<Rngs>::cursor
 //                round-robin fashion.
 inline auto interleave()
 {
-  return ranges::make_pipeable( []( auto&& rngs ) {
+  return ranges::make_view_closure( []( auto&& rngs ) {
     using Rngs = decltype( rngs );
     return details::interleave_view<ranges::views::all_t<Rngs>>( ranges::views::all( std::forward<Rngs>( rngs ) ) );
   } );
