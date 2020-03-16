@@ -13,6 +13,9 @@ else()
   set(BoostB2 "<SOURCE_DIR>/b2")
 endif()
 
+# TODO: use config.jam
+# echo "using gcc : 4.4 : /usr/bin/g++-4.4 ; " >> tools/build/src/user-config.jam
+
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   set(BoostToolset "gcc")
 elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
