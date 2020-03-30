@@ -56,21 +56,17 @@ BOOST_AUTO_TEST_CASE( AoC_utils_geo_segment )
 BOOST_AUTO_TEST_CASE( AoC_utils_geo_segment_perpendicular_intersections )
 {
   static const auto check_intersection =
-      []( const AoC::Segment& segment1, const AoC::Segment& segment2, const AoC::Point& expected_intersection ) {
-        static const auto check = [&]( const AoC::Segment& s1, const AoC::Segment& s2 ) {
+      []( const AoC::Segment& segment1, const AoC::Segment& segment2, const std::optional<AoC::Point>& expected_intersection ) {
+        const auto check = [&]( const AoC::Segment& s1, const AoC::Segment& s2 ) {
           const auto intersection = AoC::get_intersection_with_perpendicular( s1, s2 );
-          if ( intersection )
-          {
-            return *intersection == expected_intersection;
-          }
-
-          return false;
+          return ( intersection.has_value() == expected_intersection.has_value() ) &&
+                 ( !expected_intersection || ( *intersection == *expected_intersection ) );
         };
 
+        const auto result1 = check( segment1, segment2 );
+        const auto result2 = check( segment2, segment1 );
 
-        const auto result = check( segment1, segment2 );
-        assert( result == check( segment2, segment1 ) );
-        return result;
+        return ( result1 == result2 ) && result1;
       };
 
   {
@@ -100,7 +96,7 @@ BOOST_AUTO_TEST_CASE( AoC_utils_geo_segment_perpendicular_intersections )
   {
     AoC::Segment s1{ { 0, 0 }, { 5, 0 } };
     AoC::Segment s2{ { -1, 0 }, { -1, 5 } };
-    BOOST_CHECK( !check_intersection( s1, s2, {} ) );
+    BOOST_CHECK( check_intersection( s1, s2, {} ) );
   }
 }
 

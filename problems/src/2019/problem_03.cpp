@@ -225,8 +225,12 @@ using LocationToStepsNumMap = std::unordered_map<Location, size_t, AoC::GeoHashe
 size_t get_path1_steps_to_intersection( const LocationToStepsNumMap& path1_intersections_to_steps, const Location intersection )
 {
   const auto path1_location_iter = path1_intersections_to_steps.find( intersection );
-  assert( path1_location_iter != path1_intersections_to_steps.cend() );
-  return path1_location_iter->second;
+  if ( path1_location_iter != path1_intersections_to_steps.cend() )
+  {
+    return path1_location_iter->second;
+  }
+  else
+    throw std::runtime_error( "Unexpected flow" );
 }
 
 auto parse_segments( std::istream& input, const Location start_location )

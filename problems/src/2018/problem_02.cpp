@@ -40,9 +40,9 @@ using BoxId = std::string;
 
 BoxStats analyze_box_id( BoxId id )
 {
-  const auto sorted_chars   = std::move( id ) | ranges::actions::sort;
-  auto groups_lengths = sorted_chars | ranges::views::group_by( std::equal_to<char>() ) |
-                              ranges::views::transform( []( const auto group ) { return ranges::distance( group ); } );
+  const auto sorted_chars = std::move( id ) | ranges::actions::sort;
+  auto groups_lengths     = sorted_chars | ranges::views::group_by( std::equal_to<char>() ) |
+                        ranges::views::transform( []( const auto group ) { return ranges::distance( group ); } );
   const bool has_doubles = ranges::count( groups_lengths, 2 ) > 0;
   const bool has_triples = ranges::count( groups_lengths, 3 ) > 0;
   return { has_doubles ? size_t{ 1 } : size_t{ 0 }, has_triples ? size_t{ 1 } : size_t{ 0 } };
