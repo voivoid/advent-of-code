@@ -79,7 +79,7 @@ auto find_most_asleep_minute( Range&& sleep_intervals )
 {
   const auto minutes_by_intervals =
       ranges::views::indices( SleepMinute{ 0 }, SleepMinute{ 60 } ) |
-      ranges::views::transform( [&sleep_intervals]( const SleepMinute minute ) {
+      ranges::views::transform( [ &sleep_intervals ]( const SleepMinute minute ) {
         auto intervals                     = sleep_intervals;
         const auto num_of_intervals_asleep = ranges::accumulate(
             intervals | ranges::views::transform( std::bind( &is_asleep_in_minute, minute, std::placeholders::_1 ) ), SleepMinute{ 0 } );

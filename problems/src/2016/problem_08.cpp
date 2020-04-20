@@ -167,12 +167,12 @@ template <typename Range, typename B>
 auto bits_to_letters( const Range& bits, const size_t letters_num, const B bit1 )
 {
   assert( bits.size() == letters_num * LetterWidth * ScreenHeight );
-  const auto letter_chunks = bits | ranges::views::transform( [bit1]( const auto c ) { return c == bit1 ? '1' : '0'; } ) |
+  const auto letter_chunks = bits | ranges::views::transform( [ bit1 ]( const auto c ) { return c == bit1 ? '1' : '0'; } ) |
                              ranges::views::chunk( letters_num * LetterWidth ) |
                              ranges::views::transform( ranges::views::chunk( LetterWidth ) );
 
-  return ranges::views::indices( letters_num ) | ranges::views::transform( [letter_chunks]( const size_t n ) {
-           return letter_chunks | ranges::views::transform( [n]( const auto line ) {
+  return ranges::views::indices( letters_num ) | ranges::views::transform( [ letter_chunks ]( const size_t n ) {
+           return letter_chunks | ranges::views::transform( [ n ]( const auto line ) {
                     assert( n < line.size() );
                     return line[ boost::numeric_cast<ptrdiff_t>( n ) ];
                   } );

@@ -12,7 +12,7 @@ namespace AoC
 template <typename T>
 inline auto append( T elem )
 {
-  return ranges::make_pipeable( [e = std::move( elem )]( auto&& rng ) {
+  return ranges::make_pipeable( [ e = std::move( elem ) ]( auto&& rng ) {
     using Rng = decltype( rng );
     return ranges::views::concat( std::forward<Rng>( rng ), ranges::views::single( std::move( e ) ) );
   } );

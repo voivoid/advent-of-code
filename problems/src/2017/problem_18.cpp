@@ -141,7 +141,7 @@ Value read_reg( State& state, const Reg reg )
 Value get_src_value( State& state, const Source& op )
 {
   const auto reader =
-      boost::make_overloaded_function( []( const Value v ) { return v; }, [&state]( const Reg r ) { return read_reg( state, r ); } );
+      boost::make_overloaded_function( []( const Value v ) { return v; }, [ &state ]( const Reg r ) { return read_reg( state, r ); } );
 
   return boost::apply_visitor( reader, op );
 }

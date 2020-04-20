@@ -113,7 +113,7 @@ struct MaxPower
 MaxPower find_max_power( const Grid& grid, const size_t square_side )
 {
   const auto coords        = get_grid_coords( 1, grid_size - square_side + 1 );
-  const Coord max_top_left = ranges::max( coords, [&grid, square_side]( const Coord c1, const Coord c2 ) {
+  const Coord max_top_left = ranges::max( coords, [ &grid, square_side ]( const Coord c1, const Coord c2 ) {
     return get_total_power( grid, c1, square_side ) < get_total_power( grid, c2, square_side );
   } );
 

@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE( AoC_utils_geo_segment_perpendicular_intersections )
 {
   static const auto check_intersection =
       []( const AoC::Segment& segment1, const AoC::Segment& segment2, const std::optional<AoC::Point>& expected_intersection ) {
-        const auto check = [&]( const AoC::Segment& s1, const AoC::Segment& s2 ) {
+        const auto check = [ & ]( const AoC::Segment& s1, const AoC::Segment& s2 ) {
           const auto intersection = AoC::get_intersection_with_perpendicular( s1, s2 );
           return ( intersection.has_value() == expected_intersection.has_value() ) &&
                  ( !expected_intersection || ( *intersection == *expected_intersection ) );

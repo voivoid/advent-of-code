@@ -112,7 +112,9 @@ void exec_move( DanceState& state, const Spin spin )
 
 void exec_move( DanceState& state, const Exchange ex )
 {
-  const auto get_program_index = [&state]( const size_t n ) { return ( state.programs.size() + n - state.spin ) % state.programs.size(); };
+  const auto get_program_index = [ &state ]( const size_t n ) {
+    return ( state.programs.size() + n - state.spin ) % state.programs.size();
+  };
 
   const size_t from = get_program_index( ex.a_pos );
   const size_t to   = get_program_index( ex.b_pos );
@@ -125,7 +127,7 @@ void exec_move( DanceState& state, const Exchange ex )
 
 void exec_move( DanceState& state, const Partner partner )
 {
-  const auto find_program = [& programs = state.programs]( const Program program ) {
+  const auto find_program = [ &programs = state.programs ]( const Program program ) {
     auto iter = ranges::find( programs, program );
     assert( iter != programs.cend() );
     return iter;

@@ -233,7 +233,7 @@ size_t solve_1_impl( std::istream& input, const Value low_val_to_find, const Val
   const SlotMaps slots = execute_instructions( input );
 
   const auto bots     = slots.bots | ranges::views::values;
-  const auto bot_iter = ranges::find_if( bots, [low_val_to_find, high_val_to_find]( const Bot& bot ) {
+  const auto bot_iter = ranges::find_if( bots, [ low_val_to_find, high_val_to_find ]( const Bot& bot ) {
     return bot.low_val && bot.high_val && bot.low_val == low_val_to_find && bot.high_val == high_val_to_find;
   } );
 
@@ -262,7 +262,7 @@ size_t solve_2( std::istream& input )
 {
   auto slots = execute_instructions( input );
 
-  const auto get_output_val = [& outputs = slots.outputs]( const Id n ) {
+  const auto get_output_val = [ &outputs = slots.outputs ]( const Id n ) {
     const auto value = get_output( outputs, n ).value;
     assert( value );
     return *value;

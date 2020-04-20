@@ -106,7 +106,7 @@ Location get_wire_end_point( const Location loc, const Wire& wire )
 
 auto get_wire_steps( const Wire& wire, const Location loc )
 {
-  return ranges::views::closed_indices( size_t{ 1 }, wire.len ) | ranges::views::transform( [loc, wire]( const auto len ) {
+  return ranges::views::closed_indices( size_t{ 1 }, wire.len ) | ranges::views::transform( [ loc, wire ]( const auto len ) {
            return get_wire_end_point( loc, Wire{ wire.dir, len } );
          } );
 }
@@ -174,7 +174,7 @@ ranges::any_view<Location> get_parallel_intersections( const Segment& s1, const 
     return ranges::views::empty<Location>;
   }
 
-  return ranges::views::closed_iota( intersections->first, intersections->second ) | ranges::views::transform( [&]( const int c ) {
+  return ranges::views::closed_iota( intersections->first, intersections->second ) | ranges::views::transform( [ & ]( const int c ) {
            Location loc{};
            loc.*const_coord     = s1.p1.*const_coord;
            loc.*non_const_coord = c;
@@ -273,14 +273,14 @@ size_t solve_2( std::istream& input )
   const auto intersections =
       get_intersections( segments1, segments2 ) | ranges::views::tail | ranges::to<std::unordered_set<Location, AoC::GeoHasher>>;
 
-  const auto filter_intersection_locations = ranges::views::filter( [&intersections]( const auto step ) {
+  const auto filter_intersection_locations = ranges::views::filter( [ &intersections ]( const auto step ) {
     const auto [ location, _ ] = step;
     return intersections.find( location ) != intersections.cend();
   } );
 
   const auto path1_intersections_to_steps = path1_indexed | filter_intersection_locations | ranges::to<LocationToStepsNumMap>;
 
-  const auto get_of_steps_to_intersection_for_both_paths = ranges::views::transform( [&path1_intersections_to_steps]( const auto step ) {
+  const auto get_of_steps_to_intersection_for_both_paths = ranges::views::transform( [ &path1_intersections_to_steps ]( const auto step ) {
     const auto [ location, step_num ] = step;
     return step_num + get_path1_steps_to_intersection( path1_intersections_to_steps, location );
   } );

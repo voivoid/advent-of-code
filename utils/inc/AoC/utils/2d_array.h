@@ -332,7 +332,7 @@ auto column_impl( T& arr, const size_t n )
 {
   assert( n < arr.get_width() );
   return ranges::views::indices( size_t{ 0 }, arr.get_height() ) |
-         ranges::views::transform( [&arr, n]( const size_t i ) -> E& { return arr[ n ][ i ]; } );
+         ranges::views::transform( [ &arr, n ]( const size_t i ) -> E& { return arr[ n ][ i ]; } );
 }
 
 template <typename E, typename T>
@@ -340,7 +340,7 @@ auto row_impl( T& arr, const size_t n )
 {
   assert( n < arr.get_height() );
   return ranges::views::indices( size_t{ 0 }, arr.get_width() ) |
-         ranges::views::transform( [&arr, n]( const size_t i ) -> E& { return arr[ i ][ n ]; } );
+         ranges::views::transform( [ &arr, n ]( const size_t i ) -> E& { return arr[ i ][ n ]; } );
 }
 
 }  // namespace Details
@@ -360,7 +360,7 @@ auto column( const Details::dd_array<T, Impl>& arr, const size_t n )
 template <typename Arr>
 auto columns( Arr& arr )
 {
-  return ranges::views::indices( arr.get_width() ) | ranges::views::transform( [&arr]( const size_t n ) { return column( arr, n ); } );
+  return ranges::views::indices( arr.get_width() ) | ranges::views::transform( [ &arr ]( const size_t n ) { return column( arr, n ); } );
 }
 
 template <typename T, typename Impl>
@@ -378,7 +378,7 @@ auto row( const Details::dd_array<T, Impl>& arr, const size_t n )
 template <typename Arr>
 auto rows( Arr& arr )
 {
-  return ranges::views::indices( arr.get_height() ) | ranges::views::transform( [&arr]( const size_t n ) { return row( arr, n ); } );
+  return ranges::views::indices( arr.get_height() ) | ranges::views::transform( [ &arr ]( const size_t n ) { return row( arr, n ); } );
 }
 
 }  // namespace AoC

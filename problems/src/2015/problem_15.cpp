@@ -134,7 +134,7 @@ size_t calc_max_score( Scores scores )
 
 QuantityCombinations generate_quantity_combinations( const size_t ingredients_num, const Quantity max_quantity )
 {
-  QuantityCombinationCoro::pull_type quantity_combinations( [ingredients_num, max_quantity]( QuantityCombinationCoro::push_type& yield ) {
+  QuantityCombinationCoro::pull_type quantity_combinations( [ ingredients_num, max_quantity ]( QuantityCombinationCoro::push_type& yield ) {
     Quantities quantities_stack;
     generate_quantity_combinations( ingredients_num, max_quantity, quantities_stack, yield );
   } );
@@ -144,7 +144,7 @@ QuantityCombinations generate_quantity_combinations( const size_t ingredients_nu
 
 auto generate_ingredient_combinations( QuantityCombinations& quantity_combinations, const std::vector<Ingredient>& ingredients )
 {
-  return quantity_combinations | ranges::views::indirect | ranges::views::transform( [&ingredients]( const auto& quantities ) {
+  return quantity_combinations | ranges::views::indirect | ranges::views::transform( [ &ingredients ]( const auto& quantities ) {
            auto multiply = []( const Ingredient& ingredient, const Quantity quantity ) { return ingredient * quantity; };
            return ranges::views::zip_with( multiply, ingredients, quantities );
          } );
@@ -161,7 +161,7 @@ size_t solve( std::istream& input, const Quantity max_quantity, const std::optio
   if ( calories )
   {
     const auto filtered_by_calories =
-        scores | ranges::views::filter( [&calories]( const Ingredient& ingredient ) { return ingredient.calories == *calories; } );
+        scores | ranges::views::filter( [ &calories ]( const Ingredient& ingredient ) { return ingredient.calories == *calories; } );
     return calc_max_score( filtered_by_calories );
   }
   return calc_max_score( scores );

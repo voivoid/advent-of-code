@@ -117,10 +117,11 @@ ModDiff calc_mood( const std::vector<Name>& names, const NeighboursMap& neighbou
 
   const auto neighbour_groups =
       names | ranges::views::cycle | ranges::views::take_exactly( names.size() + 1 ) | ranges::views::sliding( 2 );
-  const auto total_mood = ranges::accumulate( neighbour_groups, ModDiff(), [&neighbours_map]( const ModDiff diff, const auto neighbours ) {
-    return diff + get_mood( neighbours[ 0 ], neighbours[ 1 ], neighbours_map ) +
-           get_mood( neighbours[ 1 ], neighbours[ 0 ], neighbours_map );
-  } );
+  const auto total_mood =
+      ranges::accumulate( neighbour_groups, ModDiff(), [ &neighbours_map ]( const ModDiff diff, const auto neighbours ) {
+        return diff + get_mood( neighbours[ 0 ], neighbours[ 1 ], neighbours_map ) +
+               get_mood( neighbours[ 1 ], neighbours[ 0 ], neighbours_map );
+      } );
   return total_mood;
 }
 

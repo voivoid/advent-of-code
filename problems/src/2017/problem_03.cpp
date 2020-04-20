@@ -135,7 +135,7 @@ Value calc_new_value( Quadrants& quads, const Coord x, const Coord y )
   const std::initializer_list<Pos> neighbour_positions = { { x - 1, y + 1 }, { x, y + 1 },     { x + 1, y + 1 }, { x - 1, y },
                                                            { x + 1, y },     { x - 1, y - 1 }, { x, y - 1 },     { x + 1, y - 1 } };
 
-  const auto neighbour_values = neighbour_positions | ranges::views::transform( [&quads]( const Pos p ) {
+  const auto neighbour_values = neighbour_positions | ranges::views::transform( [ &quads ]( const Pos p ) {
                                   const auto [ px, py ] = p;
                                   return get_value( quads, px, py );
                                 } );

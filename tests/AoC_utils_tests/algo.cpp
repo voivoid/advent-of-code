@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_CASE( AoC_utils_algo_iterate )
   BOOST_CHECK_EQUAL( "abcxxxxx", AoC::iterate_n( std::string( "abc" ), add_char, 5 ) );
 
   int i        = 0;
-  auto inc_ref = [&i]( int& ri ) {
+  auto inc_ref = [ &i ]( int& ri ) {
     BOOST_CHECK_EQUAL( &i, &ri );
     ++ri;
     return ri;

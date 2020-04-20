@@ -72,7 +72,7 @@ size_t get_distance( const Path& path, const PathMap& path_map )
 
 size_t calc_route_distance( const Route& route, const PathMap& path_map )
 {
-  const auto distances = route | ranges::views::sliding( 2 ) | ranges::views::transform( [&path_map]( const auto paths ) {
+  const auto distances = route | ranges::views::sliding( 2 ) | ranges::views::transform( [ &path_map ]( const auto paths ) {
                            assert( paths.size() == 2 );
                            return get_distance( { paths[ 0 ], paths[ 1 ] }, path_map );
                          } );

@@ -96,7 +96,7 @@ CursorPos move_cursor( const CursorPos cursor_pos, const Instruction instruction
 template <typename Instructions, size_t side>
 CursorPos run_instructions( const CursorPos cursor_pos, Instructions instructions, const Keypad<side>& keypad )
 {
-  return ranges::accumulate( instructions, cursor_pos, [&keypad]( const CursorPos cursor, const Instruction instruction ) {
+  return ranges::accumulate( instructions, cursor_pos, [ &keypad ]( const CursorPos cursor, const Instruction instruction ) {
     return move_cursor( cursor, instruction, keypad );
   } );
 }
@@ -113,12 +113,12 @@ std::string solve( std::istream& input, const Keypad<side>& keypad )
   const CursorPos start_cursor_pos = *AoC::dd_array_find_elem_indices( keypad, '5' );
 
   auto keypad_positions = ranges::getlines( input ) | ranges::views::transform( &parse_instructions ) |
-                          AoC::inclusive_scan( start_cursor_pos, [&keypad]( const CursorPos cursor, const Instructions& instructions ) {
+                          AoC::inclusive_scan( start_cursor_pos, [ &keypad ]( const CursorPos cursor, const Instructions& instructions ) {
                             return run_instructions( cursor, instructions, keypad );
                           } );
 
   auto codes = keypad_positions | ranges::views::tail |
-               ranges::views::transform( [&keypad]( const CursorPos cursor ) { return code_by_position( cursor, keypad ); } );
+               ranges::views::transform( [ &keypad ]( const CursorPos cursor ) { return code_by_position( cursor, keypad ); } );
 
   return codes | ranges::to<std::string>();
 }

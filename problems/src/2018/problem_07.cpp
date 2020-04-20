@@ -97,7 +97,7 @@ bool has_all_dependencies_done( const Task task, const TaskDependencyMap& depend
 boost::optional<Task> try_get_next_ready_to_start_task( const Tasks& reachable_tasks, const TaskDependencyMap& dependency_map )
 {
   auto task_iter =
-      ranges::find_if( reachable_tasks, [&dependency_map]( const Task t ) { return has_all_dependencies_done( t, dependency_map ); } );
+      ranges::find_if( reachable_tasks, [ &dependency_map ]( const Task t ) { return has_all_dependencies_done( t, dependency_map ); } );
 
   if ( task_iter == reachable_tasks.cend() )
   {
@@ -180,7 +180,7 @@ Time calc_total_time( Tasks& reachable_tasks,
   complete_task( task_in_work.task, reachable_tasks, dependency_map );
 
   tasks_in_work.erase( tasks_in_work.begin() );
-  tasks_in_work = tasks_in_work | ranges::views::transform( [task_in_work]( TaskTime tt ) {
+  tasks_in_work = tasks_in_work | ranges::views::transform( [ task_in_work ]( TaskTime tt ) {
                     tt.time -= task_in_work.time;
                     return tt;
                   } ) |

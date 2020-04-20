@@ -87,7 +87,7 @@ size_t calc_max_score( const std::vector<Deer>& deers, const Seconds time_to_tra
 
   auto scores = distances_by_time | ranges::views::transform( []( const auto& distances ) {
                   auto max_distance = ranges::max( distances );
-                  return distances | ranges::views::transform( [max_distance]( const auto& distance ) {
+                  return distances | ranges::views::transform( [ max_distance ]( const auto& distance ) {
                            return distance == max_distance ? size_t{ 1 } : size_t{ 0 };
                          } );
                 } ) |

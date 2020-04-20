@@ -107,7 +107,7 @@ State::Heading turn_left( const State::Heading heading )
 
 Coord move( const Coord coord, const State::Heading heading, const size_t steps_num )
 {
-  const auto diff = [=]() -> Coord {
+  const auto diff = [ = ]() -> Coord {
     const int d = boost::numeric_cast<int>( steps_num );
     switch ( heading )
     {

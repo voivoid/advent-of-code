@@ -8,7 +8,8 @@
 namespace
 {
 
-union md5_digest {
+union md5_digest
+{
   boost::uuids::detail::md5::digest_type digest;
 
   using digest_bytes = std::byte[ sizeof( digest ) ];

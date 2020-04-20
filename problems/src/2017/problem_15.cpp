@@ -36,7 +36,7 @@ std::pair<Value, Value> parse_start_generator_values( std::istream& input )
 
 auto make_generator( const Value start_value, const Value multiplier )
 {
-  return AoC::generate_range( start_value, [multiplier]( const Value v ) { return ( v * multiplier ) % 2147483647; } );
+  return AoC::generate_range( start_value, [ multiplier ]( const Value v ) { return ( v * multiplier ) % 2147483647; } );
 }
 
 template <typename Range1, typename Range2>

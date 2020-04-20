@@ -84,8 +84,8 @@ size_t solve_2( std::istream& input )
   const std::string data{ std::istream_iterator<char>( input ), std::istream_iterator<char>() };
   const auto unique_polymers = get_unique_polymers( data );
 
-  const auto reduction_sizes = unique_polymers | ranges::views::transform( [&data]( const char polymer ) {
-                                 return data | ranges::views::filter( [polymer]( const char c ) { return to_lower( c ) != polymer; } );
+  const auto reduction_sizes = unique_polymers | ranges::views::transform( [ &data ]( const char polymer ) {
+                                 return data | ranges::views::filter( [ polymer ]( const char c ) { return to_lower( c ) != polymer; } );
                                } ) |
                                ranges::views::transform( BOOST_HOF_LIFT( &do_reductions ) );
 

@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE( AoC_utils_ranges_coro )
 {
   using coro_t = boost::coroutines2::coroutine<int>;
 
-  coro_t::pull_type fib_seq( [&]( coro_t::push_type& yield ) {
+  coro_t::pull_type fib_seq( [ & ]( coro_t::push_type& yield ) {
     int first = 1, second = 1;
     yield( first );
     yield( second );

@@ -25,11 +25,12 @@ struct CharInfo
   char chr;
 };
 
-template <template <typename> typename CharsFrequencySortPred>
-char get_most_common_char( std::vector<char> chars )
+template <template <typename> typename CharsFrequencySortPred, typename Range>
+char get_most_common_char( Range chars_range )
 {
-  chars |= ranges::actions::sort;
-  auto char_infos = chars | ranges::views::group_by( std::equal_to<char>{} ) | ranges::views::transform( []( const auto cs ) {
+  auto chars_vec = chars_range | ranges::to_vector;
+  chars_vec |= ranges::actions::sort;
+  auto char_infos = chars_vec | ranges::views::group_by( std::equal_to<char>{} ) | ranges::views::transform( []( const auto cs ) {
                       return CharInfo{ boost::numeric_cast<size_t>( ranges::distance( cs ) ), cs.front() };
                     } ) |
                     ranges::to_vector;
@@ -43,7 +44,9 @@ std::string solve( std::istream& input )
 {
   const auto lines = ranges::istream<std::string>( input ) | ranges::to_vector;
   const std::string result =
-      lines | AoC::transpose() | ranges::views::transform( &get_most_common_char<CharsFrequencySortPred> ) | ranges::to<std::string>();
+      lines | AoC::transpose() |
+      ranges::views::transform( []( auto range ) { return get_most_common_char<CharsFrequencySortPred>( range ); } ) |
+      ranges::to<std::string>();
   return result;
 }
 }  // namespace

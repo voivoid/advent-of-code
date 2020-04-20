@@ -95,7 +95,7 @@ struct Facility
 auto partition_devices( const Devices& devices )
 {
   const auto filter_by = []( const DeviceType type ) {
-    return ranges::views::filter( [type]( const Device& device ) { return device.type == type; } );
+    return ranges::views::filter( [ type ]( const Device& device ) { return device.type == type; } );
   };
 
   const auto chips      = devices | filter_by( DeviceType::Chip );
@@ -193,7 +193,7 @@ bool is_valid_floor( const Floor& facility )
   auto generators = devices.generators;
 
   return ranges::empty( generators ) ||
-         ranges::all_of( chips, [&generators]( const Device& chip ) { return check_chip_has_generator( chip, generators ); } );
+         ranges::all_of( chips, [ &generators ]( const Device& chip ) { return check_chip_has_generator( chip, generators ); } );
 }
 
 template <typename Facility>
@@ -223,7 +223,7 @@ ranges::any_view<ranges::any_view<Device>> generate_device_pairs( ranges::any_vi
   const auto head = ranges::views::single( *devices.begin() );
   auto tail       = devices | ranges::views::tail;
 
-  auto pairs = tail | ranges::views::transform( [head]( auto e ) { return head | AoC::append( e ); } );
+  auto pairs = tail | ranges::views::transform( [ head ]( auto e ) { return head | AoC::append( e ); } );
 
   return ranges::views::concat( pairs, generate_device_pairs( tail ) );
 }
@@ -315,7 +315,7 @@ size_t count_devices( const Facility& facility )
 {
   auto floor_nums = ranges::views::closed_iota( MinFloor, MaxFloor );
   auto devices_by_floor =
-      ranges::views::transform( floor_nums, [&facility]( const FloorNumber n ) { return get_floor( facility, n ).devices.size(); } );
+      ranges::views::transform( floor_nums, [ &facility ]( const FloorNumber n ) { return get_floor( facility, n ).devices.size(); } );
   return ranges::accumulate( devices_by_floor, size_t{ 0 } );
 }
 
@@ -341,7 +341,7 @@ int solve( const Facility& initial_state )
 
     for ( const auto& devices : generate_current_floor_devices_combinations( current_state ) )
     {
-      const auto try_to_move_devices_to = [&devices, &current_state, &states_queue, &states_history]( const size_t floor_num ) {
+      const auto try_to_move_devices_to = [ &devices, &current_state, &states_queue, &states_history ]( const size_t floor_num ) {
         auto new_state = try_to_move_devices_to_the_floor( devices, current_state, floor_num );
         if ( new_state )
         {

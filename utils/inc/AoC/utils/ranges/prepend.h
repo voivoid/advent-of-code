@@ -11,7 +11,7 @@ namespace AoC
 template <typename T>
 inline auto prepend( T elem )
 {
-  return ranges::make_pipeable( [e = std::move( elem )]( auto&& rng ) {
+  return ranges::make_pipeable( [ e = std::move( elem ) ]( auto&& rng ) {
     using Rng = decltype( rng );
     return ranges::views::concat( ranges::views::single( std::move( e ) ), std::forward<Rng>( rng ) );
   } );

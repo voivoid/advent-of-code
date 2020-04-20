@@ -174,7 +174,7 @@ bool is_castable( const Player& player )
 
 void Player::update_effectful_spells( Boss& boss )
 {
-  boost::fusion::for_each( spell_effects, [this, &boss]( auto& v ) {
+  boost::fusion::for_each( spell_effects, [ this, &boss ]( auto& v ) {
     using Spell        = typename std::decay_t<decltype( v )>::first_type;
     auto& active_turns = v.second;
     if ( active_turns > 0 )
@@ -286,7 +286,7 @@ std::vector<Spells> generate_spells( const Player& player, const Boss& boss, con
   }
 
   std::vector<Spells> result_spells;
-  boost::mp11::mp_for_each<Player::SpellsList>( [&result_spells, player, boss, mode]( auto spell ) {
+  boost::mp11::mp_for_each<Player::SpellsList>( [ &result_spells, player, boss, mode ]( auto spell ) {
     using Spell = decltype( spell );
     if ( is_castable<Spell>( player ) )
     {

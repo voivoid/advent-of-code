@@ -90,9 +90,9 @@ auto generate_items_combination()
 {
   using namespace ranges::views;
   return store_weapon | for_each( []( const Item& weapon ) {
-           return store_armor | for_each( [&weapon]( const Item& armor ) {
-                    return store_rings | for_each( [&weapon, &armor]( const Item& ring1 ) {
-                             return store_rings | for_each( [&weapon, &armor, &ring1]( const Item& ring2 ) {
+           return store_armor | for_each( [ &weapon ]( const Item& armor ) {
+                    return store_rings | for_each( [ &weapon, &armor ]( const Item& ring1 ) {
+                             return store_rings | for_each( [ &weapon, &armor, &ring1 ]( const Item& ring2 ) {
                                       return ranges::yield_if( &ring1 != &ring2, std::vector<Item>{ weapon, armor, ring1, ring2 } );
                                     } );
                            } );

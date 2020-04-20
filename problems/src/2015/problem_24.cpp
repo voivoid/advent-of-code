@@ -42,7 +42,7 @@ auto find_all_weights_combinations( const Weights& sorted_weights )
 {
   using coro_t = boost::coroutines2::coroutine<Weights>;
 
-  coro_t::pull_type seq( [&sorted_weights]( coro_t::push_type& yield ) {
+  coro_t::pull_type seq( [ &sorted_weights ]( coro_t::push_type& yield ) {
     std::vector weights_dfs_stack = { std::make_pair( Weights{}, sorted_weights.cbegin() ) };
     auto end_iter                 = sorted_weights.cend();
     using WeightsStack            = decltype( weights_dfs_stack );
@@ -88,7 +88,7 @@ bool check_range_can_be_split_into_groups( ranges::any_view<Weight> rest_weights
     return false;
   }
 
-  return ranges::any_of( find_all_weights_combinations( diff | ranges::to<Weights>() ), [&diff, group_weight, groups_num]( auto ws ) {
+  return ranges::any_of( find_all_weights_combinations( diff | ranges::to<Weights>() ), [ &diff, group_weight, groups_num ]( auto ws ) {
     return calc_weights_sum( ws ) == group_weight && check_range_can_be_split_into_groups( diff, ws, groups_num - 1, group_weight );
   } );
 }
@@ -100,17 +100,17 @@ size_t solve( std::istream& input, const size_t number_of_compartments )
   const Weight compartment_weight = total_weight / number_of_compartments;
 
   auto weights_combinations = find_all_weights_combinations( sorted_weights );
-  auto passenger_weights    = weights_combinations | ranges::views::filter( [compartment_weight]( auto ws ) {
+  auto passenger_weights    = weights_combinations | ranges::views::filter( [ compartment_weight ]( auto ws ) {
                              return calc_weights_sum( ws ) == compartment_weight;
                            } );
 
   auto balanced_passenger_weights =
-      passenger_weights | ranges::views::filter( [&sorted_weights, number_of_compartments, compartment_weight]( auto ws ) {
+      passenger_weights | ranges::views::filter( [ &sorted_weights, number_of_compartments, compartment_weight ]( auto ws ) {
         return check_range_can_be_split_into_groups( sorted_weights, ws, number_of_compartments, compartment_weight );
       } );
 
   std::optional<size_t> min_size;
-  auto min_groups = balanced_passenger_weights | ranges::views::take_while( [&min_size]( const auto& r ) {
+  auto min_groups = balanced_passenger_weights | ranges::views::take_while( [ &min_size ]( const auto& r ) {
                       if ( !min_size )
                       {
                         min_size = r.size();

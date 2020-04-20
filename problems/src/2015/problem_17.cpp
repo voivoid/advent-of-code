@@ -73,9 +73,9 @@ ContainersCombinations generate_combinations( ranges::any_view<Volume> container
 
   auto tail = containers | ranges::views::tail;
 
-  ContainersCombinations result1 = generate_combinations( tail, volume_left - head, cache ) | ranges::views::transform( [head]( auto rng ) {
-                                     return ranges::views::concat( ranges::views::single( head ), rng );
-                                   } );
+  ContainersCombinations result1 =
+      generate_combinations( tail, volume_left - head, cache ) |
+      ranges::views::transform( [ head ]( auto rng ) { return ranges::views::concat( ranges::views::single( head ), rng ); } );
 
   ContainersCombinations result2 = generate_combinations( tail, volume_left, cache );
 
@@ -108,7 +108,7 @@ size_t get_min_containers_combinations_num( std::istream& input, const Volume vo
   const auto min_num_of_containers = combination_with_min_containers.size();
 
   auto combitions_with_min_containers =
-      combinations | ranges::views::filter( [min_num_of_containers]( const auto c ) { return c.size() == min_num_of_containers; } );
+      combinations | ranges::views::filter( [ min_num_of_containers ]( const auto c ) { return c.size() == min_num_of_containers; } );
 
   return boost::numeric_cast<size_t>( ranges::distance( combitions_with_min_containers ) );
 }

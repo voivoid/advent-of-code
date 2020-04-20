@@ -103,7 +103,7 @@ size_t solve_2( std::istream& input )
   const auto verbs    = ranges::views::closed_iota( IntCode{ 0 }, IntCode{ 99 } );
   const auto nv_pairs = ranges::views::cartesian_product( nouns, verbs );
 
-  const auto pair_iter = ranges::find_if( nv_pairs, [&int_codes]( const auto& pair ) {
+  const auto pair_iter = ranges::find_if( nv_pairs, [ &int_codes ]( const auto& pair ) {
     const auto [ noun, verb ] = pair;
     return run_program( int_codes, noun, verb ) == 19690720;
   } );

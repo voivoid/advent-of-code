@@ -137,7 +137,7 @@ boost::optional<Mismatch> find_mismatch( const Range& range )
 
   if ( a == b )
   {
-    auto iter = ranges::find_if( range, [a]( const Weight w ) { return w != a; } );
+    auto iter = ranges::find_if( range, [ a ]( const Weight w ) { return w != a; } );
 
     if ( iter == range.end() )
     {
@@ -172,7 +172,7 @@ Weight get_weights_sum( const std::string& name, const ProgamMap& program_map )
   const auto& prog        = get_program( name, program_map );
   const auto& subprograms = prog.subprograms;
 
-  const auto subprogram_sums = subprograms | ranges::views::transform( [&program_map]( const Name& subprog_name ) {
+  const auto subprogram_sums = subprograms | ranges::views::transform( [ &program_map ]( const Name& subprog_name ) {
                                  return get_weights_sum( subprog_name, program_map );
                                } );
 

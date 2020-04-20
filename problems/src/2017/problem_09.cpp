@@ -24,9 +24,9 @@ ParseResult solve( std::istream& input )
   ParseResult result{};
   size_t group_num = 0;
 
-  const auto calc_garbage_action = [&result]( auto& ) { ++result.chars_inside_garbage; };
-  const auto group_start_action  = [&group_num]( auto& ) { ++group_num; };
-  const auto group_end_action    = [&group_num, &result]( auto& ) {
+  const auto calc_garbage_action = [ &result ]( auto& ) { ++result.chars_inside_garbage; };
+  const auto group_start_action  = [ &group_num ]( auto& ) { ++group_num; };
+  const auto group_end_action    = [ &group_num, &result ]( auto& ) {
     result.groups_score += group_num;
     --group_num;
   };

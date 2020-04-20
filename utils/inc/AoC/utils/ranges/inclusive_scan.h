@@ -13,7 +13,7 @@ namespace AoC
 template <typename T, typename F>
 inline auto inclusive_scan( T init, F func )
 {
-  return ranges::make_pipeable( [i = std::move( init ), f = std::move( func )]( auto&& rng ) {
+  return ranges::make_pipeable( [ i = std::move( init ), f = std::move( func ) ]( auto&& rng ) {
     using Rng       = decltype( rng );
     using DummyType = std::tuple_element_t<1, boost::callable_traits::args_t<F>>;
 

@@ -96,9 +96,9 @@ Signal get_signal( const Source& source, Circuit& circuit );
 Signal run_instruction( const Instruction& instruction, Circuit& circuit )
 {
   const auto instruction_visitor = boost::make_overloaded_function(
-      [&circuit]( const Source& source ) { return get_signal( source, circuit ); },
-      [&circuit]( const UnaryGate& gate ) { return calc_unary_gate( gate.op, get_signal( gate.arg, circuit ) ); },
-      [&circuit]( const BinaryGate& gate ) {
+      [ &circuit ]( const Source& source ) { return get_signal( source, circuit ); },
+      [ &circuit ]( const UnaryGate& gate ) { return calc_unary_gate( gate.op, get_signal( gate.arg, circuit ) ); },
+      [ &circuit ]( const BinaryGate& gate ) {
         return calc_binary_gate( gate.op, get_signal( gate.arg1, circuit ), get_signal( gate.arg2, circuit ) );
       } );
   return boost::apply_visitor( instruction_visitor, instruction );
@@ -120,7 +120,7 @@ void update_circuit_wire_signal( Circuit& circuit, const Wire& wire, const Signa
 Signal get_signal( const Source& source, Circuit& circuit )
 {
   const auto source_visitor = boost::make_overloaded_function( []( const Signal& signal ) { return signal; },
-                                                               [&circuit]( const Wire& wire ) {
+                                                               [ &circuit ]( const Wire& wire ) {
                                                                  const auto& instruction = get_instruction( wire, circuit );
                                                                  const auto result       = run_instruction( instruction, circuit );
                                                                  update_circuit_wire_signal( circuit, wire, result );

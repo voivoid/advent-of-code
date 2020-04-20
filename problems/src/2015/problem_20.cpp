@@ -47,9 +47,9 @@ size_t calc_presents1( size_t house_index )
 size_t calc_presents2( size_t house_index )
 {
   auto divisors = get_all_divisors( house_index );
-  return 11 * ranges::accumulate( divisors |
-                                      ranges::views::filter( [house_index]( const auto divisor ) { return divisor * 50 >= house_index; } ),
-                                  size_t{ 0 } );
+  return 11 * ranges::accumulate(
+                  divisors | ranges::views::filter( [ house_index ]( const auto divisor ) { return divisor * 50 >= house_index; } ),
+                  size_t{ 0 } );
 }
 
 template <size_t ( *calc_presents )( size_t )>
@@ -60,7 +60,7 @@ size_t solve( std::istream& input )
 
   auto houses_with_at_least_as_many_presents =
       ranges::views::iota( size_t{ 1 } ) |
-      ranges::views::filter( [presents_num]( const size_t house_index ) { return calc_presents( house_index ) >= presents_num; } );
+      ranges::views::filter( [ presents_num ]( const size_t house_index ) { return calc_presents( house_index ) >= presents_num; } );
 
   const size_t first_house = houses_with_at_least_as_many_presents.front();
 

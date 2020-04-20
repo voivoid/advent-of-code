@@ -103,7 +103,7 @@ LocationIndex find_closest_location_index( const Coord current_coord, const Loca
     LocationIndex index;
   };
 
-  const auto indices_and_distances = locations | ranges::views::transform( [current_coord]( const auto location ) {
+  const auto indices_and_distances = locations | ranges::views::transform( [ current_coord ]( const auto location ) {
                                        const Distance distance = calc_distance( current_coord, location.coord );
                                        return DistanceIndex{ distance, location.index };
                                      } );
@@ -128,7 +128,7 @@ auto find_border_indices( const Locations& locations )
                                                     ranges::views::zip( xs, ranges::views::repeat( brect.right_bottom.y ) ),
                                                     ranges::views::zip( ranges::views::repeat( brect.right_bottom.x ), ys ) );
 
-  return border_coords | ranges::views::transform( [&locations]( const auto coord_pair ) {
+  return border_coords | ranges::views::transform( [ &locations ]( const auto coord_pair ) {
            auto [ x, y ] = coord_pair;
            return find_closest_location_index( { x, y }, locations );
          } );
@@ -136,7 +136,7 @@ auto find_border_indices( const Locations& locations )
 
 Distance sum_all_distances( const Coord current_coord, const Locations& locations )
 {
-  return ranges::accumulate( locations | ranges::views::transform( [current_coord]( const auto location ) {
+  return ranges::accumulate( locations | ranges::views::transform( [ current_coord ]( const auto location ) {
                                return calc_distance( current_coord, location.coord );
                              } ),
                              0 );
@@ -155,7 +155,7 @@ auto make_locations_map( const Locations& locations )
 
   return ranges::views::cartesian_product( ranges::views::closed_indices( brect.left_top.x, brect.right_bottom.x ),
                                            ranges::views::closed_indices( brect.left_top.y, brect.right_bottom.y ) ) |
-         ranges::views::transform( [&locations]( const auto xy ) {
+         ranges::views::transform( [ &locations ]( const auto xy ) {
            auto [ x, y ] = xy;
            return calc_map_element( Coord{ x, y }, locations );
          } );
@@ -166,7 +166,7 @@ int solve_2_impl( std::istream& input, const int total_distance_limit )
   const auto locations     = parse_locations( input );
   const auto locations_map = make_locations_map<&sum_all_distances>( locations );
   return boost::numeric_cast<int>( ranges::distance(
-      locations_map | ranges::views::filter( [total_distance_limit]( const auto sum ) { return sum < total_distance_limit; } ) ) );
+      locations_map | ranges::views::filter( [ total_distance_limit ]( const auto sum ) { return sum < total_distance_limit; } ) ) );
 }
 
 }  // namespace
@@ -185,7 +185,7 @@ int solve_1( std::istream& input )
   const auto border_location_indices = find_border_indices( locations ) | ranges::to<std::unordered_set>();
 
   auto finite_location_indices =
-      locations_map | ranges::views::filter( [&border_location_indices]( const LocationIndex index ) {
+      locations_map | ranges::views::filter( [ &border_location_indices ]( const LocationIndex index ) {
         return index != overlapped_location_index && border_location_indices.find( index ) == border_location_indices.cend();
       } );
 

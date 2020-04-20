@@ -45,7 +45,7 @@ ranges::any_view<std::pair<T, T>> get_unique_pair_combinations( ranges::any_view
   const auto& head = *elems.begin();
   auto tail        = elems | ranges::views::tail;
 
-  auto head_combinations = tail | ranges::views::transform( [head]( const auto& e ) { return std::make_pair( head, e ); } );
+  auto head_combinations = tail | ranges::views::transform( [ head ]( const auto& e ) { return std::make_pair( head, e ); } );
   auto tail_combinations = get_unique_pair_combinations<T>( tail );
 
   return ranges::views::concat( head_combinations, tail_combinations );

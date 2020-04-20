@@ -20,7 +20,7 @@ namespace x3 = boost::spirit::x3;
 
 auto inc( const size_t x )
 {
-  return [x]( auto& ctx ) { x3::_val( ctx ) += x; };
+  return [ x ]( auto& ctx ) { x3::_val( ctx ) += x; };
 }
 
 auto hex_digit()

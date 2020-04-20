@@ -26,7 +26,7 @@ size_t decompress( const Iter begin, const Iter end )
   size_t to_skip = 0;
   size_t result  = 0;
 
-  const auto decompress_marker = [&to_skip, &result]( auto& ctx ) {
+  const auto decompress_marker = [ &to_skip, &result ]( auto& ctx ) {
     const auto [ chars, to_repeat ] = AoC::fusion_to_std_tuple( x3::_attr( ctx ) );
 
     assert( to_skip == 0 );
@@ -44,8 +44,8 @@ size_t decompress( const Iter begin, const Iter end )
     }
   };
 
-  const auto skip_parser   = x3::eps( phx::cref( to_skip ) > 0 ) >> x3::char_[ ( [&to_skip]( auto& ) { --to_skip; } ) ];
-  const auto letter_parser = x3::alpha[ ( [&result]( auto& ) { ++result; } ) ];
+  const auto skip_parser   = x3::eps( phx::cref( to_skip ) > 0 ) >> x3::char_[ ( [ &to_skip ]( auto& ) { --to_skip; } ) ];
+  const auto letter_parser = x3::alpha[ ( [ &result ]( auto& ) { ++result; } ) ];
   const auto marker_parser = ( '(' > AoC::x3_size_t_ > 'x' > AoC::x3_size_t_ > ')' )[ decompress_marker ];
 
   const auto parser = *( skip_parser | letter_parser | marker_parser );

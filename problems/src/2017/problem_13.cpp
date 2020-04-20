@@ -109,7 +109,7 @@ size_t solve_2( std::istream& input )
   const auto time_offsets = ranges::views::iota( Picosecond{ 0 } );
 
   const auto smallest_delay =
-      *ranges::find_if( time_offsets, [&layers]( const Picosecond time_offset ) { return !has_violations( time_offset, layers ); } );
+      *ranges::find_if( time_offsets, [ &layers ]( const Picosecond time_offset ) { return !has_violations( time_offset, layers ); } );
 
   return smallest_delay;
 }

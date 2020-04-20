@@ -71,8 +71,8 @@ bool is_aba( const R1& parts_outside_square_brackets, const R2& parts_inside_squ
   auto bab_sequences = aba_sequences | ranges::views::transform( BOOST_HOF_LIFT( aba_to_bab ) );
 
 
-  return ranges::any_of( bab_sequences, [&parts_inside_square_brackets]( const auto bab ) {
-    return ranges::any_of( parts_inside_square_brackets | get_3chars_sequences, [&bab]( const auto seq ) {
+  return ranges::any_of( bab_sequences, [ &parts_inside_square_brackets ]( const auto bab ) {
+    return ranges::any_of( parts_inside_square_brackets | get_3chars_sequences, [ &bab ]( const auto seq ) {
       assert( seq.size() == aba_len );
       assert( bab.size() == aba_len );
       return ranges::equal( seq, bab );

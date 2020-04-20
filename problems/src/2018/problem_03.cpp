@@ -157,7 +157,7 @@ size_t solve_2( std::istream& input )
 
   const auto overlaps = calc_overlaps( claims );
   const auto non_overlapped_claim_iter =
-      ranges::find_if( claims, [&overlaps]( const Claim& claim ) { return check_is_not_overlapped( overlaps, claim ); } );
+      ranges::find_if( claims, [ &overlaps ]( const Claim& claim ) { return check_is_not_overlapped( overlaps, claim ); } );
 
   if ( non_overlapped_claim_iter == claims.end() )
   {

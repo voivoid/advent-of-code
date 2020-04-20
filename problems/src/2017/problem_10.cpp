@@ -73,7 +73,7 @@ void run_rounds( Nums& nums, const Range& lengths, const size_t rounds_num )
   size_t skip_size = 0;
   size_t current   = 0;
 
-  AoC::repeat( rounds_num, [&]() { run_round( nums, lengths, skip_size, current ); } );
+  AoC::repeat( rounds_num, [ & ]() { run_round( nums, lengths, skip_size, current ); } );
 }
 
 template <typename Range>

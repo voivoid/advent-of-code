@@ -121,7 +121,7 @@ size_t solve_1( std::istream& input )
   const auto parsed_input       = parse_input( input );
   const auto& medicine_molecule = parsed_input.medicine_molecule;
 
-  auto replacements = parsed_input.replacements_map | ranges::views::transform( [&medicine_molecule]( const auto& kv ) {
+  auto replacements = parsed_input.replacements_map | ranges::views::transform( [ &medicine_molecule ]( const auto& kv ) {
                         const auto& [ from, to ] = kv;
                         return generate_replacements( from, to, medicine_molecule );
                       } ) |
