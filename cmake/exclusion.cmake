@@ -1,5 +1,7 @@
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-  if(${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER "9")
+  if(${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER "10")
+    set(AocExcludedProblems 2015_13 2015_14 2015_20)
+  elseif(${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER "9")
     set(AocExcludedProblems 2015_13     # gcc 9.* segfaults
                             2015_18     # gcc 9.* segfaults
                             2016_07     # gcc 9.* segfaults ( debug build only )
@@ -11,6 +13,8 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
                                       2019_03     # gcc 9.1, 9.2 segfaults
       )
     endif()
+  elseif(${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER "8")
+    set(AocExcludedProblems 2016_05)
   endif()
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
   set(AocExcludedProblems 2015_14
