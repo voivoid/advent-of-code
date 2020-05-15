@@ -136,7 +136,7 @@ static void impl_tests()
   Deer deer1 = parse_deer( "Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds." );
 
   assert( deer1.name == "Comet" );
-  assert( deer1.speed = 14 );
+  assert( deer1.speed == 14 );
   assert( deer1.time_to_fly == 10 );
   assert( deer1.time_to_rest == 127 );
 

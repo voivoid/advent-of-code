@@ -1,6 +1,6 @@
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   if(${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER "10")
-    set(AocExcludedProblems 2015_13 2015_14 2015_20)
+    set(AocExcludedProblems 2015_13)
   elseif(${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER "9")
     set(AocExcludedProblems 2015_13     # gcc 9.* segfaults
                             2015_18     # gcc 9.* segfaults
