@@ -11,7 +11,7 @@ elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   set(AocCxxFlags -march=native)
 elseif (MSVC)
   set(AocCxxWarnings /W2 /WX /wd5104 /wd5105)
-  set(AocCxxFlags /DNOMINMAX /DWIN32_LEAN_AND_MEAN /MP /permissive- /experimental:preprocessor)
+  set(AocCxxFlags /DNOMINMAX /DWIN32_LEAN_AND_MEAN /MP /permissive- /Zc:preprocessor)
 endif()
 
 macro(process_aoc_target Target)

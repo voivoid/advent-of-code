@@ -18,12 +18,15 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   endif()
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
   set(AocExcludedProblems 2015_14
+                          2015_16
                           2015_19
                           2016_04
                           2016_05
+                          2016_09
                           2017_14
                           2018_03
                           2018_04
+                          2018_07
                           2018_11
                           2019_02
                           2019_03
