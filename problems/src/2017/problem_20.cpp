@@ -117,12 +117,13 @@ size_t solve_1( std::istream& input )
   return particle_index;
 }
 
-size_t solve_2( std::istream& input )
+size_t solve_2( std::istream& )
 {
-  const auto particles = get_particles( input ) | ranges::to_vector;
-  auto cs              = AoC::get_unique_pair_combinations<Particle>( particles );
+  //  const auto particles = get_particles( input ) | ranges::to_vector;
+  //  auto cs              = AoC::get_unique_pair_combinations<Particle>( particles );
 
-  return static_cast<size_t>( ranges::distance( cs ) );
+  //  return static_cast<size_t>( ranges::distance( cs ) );
+  return 0;
 }
 
 AOC_REGISTER_PROBLEM( 2017_20, solve_1, solve_2 );
