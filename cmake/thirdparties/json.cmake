@@ -1,6 +1,6 @@
 include(ExternalProject)
 
-find_program(Git REQUIRED)
+find_program(Git git REQUIRED)
 
 set(JsonVer v3.6.1)
 

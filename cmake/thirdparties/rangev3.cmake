@@ -1,6 +1,6 @@
 include(ExternalProject)
 
-find_program(Git REQUIRED)
+find_program(Git git REQUIRED)
 
 set(RangeV3Ver master)
 
