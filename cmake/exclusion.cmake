@@ -19,29 +19,19 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     set(AocExcludedProblems 2016_05)
   endif()
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-  set(AocExcludedProblems 2015_14
-                          2015_16
-                          2015_19
-                          2016_04
-                          2016_05
-                          2016_09
-                          2017_14
-                          2018_03
-                          2018_04
-                          2018_07
-                          2018_11
-                          2019_02
-                          2019_03
+  set(AocExcludedProblems 2015_16 # Boost PP
+                          2016_09 # Boost PP
+                          2018_07 # Boost PP
 
-                          2015_23 # HOF
-                          2016_07 # HOF
-                          2016_08 # HOF
-                          2017_02 # HOF
-                          2017_16 # HOF
-                          2017_18 # HOF
-                          2017_19 # HOF
-                          2017_20 # HOF
-                          2018_05 # HOF
+                          2015_23 # Boost HOF
+                          2016_07 # Boost HOF
+                          2016_08 # Boost HOF
+                          2017_02 # Boost HOF
+                          2017_16 # Boost HOF
+                          2017_18 # Boost HOF
+                          2017_19 # Boost HOF
+                          2017_20 # Boost HOF
+                          2018_05 # Boost HOF
   )
 endif()
 

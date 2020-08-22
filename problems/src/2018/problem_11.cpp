@@ -1,5 +1,9 @@
 #include "AoC/2018/problem_11.h"
 
+#ifdef _MSC_VER
+  #pragma warning( disable: 4804 ) // disable range-v3 warnings
+#endif
+
 #include "AoC/problems_map.h"
 #include "AoC/utils/2d_array.h"
 #include "AoC/utils/geo.h"
@@ -10,6 +14,8 @@
 #include "range/v3/view/transform.hpp"
 
 #include "boost/numeric/conversion/cast.hpp"
+
+#include <istream>
 
 namespace
 {

@@ -71,7 +71,7 @@ auto get_hash_bits( const std::string& hash )
          ranges::views::join;
 }
 
-std::string calc_hash( const std::string& key, const int postfix )
+std::string calc_hash( const std::string& key, const size_t postfix )
 {
   std::stringstream ss;
   ss << key << '-' << postfix;
