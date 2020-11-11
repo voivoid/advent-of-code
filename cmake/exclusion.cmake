@@ -19,11 +19,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     set(AocExcludedProblems 2016_05)
   endif()
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-  set(AocExcludedProblems 2015_16 # Boost PP
-                          2016_09 # Boost PP
-                          2018_07 # Boost PP
-
-                          2015_23 # Boost HOF
+  set(AocExcludedProblems 2015_23 # Boost HOF
                           2016_07 # Boost HOF
                           2016_08 # Boost HOF
                           2017_02 # Boost HOF
