@@ -1,8 +1,10 @@
 include(ExternalProject)
 
-set(BoostVersion "1.74.0")
+find_package(Patch REQUIRED)
+
+set(BoostVersion "1.75.0")
 set(BoostLibs test program_options context)
-set(BoostSHA256 afff36d392885120bcac079148c177d1f6f7730ec3d47233aa51b0afa4db94a5)
+set(BoostSHA256 aeb26f80e80945e82ee93e5939baebdca47b9dee80a07d3144be1e1a6a66dd6a)
 
 
 if(WIN32)
@@ -69,6 +71,7 @@ ExternalProject_Add(
   PREFIX thirdparties
   URL "https://dl.bintray.com/boostorg/release/${BoostVersion}/source/boost_${BoostVersionUnderscored}.tar.gz"
   URL_HASH SHA256=${BoostSHA256}
+  PATCH_COMMAND ${Patch_EXECUTABLE} -s -p0 < ${CMAKE_CURRENT_LIST_DIR}/boost.patch # https://github.com/boostorg/safe_numerics/issues/71
   CONFIGURE_COMMAND ${BoostBootstrapCmd} ${BoostBootstrapToolset}
   BUILD_COMMAND ${BoostB2} ${BoostB2Toolset} link=static threading=multi runtime-link=shared ${BoostLayout} ${BoostAddressModel} ${BoostBuildVariant} ${BoostLibsCmdLine} ${BoostAsmFlags} -j 4
   BUILD_IN_SOURCE TRUE

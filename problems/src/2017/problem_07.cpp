@@ -11,7 +11,17 @@
 
 #include "boost/fusion/adapted/struct.hpp"
 #include "boost/numeric/conversion/cast.hpp"
+
+#ifdef _MSC_VER
+  #pragma warning( push )
+  #pragma warning( disable: 4715 )
+#endif
+
 #include "boost/safe_numerics/safe_integer.hpp"
+
+#ifdef _MSC_VER
+  #pragma warning( pop )
+#endif
 
 
 #include <istream>

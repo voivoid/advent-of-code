@@ -11,7 +11,16 @@
 #include "range/v3/view/take_while.hpp"
 #include "range/v3/view/transform.hpp"
 
+#ifdef _MSC_VER
+  #pragma warning( push )
+  #pragma warning( disable: 4715 )
+#endif
+
 #include "boost/safe_numerics/safe_integer.hpp"
+
+#ifdef _MSC_VER
+  #pragma warning( pop )
+#endif
 
 #include <istream>
 #include <stdexcept>
