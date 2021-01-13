@@ -1,7 +1,7 @@
 #include "AoC/2019/problem_02.h"
 
 #ifdef _MSC_VER
-  #pragma warning( disable: 4804 ) // disable range-v3 warnings
+#  pragma warning( disable : 4804 )  // disable range-v3 warnings
 #endif
 
 #include "AoC/problems_map.h"
