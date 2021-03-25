@@ -15,8 +15,6 @@
 #include "range/v3/view/transform.hpp"
 
 #include "boost/fusion/adapted/struct.hpp"
-#include "boost/graph/adjacency_list.hpp"
-#include "boost/graph/topological_sort.hpp"
 #include "boost/numeric/conversion/cast.hpp"
 
 
